@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from "react";
 import { PosBadge } from "./PosBadge";
+import { PlayerAvatar } from "./PlayerAvatar";
+import { TeamLogo } from "./TeamLogo";
 import type { ArchBoardRow } from "@/lib/archetypes";
 
 const POSITIONS = ["QB", "RB", "WR", "TE"] as const;
@@ -50,10 +52,12 @@ export function ArchetypeBoard({ rows }: { rows: ArchBoardRow[] }) {
           <div key={row.player} className="rounded-xl border border-line bg-card p-3 shadow-sm">
             <div className="flex items-start justify-between gap-3">
               <div className="flex min-w-0 items-center gap-2">
+                <PlayerAvatar player={row.player} size={28} />
                 <PosBadge pos={row.pos} />
                 <div className="min-w-0">
                   <p className="truncate text-sm font-semibold text-ink">{row.player}</p>
-                  <p className="text-xs text-muted">
+                  <p className="flex items-center gap-1 text-xs text-muted">
+                    <TeamLogo team={row.team} size={14} />
                     {row.team}
                     {row.half_ppr_pg != null ? ` · ${row.half_ppr_pg.toFixed(1)} pts/g` : ""}
                     {row.proj_ppg != null ? ` · proj ${row.proj_ppg.toFixed(1)}` : ""}

@@ -1,4 +1,5 @@
 import { PosBadge } from "./PosBadge";
+import { PlayerAvatar } from "./PlayerAvatar";
 import type { DraftBoardRow } from "@/lib/draft";
 
 export function DraftRow({ row }: { row: DraftBoardRow }) {
@@ -7,6 +8,7 @@ export function DraftRow({ row }: { row: DraftBoardRow }) {
     <div className="rounded-xl border border-line bg-card p-3 shadow-sm">
       <div className="flex items-center justify-between gap-3">
         <div className="flex min-w-0 items-center gap-2">
+          <PlayerAvatar player={row.player} size={28} />
           <PosBadge pos={row.pos} />
           <div className="min-w-0">
             <p className="truncate text-sm font-semibold text-ink">{row.player}</p>

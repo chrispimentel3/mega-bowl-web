@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { PosBadge } from "./PosBadge";
+import { PlayerAvatar } from "./PlayerAvatar";
 import type { PlayerIndexRow } from "@/lib/players";
 
 export function PlayerSearch({ index }: { index: PlayerIndexRow[] }) {
@@ -57,6 +58,7 @@ function ResultRow({ row }: { row: PlayerIndexRow }) {
       className="flex items-center justify-between gap-3 rounded-xl border border-line bg-card p-3 shadow-sm transition-colors hover:border-navy/40"
     >
       <div className="flex items-center gap-2">
+        <PlayerAvatar player={row.name} size={32} />
         <PosBadge pos={row.pos} />
         <span className="text-sm font-semibold text-ink">{row.name}</span>
       </div>

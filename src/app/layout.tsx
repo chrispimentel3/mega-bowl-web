@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Archivo_Narrow } from "next/font/google";
+import { getHeadshots } from "@/lib/headshots";
+import { HeadshotsProvider } from "@/components/HeadshotsProvider";
 import "./globals.css";
 
 const inter = Inter({
@@ -18,13 +20,17 @@ export const metadata: Metadata = {
   description: "Mega Bowl command center — what to do this week, ranked by what it adds to your starting nine.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const headshots = await getHeadshots();
+
   return (
     <html
       lang="en"
       className={`${inter.variable} ${archivo.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground">{children}</body>
+      <body className="min-h-full flex flex-col bg-background text-foreground">
+        <HeadshotsProvider headshots={headshots}>{children}</HeadshotsProvider>
+      </body>
     </html>
   );
 }

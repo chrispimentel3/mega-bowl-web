@@ -1,4 +1,6 @@
 import { PosBadge } from "./PosBadge";
+import { PlayerAvatar } from "./PlayerAvatar";
+import { TeamLogo } from "./TeamLogo";
 import type { WoprRow } from "@/lib/wopr";
 
 const TAG_STYLES: Record<string, string> = {
@@ -41,10 +43,12 @@ export function WoprTable({ rows, showOwner = false }: { rows: WoprRow[]; showOw
         <div key={`${row.name}-${row.owner ?? ""}`} className="rounded-xl border border-line bg-card p-3 shadow-sm">
           <div className="flex items-start justify-between gap-3">
             <div className="flex min-w-0 items-center gap-2">
+              <PlayerAvatar player={row.name} size={28} />
               <PosBadge pos={row.pos} />
               <div className="min-w-0">
                 <p className="truncate text-sm font-semibold text-ink">{row.name}</p>
-                <p className="text-xs text-muted">
+                <p className="flex items-center gap-1 text-xs text-muted">
+                  <TeamLogo team={row.team_2026_nfl} size={14} />
                   {row.team_2026_nfl}
                   {showOwner && row.owner ? ` · ${row.owner}` : ""}
                   {row.board_posrank != null ? ` · board #${Math.round(row.board_posrank)}` : ""}

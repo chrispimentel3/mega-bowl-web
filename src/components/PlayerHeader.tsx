@@ -1,5 +1,6 @@
 import { PosBadge } from "./PosBadge";
 import { OwnershipBadge } from "./OwnershipBadge";
+import { TeamLogo } from "./TeamLogo";
 import type { PlayerDetail } from "@/lib/players";
 
 export function PlayerHeader({ player }: { player: PlayerDetail }) {
@@ -28,7 +29,8 @@ export function PlayerHeader({ player }: { player: PlayerDetail }) {
             <PosBadge pos={player.pos} />
             <h1 className="truncate font-display text-xl font-bold text-ink">{player.name}</h1>
           </div>
-          <p className="mt-1 text-sm font-medium text-ink">
+          <p className="mt-1 flex items-center gap-1.5 text-sm font-medium text-ink">
+            <TeamLogo team={player.team || player.last_team} size={18} />
             {player.team || `no team (last: ${player.last_team || "—"})`}
           </p>
           <p className="mt-0.5 text-xs text-muted">{facts.join(" · ")}</p>

@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from "react";
 import { PosBadge } from "./PosBadge";
+import { PlayerAvatar } from "./PlayerAvatar";
+import { TeamLogo } from "./TeamLogo";
 import type { VegasPlayerRow } from "@/lib/matchups";
 
 export function VegasPlayersTable({ rows, myTeam }: { rows: VegasPlayerRow[]; myTeam: string }) {
@@ -57,11 +59,17 @@ export function VegasPlayersTable({ rows, myTeam }: { rows: VegasPlayerRow[]; my
               <tr key={r.gsis_id} className="border-b border-line last:border-0 even:bg-ink/[0.02]">
                 <td className="px-3 py-2">
                   <div className="flex items-center gap-2">
+                    <PlayerAvatar player={r.player} size={24} />
                     <PosBadge pos={r.pos} />
                     <span className="font-medium text-ink">{r.player}</span>
                   </div>
                 </td>
-                <td className="px-3 py-2 text-muted">{r.team}</td>
+                <td className="px-3 py-2 text-muted">
+                  <div className="flex items-center gap-1.5">
+                    <TeamLogo team={r.team} size={16} />
+                    {r.team}
+                  </div>
+                </td>
                 <td className="px-3 py-2 text-muted">
                   {r.owner === myTeam ? <span className="font-semibold text-navy">you</span> : r.owner}
                 </td>

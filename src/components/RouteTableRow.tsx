@@ -1,4 +1,6 @@
 import { PosBadge } from "./PosBadge";
+import { PlayerAvatar } from "./PlayerAvatar";
+import { TeamLogo } from "./TeamLogo";
 import type { RouteTableRow as Row } from "@/lib/routes";
 
 export function RouteTableRow({ row }: { row: Row }) {
@@ -6,10 +8,12 @@ export function RouteTableRow({ row }: { row: Row }) {
     <div className="rounded-xl border border-line bg-card p-3 shadow-sm">
       <div className="flex items-center justify-between gap-3">
         <div className="flex min-w-0 items-center gap-2">
+          <PlayerAvatar player={row.player} size={28} />
           <PosBadge pos={row.pos} />
           <div className="min-w-0">
             <p className="truncate text-sm font-semibold text-ink">{row.player}</p>
-            <p className="text-xs text-muted">
+            <p className="flex items-center gap-1 text-xs text-muted">
+              <TeamLogo team={row.team} size={14} />
               {row.team} · {row.routes_pg?.toFixed(1) ?? "—"} rte/g
             </p>
           </div>

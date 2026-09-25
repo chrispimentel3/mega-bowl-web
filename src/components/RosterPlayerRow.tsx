@@ -1,4 +1,5 @@
 import { PosBadge } from "./PosBadge";
+import { PlayerAvatar } from "./PlayerAvatar";
 import type { RosterRow } from "@/lib/roster";
 
 export function RosterPlayerRow({ row }: { row: RosterRow }) {
@@ -12,6 +13,7 @@ export function RosterPlayerRow({ row }: { row: RosterRow }) {
           <span className="w-8 shrink-0 text-[11px] font-bold uppercase tracking-wide text-muted">
             {row.slot}
           </span>
+          <PlayerAvatar player={row.player} size={28} />
           <PosBadge pos={row.pos} />
           <div className="min-w-0">
             <p className="truncate text-sm font-semibold text-ink">

@@ -1,4 +1,5 @@
 import { PosBadge } from "./PosBadge";
+import { PlayerAvatar } from "./PlayerAvatar";
 import type { WaiverRow } from "@/lib/action-board";
 
 export function WaiverCard({ row }: { row: WaiverRow }) {
@@ -9,6 +10,7 @@ export function WaiverCard({ row }: { row: WaiverRow }) {
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="flex items-center gap-2">
+            <PlayerAvatar player={row.player} size={28} />
             <PosBadge pos={row.pos} />
             <span className="truncate font-semibold text-ink">{row.player}</span>
           </div>
