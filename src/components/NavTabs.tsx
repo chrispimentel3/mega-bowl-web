@@ -11,6 +11,11 @@ const LINKS = [
     label: "Who should I get?",
     matches: ["/waivers", "/trades", "/wopr", "/archetypes"],
   },
+  {
+    href: "/roster",
+    label: "How am I doing?",
+    matches: ["/roster", "/axe", "/usage", "/league", "/draft"],
+  },
 ];
 
 export function NavTabs() {

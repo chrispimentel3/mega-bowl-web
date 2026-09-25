@@ -18,6 +18,15 @@ const GROUPS = [
       { href: "/archetypes", label: "Blueprint fit" },
     ],
   },
+  {
+    links: [
+      { href: "/roster", label: "My roster" },
+      { href: "/axe", label: "Points vs opportunity" },
+      { href: "/usage", label: "Usage trends" },
+      { href: "/league", label: "The league" },
+      { href: "/draft", label: "Draft value" },
+    ],
+  },
 ];
 
 /** Second-level nav for pages that are sub-tabs of the same top-level Streamlit page. */
