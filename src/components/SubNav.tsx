@@ -34,6 +34,12 @@ const GROUPS = [
       { href: "/news", label: "News" },
     ],
   },
+  {
+    links: [
+      { href: "/ask", label: "Ask anything" },
+      { href: "/downloads", label: "Downloads" },
+    ],
+  },
 ];
 
 /** Second-level nav for pages that are sub-tabs of the same top-level Streamlit page. */

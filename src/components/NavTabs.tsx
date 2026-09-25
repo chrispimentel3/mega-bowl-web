@@ -19,7 +19,12 @@ const LINKS = [
   {
     href: "/players",
     label: "Look up a player",
-    matches: ["/players"],
+    matches: ["/players", "/glossary", "/news"],
+  },
+  {
+    href: "/ask",
+    label: "Ask the data",
+    matches: ["/ask", "/downloads"],
   },
 ];
 
