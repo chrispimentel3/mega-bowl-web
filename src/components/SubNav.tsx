@@ -24,12 +24,13 @@ const GROUPS = [
       { href: "/axe", label: "Points vs opportunity" },
       { href: "/usage", label: "Usage trends" },
       { href: "/league", label: "The league" },
-      { href: "/draft", label: "Draft value" },
     ],
   },
   {
     links: [
       { href: "/players", label: "Player card" },
+      { href: "/rankings", label: "Rankings" },
+      { href: "/compare", label: "Compare" },
       { href: "/glossary", label: "Glossary" },
       { href: "/news", label: "News" },
     ],

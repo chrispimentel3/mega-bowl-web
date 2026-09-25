@@ -14,12 +14,12 @@ const LINKS = [
   {
     href: "/roster",
     label: "Season",
-    matches: ["/roster", "/axe", "/usage", "/league", "/draft"],
+    matches: ["/roster", "/axe", "/usage", "/league"],
   },
   {
     href: "/players",
     label: "Player Lookup",
-    matches: ["/players", "/glossary", "/news"],
+    matches: ["/players", "/rankings", "/compare", "/glossary", "/news"],
   },
   {
     href: "/ask",

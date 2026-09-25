@@ -1,5 +1,14 @@
 import { fetchRemoteJson } from "./fetchRemoteJson";
 
+export type TradeImpact = {
+  my_lineup_delta: number;
+  their_lineup_delta: number;
+  i_would_start: string[];
+  i_would_bench: string[];
+  they_would_start: string[];
+  they_would_bench: string[];
+};
+
 export type TradeOffer = {
   give: string;
   give_val: number;
@@ -8,6 +17,7 @@ export type TradeOffer = {
   addresses: string;
   fairness: number;
   edge: number;
+  impact: TradeImpact | null;
 };
 
 export type TradeGroup = {
@@ -20,6 +30,7 @@ export type Trades = {
   available: boolean;
   groups: TradeGroup[];
   roster_src: string | null;
+  impact_available: boolean;
 };
 
 const REMOTE_URL = process.env.TRADES_URL;

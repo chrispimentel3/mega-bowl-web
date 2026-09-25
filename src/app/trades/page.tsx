@@ -3,6 +3,7 @@ import { getActionBoard } from "@/lib/action-board";
 import { Masthead } from "@/components/Masthead";
 import { SectionHeading } from "@/components/SectionHeading";
 import { TradeOfferCard } from "@/components/TradeOfferCard";
+import { TradeSearchExplorer } from "@/components/TradeSearchExplorer";
 import Link from "next/link";
 
 export const revalidate = 3600;
@@ -14,6 +15,10 @@ export default async function TradesPage() {
     <>
       <Masthead season={ab.season} week={ab.week} nextWeek={ab.next_week} rosterSrc={ab.roster_src} />
       <main className="mx-auto w-full max-w-2xl flex-1 px-4 pb-16 pt-4 sm:max-w-3xl">
+        <SectionHeading title="Trade around one player" />
+        <TradeSearchExplorer />
+
+        <SectionHeading title="Offers the league is set up for" />
         <p className="mt-4 text-sm text-muted">
           Built from your league&apos;s actual rosters — who has a surplus where you&apos;re thin,
           and what they&apos;re short of in return. The percentage is fairness on FantasyCalc
@@ -50,12 +55,6 @@ export default async function TradesPage() {
         {tr.roster_src ? (
           <p className="mt-6 text-xs text-muted">Rosters: {tr.roster_src}.</p>
         ) : null}
-
-        <p className="mt-2 text-xs text-muted">
-          &ldquo;Trade around one player&rdquo; — the interactive search for offers around a
-          specific player — needs live computation per query and isn&apos;t available on this
-          statically-generated page yet; use the Streamlit dashboard for that.
-        </p>
       </main>
     </>
   );
