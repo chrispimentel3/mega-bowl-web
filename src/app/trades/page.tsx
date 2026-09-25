@@ -3,6 +3,7 @@ import { getActionBoard } from "@/lib/action-board";
 import { Masthead } from "@/components/Masthead";
 import { SectionHeading } from "@/components/SectionHeading";
 import { TradeOfferCard } from "@/components/TradeOfferCard";
+import Link from "next/link";
 
 export const revalidate = 3600;
 
@@ -15,7 +16,13 @@ export default async function TradesPage() {
       <main className="mx-auto w-full max-w-2xl flex-1 px-4 pb-16 pt-4 sm:max-w-3xl">
         <p className="mt-4 text-sm text-muted">
           Built from your league&apos;s actual rosters — who has a surplus where you&apos;re thin,
-          and what they&apos;re short of in return.
+          and what they&apos;re short of in return. The percentage is fairness on FantasyCalc
+          trade value (the smaller side over the larger — 95%+ is close to even); &quot;addresses&quot;
+          names the position the deal actually fixes for you. See{" "}
+          <Link href="/logic#trade_value" className="text-navy hover:underline">
+            Logic → what the value number actually is
+          </Link>{" "}
+          for how that&apos;s built.
         </p>
 
         {!tr.available ? (

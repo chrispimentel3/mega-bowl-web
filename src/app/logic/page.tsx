@@ -20,7 +20,11 @@ export default async function LogicPage() {
 
         <div className="space-y-3">
           {logic.topics.map((topic) => (
-            <details key={topic.key} className="group rounded-xl border border-line bg-card p-4 shadow-sm">
+            <details
+              key={topic.key}
+              id={topic.key}
+              className="group scroll-mt-4 rounded-xl border border-line bg-card p-4 shadow-sm"
+            >
               <summary className="cursor-pointer list-none">
                 <div className="flex items-start justify-between gap-3">
                   <h2 className="font-display text-base font-bold text-ink">{topic.title}</h2>

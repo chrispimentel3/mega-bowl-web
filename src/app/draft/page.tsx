@@ -6,6 +6,7 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { DraftBoard } from "@/components/DraftBoard";
 import { PosBadge } from "@/components/PosBadge";
 import { TrendChart } from "@/components/TrendChart";
+import Link from "next/link";
 
 export const revalidate = 3600;
 
@@ -22,7 +23,16 @@ export default async function DraftPage() {
           </div>
         ) : (
           <>
-            <div className="mt-4">
+            <p className="mt-4 text-sm text-muted">
+              Every pick vs. what it &quot;should&quot; be worth today, by draft slot — a
+              league-wide grade on who&apos;s risen or fallen, not a trade recommendation for
+              your roster specifically. See{" "}
+              <Link href="/logic#trade_value" className="text-navy hover:underline">
+                Logic → what the value number actually is
+              </Link>{" "}
+              for how it&apos;s built and what it doesn&apos;t account for.
+            </p>
+            <div className="mt-2">
               <DraftBoard board={draft.board} />
             </div>
 
@@ -59,7 +69,10 @@ export default async function DraftPage() {
             )}
 
             <SectionHeading title="Trade value over time" />
-            <p className="mb-3 text-sm text-muted">FantasyCalc value, your roster, week by week.</p>
+            <p className="mb-3 text-sm text-muted">
+              FantasyCalc&apos;s crowd-sourced trade value for your roster, week by week — the
+              same number the Trades page below sums on both sides of a deal.
+            </p>
             <TrendChart trend={trend} yLabel="Value" />
           </>
         )}
