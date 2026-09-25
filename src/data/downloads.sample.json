@@ -1,0 +1,71 @@
+{
+  "available": true,
+  "roster": [
+    {
+      "name": "Bryce Young",
+      "slot": "QB",
+      "pos": "QB",
+      "nfl_team": "CAR",
+      "yahoo_id": "40029",
+      "gsis_id": "00-0039150",
+      "pfr_id": "YounBr01",
+      "matched_name": "Bryce Young",
+      "match_method": "id",
+      "resolved": true,
+      "unmapped": false
+    },
+    {
+      "name": "Christian McCaffrey",
+      "slot": "RB",
+      "pos": "RB",
+      "nfl_team": "SF",
+      "yahoo_id": "30121",
+      "gsis_id": "00-0033280",
+      "pfr_id": "McCaCh01",
+      "matched_name": "Christian McCaffrey",
+      "match_method": "id",
+      "resolved": true,
+      "unmapped": false
+    },
+    {
+      "name": "Travis Kelce",
+      "slot": "TE",
+      "pos": "TE",
+      "nfl_team": "KC",
+      "yahoo_id": "26686",
+      "gsis_id": "00-0030506",
+      "pfr_id": "KelcTr00",
+      "matched_name": "Travis Kelce",
+      "match_method": "id",
+      "resolved": true,
+      "unmapped": false
+    },
+    {
+      "name": "Tyler Loop",
+      "slot": "K",
+      "pos": "K",
+      "nfl_team": "BAL",
+      "yahoo_id": "41988",
+      "gsis_id": "00-0040074",
+      "pfr_id": "LoopTy00",
+      "matched_name": "Tyler Loop",
+      "match_method": "name",
+      "resolved": true,
+      "unmapped": false
+    },
+    {
+      "name": "Panthers",
+      "slot": "DEF",
+      "pos": "DEF",
+      "nfl_team": "CAR",
+      "yahoo_id": null,
+      "gsis_id": null,
+      "pfr_id": null,
+      "matched_name": null,
+      "match_method": "unmapped",
+      "resolved": false,
+      "unmapped": true
+    }
+  ],
+  "match_line": "16 players · 10 by id, 5 by name, 1 intentionally unmapped"
+}
