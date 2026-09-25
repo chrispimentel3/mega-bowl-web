@@ -6,6 +6,11 @@ import { usePathname } from "next/navigation";
 const LINKS = [
   { href: "/", label: "This week", matches: ["/"] },
   { href: "/start-sit", label: "Who do I start?", matches: ["/start-sit", "/matchups"] },
+  {
+    href: "/waivers",
+    label: "Who should I get?",
+    matches: ["/waivers", "/trades", "/wopr", "/archetypes"],
+  },
 ];
 
 export function NavTabs() {
