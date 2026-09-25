@@ -4,26 +4,26 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const LINKS = [
-  { href: "/", label: "This week", matches: ["/"] },
-  { href: "/start-sit", label: "Who do I start?", matches: ["/start-sit", "/matchups"] },
+  { href: "/", label: "This Week", matches: ["/"] },
+  { href: "/start-sit", label: "Lineup & Matchups", matches: ["/start-sit", "/matchups"] },
   {
     href: "/waivers",
-    label: "Who should I get?",
+    label: "Waivers & Trades",
     matches: ["/waivers", "/trades", "/wopr", "/archetypes"],
   },
   {
     href: "/roster",
-    label: "How am I doing?",
+    label: "Season",
     matches: ["/roster", "/axe", "/usage", "/league", "/draft"],
   },
   {
     href: "/players",
-    label: "Look up a player",
+    label: "Player Lookup",
     matches: ["/players", "/glossary", "/news"],
   },
   {
     href: "/ask",
-    label: "Ask the data",
+    label: "Data Search",
     matches: ["/ask", "/downloads"],
   },
   {
