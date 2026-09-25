@@ -1,14 +1,16 @@
 import { getDraft } from "@/lib/draft";
+import { getTradeValueTrend } from "@/lib/trends";
 import { getActionBoard } from "@/lib/action-board";
 import { Masthead } from "@/components/Masthead";
 import { SectionHeading } from "@/components/SectionHeading";
 import { DraftBoard } from "@/components/DraftBoard";
 import { PosBadge } from "@/components/PosBadge";
+import { TrendChart } from "@/components/TrendChart";
 
 export const revalidate = 3600;
 
 export default async function DraftPage() {
-  const [draft, ab] = await Promise.all([getDraft(), getActionBoard()]);
+  const [draft, trend, ab] = await Promise.all([getDraft(), getTradeValueTrend(), getActionBoard()]);
 
   return (
     <>
@@ -55,6 +57,10 @@ export default async function DraftPage() {
             ) : (
               <p className="mt-6 text-sm text-muted">Not enough games yet to compare.</p>
             )}
+
+            <SectionHeading title="Trade value over time" />
+            <p className="mb-3 text-sm text-muted">FantasyCalc value, your roster, week by week.</p>
+            <TrendChart trend={trend} yLabel="Value" />
           </>
         )}
       </main>

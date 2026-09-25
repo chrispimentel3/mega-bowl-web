@@ -1,13 +1,15 @@
 import { getWopr } from "@/lib/wopr";
+import { getWoprTrend } from "@/lib/trends";
 import { getActionBoard } from "@/lib/action-board";
 import { Masthead } from "@/components/Masthead";
 import { SectionHeading } from "@/components/SectionHeading";
 import { WoprTable } from "@/components/WoprTable";
+import { TrendChart } from "@/components/TrendChart";
 
 export const revalidate = 3600;
 
 export default async function WoprPage() {
-  const [w, ab] = await Promise.all([getWopr(), getActionBoard()]);
+  const [w, trend, ab] = await Promise.all([getWopr(), getWoprTrend(), getActionBoard()]);
 
   return (
     <>
@@ -49,6 +51,12 @@ export default async function WoprPage() {
               Unrostered WR/TE clearing a startable opportunity bar or jumping in role.
             </p>
             <WoprTable rows={w.fa} />
+
+            <SectionHeading title="Opportunity over time" />
+            <p className="mb-3 text-sm text-muted">
+              Your WR/TE&apos;s weighted opportunity rating, week by week.
+            </p>
+            <TrendChart trend={trend} percent yLabel="WOPR" />
           </>
         )}
       </main>

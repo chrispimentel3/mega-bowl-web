@@ -1,14 +1,16 @@
 import { getArchetypes } from "@/lib/archetypes";
+import { getArchetypeTrend } from "@/lib/trends";
 import { getActionBoard } from "@/lib/action-board";
 import { Masthead } from "@/components/Masthead";
 import { SectionHeading } from "@/components/SectionHeading";
 import { ArchMineCard } from "@/components/ArchMineCard";
 import { ArchetypeBoard } from "@/components/ArchetypeBoard";
+import { TrendChart } from "@/components/TrendChart";
 
 export const revalidate = 3600;
 
 export default async function ArchetypesPage() {
-  const [arch, ab] = await Promise.all([getArchetypes(), getActionBoard()]);
+  const [arch, trend, ab] = await Promise.all([getArchetypes(), getArchetypeTrend(), getActionBoard()]);
 
   return (
     <>
@@ -35,6 +37,9 @@ export default async function ArchetypesPage() {
 
             <SectionHeading title="Best fits — who to target" />
             <ArchetypeBoard rows={arch.board} />
+
+            <SectionHeading title="Your roster's fit score over time" />
+            <TrendChart trend={trend} yLabel="Fit (0–100)" />
           </>
         )}
       </main>
