@@ -60,6 +60,15 @@ export type ThisWeek = {
   out_reason?: string | null;
   projection?: number | null;
   proj_source?: string | null;
+  matchup_mult?: number | null;
+  matchup_pct?: number | null;
+  matchup_basis?: "defense+vegas" | "defense_only" | null;
+  matchup_def_rank?: number | null;
+  matchup_def_pct?: number | null;
+  matchup_vegas_pct?: number | null;
+  matchup_baseline?: number | null;
+  expected_pts?: number | null;
+  delta_pts?: number | null;
 };
 
 export type GameLogRow = Record<string, number | string | null>;
