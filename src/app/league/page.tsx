@@ -6,6 +6,7 @@ import { KpiRow } from "@/components/KpiRow";
 import { SimpleTable } from "@/components/SimpleTable";
 import { WeeklyResultsTable } from "@/components/WeeklyResultsTable";
 import { WeeklyPointsChart } from "@/components/WeeklyPointsChart";
+import Link from "next/link";
 
 export const revalidate = 3600;
 
@@ -49,8 +50,13 @@ export default async function LeaguePage() {
               ]}
             />
             <p className="mt-2 text-xs text-muted">
-              6,000 simulated seasons. Each week&apos;s score is drawn around the team&apos;s own
-              average, with this league&apos;s own spread.
+              6,000 simulated seasons. Each team&apos;s own points-per-week estimate carries its
+              own uncertainty — wide early in the season, narrowing as more games come in — on
+              top of this league&apos;s week-to-week scoring spread. See{" "}
+              <Link href="/logic#playoff_odds" className="text-navy hover:underline">
+                Logic → why these move so much early in the season
+              </Link>
+              .
             </p>
           </>
         ) : null}
