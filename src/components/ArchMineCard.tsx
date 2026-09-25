@@ -27,12 +27,14 @@ export function ArchMineCard({ row }: { row: ArchMineRow }) {
           <p className="text-[11px] text-muted">fit</p>
         </div>
       </div>
-      {row.tags ? (
-        <span className="mt-2 inline-block rounded-md bg-navy/10 px-1.5 py-0.5 text-[11px] font-bold text-navy">
-          {row.tags}
-        </span>
-      ) : null}
-      <p className="mt-2 text-sm text-muted">{row.why}</p>
+      <div className="mt-2 min-h-[22px]">
+        {row.tags ? (
+          <span className="inline-block rounded-md bg-navy/10 px-1.5 py-0.5 text-[11px] font-bold text-navy">
+            {row.tags}
+          </span>
+        ) : null}
+      </div>
+      <p className="text-sm text-muted">{row.why}</p>
     </div>
   );
 }

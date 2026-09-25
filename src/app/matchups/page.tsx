@@ -5,6 +5,7 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { TeamEnvironmentCard } from "@/components/TeamEnvironmentCard";
 import { PlayerDifficultyRow } from "@/components/PlayerDifficultyRow";
 import { VegasPlayersTable } from "@/components/VegasPlayersTable";
+import Link from "next/link";
 
 export const revalidate = 3600;
 
@@ -22,7 +23,11 @@ export default async function MatchupsPage() {
             <SectionHeading title={`Week ${mm.next_week} — team game environment (Vegas)`} />
             <p className="mb-3 text-sm text-muted">
               Implied team total = Vegas&apos;s expected points for that offense. Higher = more
-              scoring to go around.
+              scoring to go around. See{" "}
+              <Link href="/logic#vegas" className="text-navy hover:underline">
+                Logic → why Vegas lines, not a homemade projection
+              </Link>{" "}
+              for the math behind these numbers.
             </p>
             <div className="grid gap-3 sm:grid-cols-2">
               {mm.team_environment.map((row) => (
