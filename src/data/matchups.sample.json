@@ -44,12 +44,20 @@
       "implied_pts": 22.5
     },
     {
+      "team": "HOU",
+      "players": "C.J. Stroud",
+      "matchup": "@ IND",
+      "total": 42.5,
+      "spread": 1.5,
+      "implied_pts": 22.0
+    },
+    {
       "team": "NYJ",
       "players": "Breece Hall",
       "matchup": "@ DET",
-      "total": 47.5,
+      "total": 48.5,
       "spread": -6.5,
-      "implied_pts": 20.5
+      "implied_pts": 21.0
     },
     {
       "team": "IND",
@@ -113,7 +121,7 @@
       "vegas_parts": 5,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Burrow-Chase combo"
     },
     {
       "gsis_id": "00-0029604",
@@ -157,7 +165,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "TaylorMade"
     },
     {
       "gsis_id": "00-0030565",
@@ -190,7 +198,7 @@
       "vegas_parts": 1,
       "vegas_filled": 2,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "BillsMafia"
     },
     {
       "gsis_id": "00-0031408",
@@ -201,7 +209,7 @@
       "vegas_parts": 1,
       "vegas_filled": 2,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "Crabcakes and Football"
     },
     {
       "gsis_id": "00-0031484",
@@ -234,7 +242,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Heartbreak Drake"
     },
     {
       "gsis_id": "00-0031595",
@@ -333,7 +341,7 @@
       "vegas_parts": 2,
       "vegas_filled": 2,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "Don R.I.C.O"
     },
     {
       "gsis_id": "00-0032951",
@@ -355,7 +363,7 @@
       "vegas_parts": 5,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Revenge of the Smith"
     },
     {
       "gsis_id": "00-0033090",
@@ -366,7 +374,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Heartbreak Drake"
     },
     {
       "gsis_id": "00-0033106",
@@ -377,7 +385,7 @@
       "vegas_parts": 4,
       "vegas_filled": 1,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "deez nuts"
     },
     {
       "gsis_id": "00-0033110",
@@ -432,7 +440,7 @@
       "vegas_parts": 2,
       "vegas_filled": 2,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "TaylorMade"
     },
     {
       "gsis_id": "00-0033288",
@@ -443,7 +451,7 @@
       "vegas_parts": 1,
       "vegas_filled": 2,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "TaylorMade"
     },
     {
       "gsis_id": "00-0033293",
@@ -454,7 +462,7 @@
       "vegas_parts": 1,
       "vegas_filled": 3,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "A Place in the Hampton"
     },
     {
       "gsis_id": "00-0033307",
@@ -553,7 +561,7 @@
       "vegas_parts": 5,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Crabcakes and Football"
     },
     {
       "gsis_id": "00-0033881",
@@ -575,7 +583,7 @@
       "vegas_parts": 1,
       "vegas_filled": 3,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "Burrow-Chase combo"
     },
     {
       "gsis_id": "00-0033908",
@@ -586,7 +594,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Don R.I.C.O"
     },
     {
       "gsis_id": "00-0033921",
@@ -597,7 +605,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "A Place in the Hampton"
     },
     {
       "gsis_id": "00-0034270",
@@ -619,7 +627,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Undisputed"
     },
     {
       "gsis_id": "00-0034351",
@@ -630,7 +638,7 @@
       "vegas_parts": 1,
       "vegas_filled": 2,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "BillsMafia"
     },
     {
       "gsis_id": "00-0034365",
@@ -652,7 +660,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "L'Omar"
     },
     {
       "gsis_id": "00-0034419",
@@ -674,7 +682,18 @@
       "vegas_parts": 1,
       "vegas_filled": 2,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "Revenge of the Smith"
+    },
+    {
+      "gsis_id": "00-0034796",
+      "player": "Lamar Jackson",
+      "team": "BAL",
+      "pos": "QB",
+      "vegas": 22.95,
+      "vegas_parts": 5,
+      "vegas_filled": 0,
+      "vegas_complete": true,
+      "owner": "L'Omar"
     },
     {
       "gsis_id": "00-0034798",
@@ -696,7 +715,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Barkley\u2019s Balls Deep"
     },
     {
       "gsis_id": "00-0034829",
@@ -729,7 +748,7 @@
       "vegas_parts": 4,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Barkley\u2019s Balls Deep"
     },
     {
       "gsis_id": "00-0034854",
@@ -762,7 +781,7 @@
       "vegas_parts": 5,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Barkley\u2019s Balls Deep"
     },
     {
       "gsis_id": "00-0034959",
@@ -784,7 +803,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "L'Omar"
     },
     {
       "gsis_id": "00-0034975",
@@ -795,7 +814,7 @@
       "vegas_parts": 1,
       "vegas_filled": 3,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "deez nuts"
     },
     {
       "gsis_id": "00-0034981",
@@ -839,7 +858,7 @@
       "vegas_parts": 5,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Undisputed"
     },
     {
       "gsis_id": "00-0035229",
@@ -850,7 +869,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "BillsMafia"
     },
     {
       "gsis_id": "00-0035249",
@@ -883,12 +902,12 @@
       "vegas_parts": 2,
       "vegas_filled": 2,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "Barkley\u2019s Balls Deep"
     },
     {
       "gsis_id": "00-0035535",
       "player": "Darius Slayton",
-      "team": "FA",
+      "team": "IND",
       "pos": "WR",
       "vegas": 1.38,
       "vegas_parts": 1,
@@ -949,7 +968,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Burrow-Chase combo"
     },
     {
       "gsis_id": "00-0035644",
@@ -971,7 +990,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Undisputed"
     },
     {
       "gsis_id": "00-0035662",
@@ -993,7 +1012,7 @@
       "vegas_parts": 2,
       "vegas_filled": 2,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "Undisputed"
     },
     {
       "gsis_id": "00-0035689",
@@ -1026,7 +1045,7 @@
       "vegas_parts": 1,
       "vegas_filled": 2,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "Don R.I.C.O"
     },
     {
       "gsis_id": "00-0035891",
@@ -1048,7 +1067,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Revenge of the Smith"
     },
     {
       "gsis_id": "00-0036139",
@@ -1059,18 +1078,7 @@
       "vegas_parts": 1,
       "vegas_filled": 3,
       "vegas_complete": false,
-      "owner": "FA"
-    },
-    {
-      "gsis_id": "00-0036152",
-      "player": "Lamar Jackson",
-      "team": "CAR",
-      "pos": "CB",
-      "vegas": 23.73,
-      "vegas_parts": 5,
-      "vegas_filled": 0,
-      "vegas_complete": false,
-      "owner": "FA"
+      "owner": "Don R.I.C.O"
     },
     {
       "gsis_id": "00-0036158",
@@ -1081,7 +1089,7 @@
       "vegas_parts": 1,
       "vegas_filled": 3,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "Burrow-Chase combo"
     },
     {
       "gsis_id": "00-0036187",
@@ -1103,7 +1111,7 @@
       "vegas_parts": 4,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Heartbreak Drake"
     },
     {
       "gsis_id": "00-0036244",
@@ -1125,7 +1133,7 @@
       "vegas_parts": 1,
       "vegas_filled": 2,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "deez nuts"
     },
     {
       "gsis_id": "00-0036259",
@@ -1147,7 +1155,7 @@
       "vegas_parts": 5,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "A Place in the Hampton"
     },
     {
       "gsis_id": "00-0036265",
@@ -1169,7 +1177,7 @@
       "vegas_parts": 1,
       "vegas_filled": 3,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "BillsMafia"
     },
     {
       "gsis_id": "00-0036290",
@@ -1194,6 +1202,17 @@
       "owner": "FA"
     },
     {
+      "gsis_id": "00-0036322",
+      "player": "Justin Jefferson",
+      "team": "MIN",
+      "pos": "WR",
+      "vegas": 12.94,
+      "vegas_parts": 3,
+      "vegas_filled": 0,
+      "vegas_complete": true,
+      "owner": "BillsMafia"
+    },
+    {
       "gsis_id": "00-0036331",
       "player": "Devin Duvernay",
       "team": "ARI",
@@ -1213,7 +1232,7 @@
       "vegas_parts": 5,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "A Place in the Hampton"
     },
     {
       "gsis_id": "00-0036358",
@@ -1224,7 +1243,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Crabcakes and Football"
     },
     {
       "gsis_id": "00-0036389",
@@ -1235,7 +1254,7 @@
       "vegas_parts": 5,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Don R.I.C.O"
     },
     {
       "gsis_id": "00-0036407",
@@ -1257,7 +1276,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Crabcakes and Football"
     },
     {
       "gsis_id": "00-0036422",
@@ -1301,14 +1320,14 @@
       "vegas_parts": 4,
       "vegas_filled": 1,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "Burrow-Chase combo"
     },
     {
       "gsis_id": "00-0036463",
       "player": "Chris Blair",
       "team": "ATL",
       "pos": "WR",
-      "vegas": 3.59,
+      "vegas": 1.81,
       "vegas_parts": 1,
       "vegas_filled": 2,
       "vegas_complete": false,
@@ -1323,7 +1342,7 @@
       "vegas_parts": 1,
       "vegas_filled": 2,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "Barkley\u2019s Balls Deep"
     },
     {
       "gsis_id": "00-0036555",
@@ -1334,7 +1353,7 @@
       "vegas_parts": 4,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Don R.I.C.O"
     },
     {
       "gsis_id": "00-0036590",
@@ -1356,7 +1375,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Revenge of the Smith"
     },
     {
       "gsis_id": "00-0036626",
@@ -1466,7 +1485,7 @@
       "vegas_parts": 4,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Crabcakes and Football"
     },
     {
       "gsis_id": "00-0036876",
@@ -1521,7 +1540,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Burrow-Chase combo"
     },
     {
       "gsis_id": "00-0036912",
@@ -1532,7 +1551,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Revenge of the Smith"
     },
     {
       "gsis_id": "00-0036919",
@@ -1543,7 +1562,7 @@
       "vegas_parts": 1,
       "vegas_filled": 3,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "Heartbreak Drake"
     },
     {
       "gsis_id": "00-0036963",
@@ -1554,7 +1573,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "A Place in the Hampton"
     },
     {
       "gsis_id": "00-0036970",
@@ -1565,7 +1584,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "L'Omar"
     },
     {
       "gsis_id": "00-0036971",
@@ -1576,7 +1595,7 @@
       "vegas_parts": 5,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Crabcakes and Football"
     },
     {
       "gsis_id": "00-0036973",
@@ -1587,7 +1606,7 @@
       "vegas_parts": 1,
       "vegas_filled": 3,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "Burrow-Chase combo"
     },
     {
       "gsis_id": "00-0036980",
@@ -1620,7 +1639,7 @@
       "vegas_parts": 4,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Burrow-Chase combo"
     },
     {
       "gsis_id": "00-0037004",
@@ -1649,7 +1668,7 @@
       "player": "Bo Melton",
       "team": "GB",
       "pos": "WR",
-      "vegas": 1.48,
+      "vegas": 1.34,
       "vegas_parts": 1,
       "vegas_filled": 2,
       "vegas_complete": false,
@@ -1708,7 +1727,7 @@
       "vegas_parts": 1,
       "vegas_filled": 3,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "L'Omar"
     },
     {
       "gsis_id": "00-0037231",
@@ -1730,7 +1749,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "deez nuts"
     },
     {
       "gsis_id": "00-0037239",
@@ -1741,7 +1760,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "BillsMafia"
     },
     {
       "gsis_id": "00-0037240",
@@ -1752,7 +1771,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "BillsMafia"
     },
     {
       "gsis_id": "00-0037247",
@@ -1763,7 +1782,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "deez nuts"
     },
     {
       "gsis_id": "00-0037248",
@@ -1774,7 +1793,7 @@
       "vegas_parts": 4,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Revenge of the Smith"
     },
     {
       "gsis_id": "00-0037252",
@@ -1796,7 +1815,7 @@
       "vegas_parts": 1,
       "vegas_filled": 3,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "A Place in the Hampton"
     },
     {
       "gsis_id": "00-0037261",
@@ -1807,7 +1826,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Burrow-Chase combo"
     },
     {
       "gsis_id": "00-0037263",
@@ -1950,7 +1969,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "A Place in the Hampton"
     },
     {
       "gsis_id": "00-0037741",
@@ -1983,18 +2002,18 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Crabcakes and Football"
     },
     {
       "gsis_id": "00-0037746",
       "player": "Brian Robinson Jr.",
       "team": "ATL",
       "pos": "RB",
-      "vegas": 5.26,
+      "vegas": 4.92,
       "vegas_parts": 2,
       "vegas_filled": 2,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "L'Omar"
     },
     {
       "gsis_id": "00-0037755",
@@ -2049,7 +2068,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Heartbreak Drake"
     },
     {
       "gsis_id": "00-0037834",
@@ -2060,7 +2079,7 @@
       "vegas_parts": 4,
       "vegas_filled": 1,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "BillsMafia"
     },
     {
       "gsis_id": "00-0037838",
@@ -2071,7 +2090,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Don R.I.C.O"
     },
     {
       "gsis_id": "00-0037840",
@@ -2082,7 +2101,7 @@
       "vegas_parts": 2,
       "vegas_filled": 2,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "Undisputed"
     },
     {
       "gsis_id": "00-0038041",
@@ -2093,7 +2112,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Barkley\u2019s Balls Deep"
     },
     {
       "gsis_id": "00-0038090",
@@ -2115,7 +2134,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Don R.I.C.O"
     },
     {
       "gsis_id": "00-0038115",
@@ -2148,7 +2167,7 @@
       "vegas_parts": 4,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "TaylorMade"
     },
     {
       "gsis_id": "00-0038124",
@@ -2159,7 +2178,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "TaylorMade"
     },
     {
       "gsis_id": "00-0038128",
@@ -2192,7 +2211,7 @@
       "vegas_parts": 4,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "BillsMafia"
     },
     {
       "gsis_id": "00-0038359",
@@ -2214,7 +2233,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Burrow-Chase combo"
     },
     {
       "gsis_id": "00-0038416",
@@ -2291,7 +2310,7 @@
       "vegas_parts": 4,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Undisputed"
     },
     {
       "gsis_id": "00-0038543",
@@ -2302,7 +2321,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Don R.I.C.O"
     },
     {
       "gsis_id": "00-0038544",
@@ -2313,7 +2332,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Undisputed"
     },
     {
       "gsis_id": "00-0038547",
@@ -2346,7 +2365,7 @@
       "vegas_parts": 1,
       "vegas_filled": 3,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "Barkley\u2019s Balls Deep"
     },
     {
       "gsis_id": "00-0038558",
@@ -2368,7 +2387,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "BillsMafia"
     },
     {
       "gsis_id": "00-0038563",
@@ -2379,7 +2398,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Crabcakes and Football"
     },
     {
       "gsis_id": "00-0038564",
@@ -2423,7 +2442,7 @@
       "vegas_parts": 4,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Crabcakes and Football"
     },
     {
       "gsis_id": "00-0038606",
@@ -2434,7 +2453,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Revenge of the Smith"
     },
     {
       "gsis_id": "00-0038608",
@@ -2632,7 +2651,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "deez nuts"
     },
     {
       "gsis_id": "00-0038935",
@@ -2676,7 +2695,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Burrow-Chase combo"
     },
     {
       "gsis_id": "00-0038996",
@@ -2687,7 +2706,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Don R.I.C.O"
     },
     {
       "gsis_id": "00-0038997",
@@ -2698,7 +2717,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "TaylorMade"
     },
     {
       "gsis_id": "00-0039021",
@@ -2720,7 +2739,7 @@
       "vegas_parts": 2,
       "vegas_filled": 2,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "Barkley\u2019s Balls Deep"
     },
     {
       "gsis_id": "00-0039040",
@@ -2731,7 +2750,7 @@
       "vegas_parts": 4,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Revenge of the Smith"
     },
     {
       "gsis_id": "00-0039041",
@@ -2775,7 +2794,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "L'Omar"
     },
     {
       "gsis_id": "00-0039065",
@@ -2786,7 +2805,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Heartbreak Drake"
     },
     {
       "gsis_id": "00-0039066",
@@ -2808,7 +2827,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "A Place in the Hampton"
     },
     {
       "gsis_id": "00-0039074",
@@ -2830,7 +2849,7 @@
       "vegas_parts": 1,
       "vegas_filled": 2,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "L'Omar"
     },
     {
       "gsis_id": "00-0039139",
@@ -2841,7 +2860,7 @@
       "vegas_parts": 4,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "deez nuts"
     },
     {
       "gsis_id": "00-0039150",
@@ -2852,7 +2871,7 @@
       "vegas_parts": 5,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "TaylorMade"
     },
     {
       "gsis_id": "00-0039163",
@@ -2863,7 +2882,7 @@
       "vegas_parts": 5,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "TaylorMade"
     },
     {
       "gsis_id": "00-0039299",
@@ -2885,7 +2904,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "TaylorMade"
     },
     {
       "gsis_id": "00-0039338",
@@ -2896,7 +2915,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Undisputed"
     },
     {
       "gsis_id": "00-0039342",
@@ -2940,7 +2959,7 @@
       "vegas_parts": 2,
       "vegas_filled": 2,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "L'Omar"
     },
     {
       "gsis_id": "00-0039364",
@@ -2951,7 +2970,7 @@
       "vegas_parts": 1,
       "vegas_filled": 3,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "deez nuts"
     },
     {
       "gsis_id": "00-0039365",
@@ -3017,7 +3036,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Don R.I.C.O"
     },
     {
       "gsis_id": "00-0039451",
@@ -3039,7 +3058,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "deez nuts"
     },
     {
       "gsis_id": "00-0039530",
@@ -3105,7 +3124,7 @@
       "vegas_parts": 5,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "BillsMafia"
     },
     {
       "gsis_id": "00-0039738",
@@ -3116,7 +3135,7 @@
       "vegas_parts": 2,
       "vegas_filled": 2,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "Crabcakes and Football"
     },
     {
       "gsis_id": "00-0039739",
@@ -3171,7 +3190,7 @@
       "vegas_parts": 1,
       "vegas_filled": 3,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "Undisputed"
     },
     {
       "gsis_id": "00-0039796",
@@ -3204,7 +3223,7 @@
       "vegas_parts": 4,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "deez nuts"
     },
     {
       "gsis_id": "00-0039814",
@@ -3237,7 +3256,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Barkley\u2019s Balls Deep"
     },
     {
       "gsis_id": "00-0039851",
@@ -3248,7 +3267,7 @@
       "vegas_parts": 5,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Heartbreak Drake"
     },
     {
       "gsis_id": "00-0039855",
@@ -3292,7 +3311,7 @@
       "vegas_parts": 1,
       "vegas_filled": 3,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "Revenge of the Smith"
     },
     {
       "gsis_id": "00-0039880",
@@ -3314,7 +3333,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "deez nuts"
     },
     {
       "gsis_id": "00-0039893",
@@ -3325,7 +3344,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "L'Omar"
     },
     {
       "gsis_id": "00-0039894",
@@ -3336,7 +3355,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Undisputed"
     },
     {
       "gsis_id": "00-0039901",
@@ -3369,7 +3388,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Don R.I.C.O"
     },
     {
       "gsis_id": "00-0039917",
@@ -3391,7 +3410,7 @@
       "vegas_parts": 1,
       "vegas_filled": 2,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "Revenge of the Smith"
     },
     {
       "gsis_id": "00-0039920",
@@ -3468,7 +3487,7 @@
       "vegas_parts": 4,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Heartbreak Drake"
     },
     {
       "gsis_id": "00-0040124",
@@ -3479,7 +3498,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Heartbreak Drake"
     },
     {
       "gsis_id": "00-0040126",
@@ -3490,7 +3509,7 @@
       "vegas_parts": 1,
       "vegas_filled": 2,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "Burrow-Chase combo"
     },
     {
       "gsis_id": "00-0040128",
@@ -3501,7 +3520,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "A Place in the Hampton"
     },
     {
       "gsis_id": "00-0040129",
@@ -3512,7 +3531,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "TaylorMade"
     },
     {
       "gsis_id": "00-0040131",
@@ -3552,11 +3571,11 @@
       "player": "Kaleb Johnson",
       "team": "GB",
       "pos": "RB",
-      "vegas": 6.79,
+      "vegas": 8.26,
       "vegas_parts": 2,
       "vegas_filled": 2,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "A Place in the Hampton"
     },
     {
       "gsis_id": "00-0040154",
@@ -3622,7 +3641,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Barkley\u2019s Balls Deep"
     },
     {
       "gsis_id": "00-0040194",
@@ -3677,7 +3696,7 @@
       "vegas_parts": 1,
       "vegas_filled": 3,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "Crabcakes and Football"
     },
     {
       "gsis_id": "00-0040237",
@@ -3710,7 +3729,7 @@
       "vegas_parts": 2,
       "vegas_filled": 2,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "Undisputed"
     },
     {
       "gsis_id": "00-0040277",
@@ -3809,7 +3828,7 @@
       "vegas_parts": 2,
       "vegas_filled": 2,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "Undisputed"
     },
     {
       "gsis_id": "00-0040584",
@@ -3864,7 +3883,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "BillsMafia"
     },
     {
       "gsis_id": "00-0040666",
@@ -3875,7 +3894,7 @@
       "vegas_parts": 4,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "A Place in the Hampton"
     },
     {
       "gsis_id": "00-0040667",
@@ -3886,7 +3905,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Revenge of the Smith"
     },
     {
       "gsis_id": "00-0040669",
@@ -3930,7 +3949,7 @@
       "vegas_parts": 4,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Barkley\u2019s Balls Deep"
     },
     {
       "gsis_id": "00-0040718",
@@ -3952,7 +3971,7 @@
       "vegas_parts": 4,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "deez nuts"
     },
     {
       "gsis_id": "00-0040727",
@@ -3985,7 +4004,7 @@
       "vegas_parts": 1,
       "vegas_filled": 3,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "Revenge of the Smith"
     },
     {
       "gsis_id": "00-0040734",
@@ -3996,7 +4015,7 @@
       "vegas_parts": 4,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Burrow-Chase combo"
     },
     {
       "gsis_id": "00-0040735",
@@ -4007,7 +4026,7 @@
       "vegas_parts": 1,
       "vegas_filled": 2,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "deez nuts"
     },
     {
       "gsis_id": "00-0040736",
@@ -4051,7 +4070,7 @@
       "vegas_parts": 5,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Heartbreak Drake"
     },
     {
       "gsis_id": "00-0040782",
@@ -4073,7 +4092,7 @@
       "vegas_parts": 4,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "L'Omar"
     },
     {
       "gsis_id": "00-0040785",
@@ -4095,7 +4114,7 @@
       "vegas_parts": 1,
       "vegas_filled": 2,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "L'Omar"
     },
     {
       "gsis_id": "00-0040876",
@@ -4117,7 +4136,7 @@
       "vegas_parts": 1,
       "vegas_filled": 3,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "Heartbreak Drake"
     },
     {
       "gsis_id": "00-0040879",
@@ -4190,9 +4209,9 @@
       "player": "J. Michael Sturdivant",
       "team": "GB",
       "pos": "WR",
-      "vegas": 0.11,
+      "vegas": 3.01,
       "vegas_parts": 1,
-      "vegas_filled": 0,
+      "vegas_filled": 2,
       "vegas_complete": false,
       "owner": "FA"
     },
@@ -4205,7 +4224,7 @@
       "vegas_parts": 4,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "A Place in the Hampton"
     },
     {
       "gsis_id": "00-0041027",
@@ -4216,7 +4235,7 @@
       "vegas_parts": 2,
       "vegas_filled": 2,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "Don R.I.C.O"
     },
     {
       "gsis_id": "00-0041032",
@@ -4238,7 +4257,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "TaylorMade"
     },
     {
       "gsis_id": "00-0041040",
@@ -4278,7 +4297,7 @@
       "player": "Zachariah Branch",
       "team": "ATL",
       "pos": "WR",
-      "vegas": 2.11,
+      "vegas": 2.27,
       "vegas_parts": 1,
       "vegas_filled": 2,
       "vegas_complete": false,
@@ -4315,7 +4334,7 @@
       "vegas_parts": 1,
       "vegas_filled": 3,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "TaylorMade"
     },
     {
       "gsis_id": "00-0041067",
@@ -4336,17 +4355,6 @@
       "vegas": 1.56,
       "vegas_parts": 1,
       "vegas_filled": 2,
-      "vegas_complete": false,
-      "owner": "FA"
-    },
-    {
-      "gsis_id": "00-0041075",
-      "player": "Justin Jefferson",
-      "team": "CLE",
-      "pos": "LB",
-      "vegas": 12.94,
-      "vegas_parts": 3,
-      "vegas_filled": 0,
       "vegas_complete": false,
       "owner": "FA"
     },
@@ -4527,6 +4535,17 @@
       "owner": "FA"
     },
     {
+      "gsis_id": "00-0041436",
+      "player": "DJ Herman",
+      "team": "MIA",
+      "pos": "RB",
+      "vegas": 3.55,
+      "vegas_parts": 1,
+      "vegas_filled": 3,
+      "vegas_complete": false,
+      "owner": "FA"
+    },
+    {
       "gsis_id": "00-0041438",
       "player": "Carnell Tate",
       "team": "TEN",
@@ -4535,7 +4554,7 @@
       "vegas_parts": 3,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "L'Omar"
     },
     {
       "gsis_id": "00-0041443",
@@ -4601,7 +4620,7 @@
       "vegas_parts": 1,
       "vegas_filled": 3,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "A Place in the Hampton"
     },
     {
       "gsis_id": "00-0041503",
@@ -4623,7 +4642,7 @@
       "vegas_parts": 1,
       "vegas_filled": 3,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "TaylorMade"
     },
     {
       "gsis_id": "00-0041523",
@@ -4634,7 +4653,7 @@
       "vegas_parts": 1,
       "vegas_filled": 2,
       "vegas_complete": false,
-      "owner": "FA"
+      "owner": "Barkley\u2019s Balls Deep"
     },
     {
       "gsis_id": "00-0041524",
@@ -4678,7 +4697,7 @@
       "vegas_parts": 4,
       "vegas_filled": 0,
       "vegas_complete": true,
-      "owner": "FA"
+      "owner": "Heartbreak Drake"
     },
     {
       "gsis_id": "00-0041550",
@@ -4716,107 +4735,115 @@
   ],
   "player_difficulty": [
     {
-      "player": "George Kittle",
-      "pos": "TE",
-      "matchup": "vs ARI",
-      "ease_rank": 2,
-      "pa_pg": 13.7882352941,
+      "player": "Josh Downs",
+      "pos": "WR",
+      "matchup": "vs HOU",
+      "ease_rank": 1,
+      "pa_pg": 36.7,
       "verdict": "great"
     },
     {
-      "player": "Christian McCaffrey",
-      "pos": "RB",
-      "matchup": "vs ARI",
+      "player": "C.J. Stroud",
+      "pos": "QB",
+      "matchup": "@ IND",
       "ease_rank": 3,
-      "pa_pg": 24.0764705882,
-      "verdict": "great"
-    },
-    {
-      "player": "Kaelon Black",
-      "pos": "RB",
-      "matchup": "vs ARI",
-      "ease_rank": 3,
-      "pa_pg": 24.0764705882,
-      "verdict": "great"
-    },
-    {
-      "player": "Travis Kelce",
-      "pos": "TE",
-      "matchup": "@ MIA",
-      "ease_rank": 4,
-      "pa_pg": 13.0705882353,
+      "pa_pg": 26.97,
       "verdict": "great"
     },
     {
       "player": "Malik Nabers",
       "pos": "WR",
       "matchup": "vs TEN",
-      "ease_rank": 4,
-      "pa_pg": 29.5529411765,
+      "ease_rank": 6,
+      "pa_pg": 33.95,
       "verdict": "great"
-    },
-    {
-      "player": "Jadarian Price",
-      "pos": "RB",
-      "matchup": "@ WAS",
-      "ease_rank": 4,
-      "pa_pg": 23.7764705882,
-      "verdict": "great"
-    },
-    {
-      "player": "Christian Watson",
-      "pos": "WR",
-      "matchup": "vs ATL",
-      "ease_rank": 9,
-      "pa_pg": 28.0705882353,
-      "verdict": "good"
-    },
-    {
-      "player": "Jayden Daniels",
-      "pos": "QB",
-      "matchup": "vs SEA",
-      "ease_rank": 22,
-      "pa_pg": 15.559,
-      "verdict": "tough"
-    },
-    {
-      "player": "Denzel Boston",
-      "pos": "WR",
-      "matchup": "vs CAR",
-      "ease_rank": 23,
-      "pa_pg": 22.7,
-      "verdict": "tough"
-    },
-    {
-      "player": "Breece Hall",
-      "pos": "RB",
-      "matchup": "@ DET",
-      "ease_rank": 24,
-      "pa_pg": 17.6058823529,
-      "verdict": "tough"
-    },
-    {
-      "player": "Josh Downs",
-      "pos": "WR",
-      "matchup": "vs HOU",
-      "ease_rank": 27,
-      "pa_pg": 21.8736842105,
-      "verdict": "avoid"
-    },
-    {
-      "player": "Bryce Young",
-      "pos": "QB",
-      "matchup": "@ CLE",
-      "ease_rank": 29,
-      "pa_pg": 13.96,
-      "verdict": "avoid"
     },
     {
       "player": "Emeka Egbuka",
       "pos": "WR",
       "matchup": "vs MIN",
+      "ease_rank": 10,
+      "pa_pg": 32.1,
+      "verdict": "good"
+    },
+    {
+      "player": "Bryce Young",
+      "pos": "QB",
+      "matchup": "@ CLE",
+      "ease_rank": 11,
+      "pa_pg": 19.49,
+      "verdict": "good"
+    },
+    {
+      "player": "Breece Hall",
+      "pos": "RB",
+      "matchup": "@ DET",
+      "ease_rank": 12,
+      "pa_pg": 20.7,
+      "verdict": "good"
+    },
+    {
+      "player": "Christian Watson",
+      "pos": "WR",
+      "matchup": "vs ATL",
+      "ease_rank": 12,
+      "pa_pg": 31.3,
+      "verdict": "good"
+    },
+    {
+      "player": "Travis Kelce",
+      "pos": "TE",
+      "matchup": "@ MIA",
+      "ease_rank": 13,
+      "pa_pg": 11.1,
+      "verdict": "good"
+    },
+    {
+      "player": "George Kittle",
+      "pos": "TE",
+      "matchup": "vs ARI",
+      "ease_rank": 14,
+      "pa_pg": 10.8,
+      "verdict": "good"
+    },
+    {
+      "player": "Denzel Boston",
+      "pos": "WR",
+      "matchup": "vs CAR",
+      "ease_rank": 21,
+      "pa_pg": 22.75,
+      "verdict": "tough"
+    },
+    {
+      "player": "Christian McCaffrey",
+      "pos": "RB",
+      "matchup": "vs ARI",
+      "ease_rank": 27,
+      "pa_pg": 12.45,
+      "verdict": "avoid"
+    },
+    {
+      "player": "Kaelon Black",
+      "pos": "RB",
+      "matchup": "vs ARI",
+      "ease_rank": 27,
+      "pa_pg": 12.45,
+      "verdict": "avoid"
+    },
+    {
+      "player": "Jayden Daniels",
+      "pos": "QB",
+      "matchup": "vs SEA",
+      "ease_rank": 28,
+      "pa_pg": 10.16,
+      "verdict": "avoid"
+    },
+    {
+      "player": "Jadarian Price",
+      "pos": "RB",
+      "matchup": "@ WAS",
       "ease_rank": 32,
-      "pa_pg": 19.3352941176,
+      "pa_pg": 8.95,
       "verdict": "avoid"
     }
   ]
