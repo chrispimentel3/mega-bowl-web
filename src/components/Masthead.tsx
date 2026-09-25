@@ -1,3 +1,5 @@
+import { NavTabs } from "./NavTabs";
+
 export function Masthead({
   season,
   week,
@@ -11,9 +13,9 @@ export function Masthead({
 }) {
   return (
     <header className="sticky top-0 z-10 border-b border-line bg-background/90 backdrop-blur">
-      <div className="mx-auto flex max-w-2xl items-baseline justify-between px-4 py-3 sm:max-w-3xl">
-        <h1 className="font-display text-2xl font-bold tracking-tight">
-          <span className="text-navy">Mega</span> <span className="text-crimson">Bowl</span>
+      <div className="mx-auto flex max-w-2xl items-baseline justify-between px-4 pt-3 sm:max-w-3xl">
+        <h1 className="font-display text-2xl font-bold tracking-tight text-navy">
+          Mega Bowl
         </h1>
         <p className="text-right text-xs text-muted">
           {season} · through wk {week}
@@ -22,6 +24,7 @@ export function Masthead({
           {rosterSrc ? <> · {rosterSrc}</> : null}
         </p>
       </div>
+      <NavTabs />
     </header>
   );
 }
