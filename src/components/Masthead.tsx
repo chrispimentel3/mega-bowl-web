@@ -1,4 +1,5 @@
 import { NavTabs } from "./NavTabs";
+import { SubNav } from "./SubNav";
 
 export function Masthead({
   season,
@@ -25,6 +26,7 @@ export function Masthead({
         </p>
       </div>
       <NavTabs />
+      <SubNav />
     </header>
   );
 }
