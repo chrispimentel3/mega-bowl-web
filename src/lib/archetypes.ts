@@ -1,3 +1,5 @@
+import { fetchRemoteJson } from "./fetchRemoteJson";
+
 export type ArchMineRow = {
   player: string;
   pos: string;
@@ -37,9 +39,7 @@ const REMOTE_URL = process.env.ARCHETYPES_URL;
 /** Same pattern as `getActionBoard` — see src/lib/action-board.ts for why. */
 export async function getArchetypes(): Promise<Archetypes> {
   if (REMOTE_URL) {
-    const res = await fetch(REMOTE_URL, { next: { revalidate: 3600 } });
-    if (!res.ok) throw new Error(`ARCHETYPES_URL fetch failed: ${res.status} ${res.statusText}`);
-    return res.json();
+    return fetchRemoteJson(REMOTE_URL, 3600, "ARCHETYPES_URL");
   }
 
   const { readFile } = await import("node:fs/promises");

@@ -1,3 +1,5 @@
+import { fetchRemoteJson } from "./fetchRemoteJson";
+
 export type ShopHoldRow = {
   player: string;
   pos: string;
@@ -59,11 +61,7 @@ const REMOTE_URL = process.env.ACTION_BOARD_URL;
  */
 export async function getActionBoard(): Promise<ActionBoard> {
   if (REMOTE_URL) {
-    const res = await fetch(REMOTE_URL, { next: { revalidate: 3600 } });
-    if (!res.ok) {
-      throw new Error(`ACTION_BOARD_URL fetch failed: ${res.status} ${res.statusText}`);
-    }
-    return res.json();
+    return fetchRemoteJson(REMOTE_URL, 3600, "ACTION_BOARD_URL");
   }
 
   const { readFile } = await import("node:fs/promises");

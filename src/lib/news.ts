@@ -1,3 +1,5 @@
+import { fetchRemoteJson } from "./fetchRemoteJson";
+
 export type NewsItem = {
   source: string;
   title: string;
@@ -15,9 +17,7 @@ const REMOTE_URL = process.env.NEWS_URL;
  * often than most exports since headlines move faster than weekly dashboard data. */
 export async function getNews(): Promise<News> {
   if (REMOTE_URL) {
-    const res = await fetch(REMOTE_URL, { next: { revalidate: 900 } });
-    if (!res.ok) throw new Error(`NEWS_URL fetch failed: ${res.status} ${res.statusText}`);
-    return res.json();
+    return fetchRemoteJson(REMOTE_URL, 900, "NEWS_URL");
   }
 
   const { readFile } = await import("node:fs/promises");

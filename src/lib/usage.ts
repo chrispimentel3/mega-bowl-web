@@ -1,3 +1,5 @@
+import { fetchRemoteJson } from "./fetchRemoteJson";
+
 export type UsageRow = {
   player: string;
   week: number;
@@ -21,9 +23,7 @@ const REMOTE_URL = process.env.USAGE_URL;
 /** Same pattern as `getActionBoard` — see src/lib/action-board.ts for why. */
 export async function getUsage(): Promise<Usage> {
   if (REMOTE_URL) {
-    const res = await fetch(REMOTE_URL, { next: { revalidate: 3600 } });
-    if (!res.ok) throw new Error(`USAGE_URL fetch failed: ${res.status} ${res.statusText}`);
-    return res.json();
+    return fetchRemoteJson(REMOTE_URL, 3600, "USAGE_URL");
   }
 
   const { readFile } = await import("node:fs/promises");

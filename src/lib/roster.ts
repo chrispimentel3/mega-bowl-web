@@ -1,3 +1,5 @@
+import { fetchRemoteJson } from "./fetchRemoteJson";
+
 export type RosterRow = {
   slot: string;
   player: string;
@@ -39,9 +41,7 @@ const REMOTE_URL = process.env.ROSTER_URL;
 /** Same pattern as `getActionBoard` — see src/lib/action-board.ts for why. */
 export async function getRoster(): Promise<Roster> {
   if (REMOTE_URL) {
-    const res = await fetch(REMOTE_URL, { next: { revalidate: 3600 } });
-    if (!res.ok) throw new Error(`ROSTER_URL fetch failed: ${res.status} ${res.statusText}`);
-    return res.json();
+    return fetchRemoteJson(REMOTE_URL, 3600, "ROSTER_URL");
   }
 
   const { readFile } = await import("node:fs/promises");

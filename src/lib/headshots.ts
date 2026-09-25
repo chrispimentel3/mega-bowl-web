@@ -1,14 +1,20 @@
+import { fetchRemoteJson } from "./fetchRemoteJson";
+
 export type Headshots = Record<string, string>;
 
 const REMOTE_URL = process.env.HEADSHOTS_URL;
 
 /** Player display name -> nflverse headshot URL. Same fetch-with-fallback pattern as
- * every other export — see src/lib/action-board.ts for why. */
+ * every other export — see src/lib/action-board.ts for why. Every page depends on this
+ * one (fetched once in the root layout), so a failure degrades to no photos rather than
+ * throwing — losing headshots site-wide is much better than crashing every page. */
 export async function getHeadshots(): Promise<Headshots> {
   if (REMOTE_URL) {
-    const res = await fetch(REMOTE_URL, { next: { revalidate: 86400 } });
-    if (!res.ok) return {};
-    return res.json();
+    try {
+      return await fetchRemoteJson<Headshots>(REMOTE_URL, 86400, "HEADSHOTS_URL");
+    } catch {
+      return {};
+    }
   }
 
   const { readFile } = await import("node:fs/promises");

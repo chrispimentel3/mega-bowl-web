@@ -1,3 +1,5 @@
+import { fetchRemoteJson } from "./fetchRemoteJson";
+
 export type DraftBoardRow = {
   player: string;
   pos: string;
@@ -29,9 +31,7 @@ const REMOTE_URL = process.env.DRAFT_URL;
 /** Same pattern as `getActionBoard` — see src/lib/action-board.ts for why. */
 export async function getDraft(): Promise<Draft> {
   if (REMOTE_URL) {
-    const res = await fetch(REMOTE_URL, { next: { revalidate: 3600 } });
-    if (!res.ok) throw new Error(`DRAFT_URL fetch failed: ${res.status} ${res.statusText}`);
-    return res.json();
+    return fetchRemoteJson(REMOTE_URL, 3600, "DRAFT_URL");
   }
 
   const { readFile } = await import("node:fs/promises");

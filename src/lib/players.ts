@@ -1,3 +1,5 @@
+import { fetchRemoteJson, RemoteFetchError } from "./fetchRemoteJson";
+
 export type PlayerIndexRow = {
   gsis_id: string;
   name: string;
@@ -100,9 +102,7 @@ const PLAYERS_BASE_URL = process.env.PLAYERS_BASE_URL; // e.g. .../data/web/play
  * fetched only for whichever player is actually being viewed. */
 export async function getPlayerIndex(): Promise<PlayerIndex> {
   if (INDEX_URL) {
-    const res = await fetch(INDEX_URL, { next: { revalidate: 3600 } });
-    if (!res.ok) throw new Error(`PLAYERS_INDEX_URL fetch failed: ${res.status} ${res.statusText}`);
-    return res.json();
+    return fetchRemoteJson(INDEX_URL, 3600, "PLAYERS_INDEX_URL");
   }
 
   const { readFile } = await import("node:fs/promises");
@@ -120,10 +120,17 @@ export async function getPlayerIndex(): Promise<PlayerIndex> {
 
 export async function getPlayer(gsisId: string): Promise<PlayerDetail | null> {
   if (PLAYERS_BASE_URL) {
-    const res = await fetch(`${PLAYERS_BASE_URL}/${gsisId}.json`, { next: { revalidate: 3600 } });
-    if (res.status === 404) return null;
-    if (!res.ok) throw new Error(`PLAYERS_BASE_URL fetch failed: ${res.status} ${res.statusText}`);
-    return res.json();
+    try {
+      return await fetchRemoteJson<PlayerDetail>(`${PLAYERS_BASE_URL}/${gsisId}.json`, 3600, "PLAYERS_BASE_URL");
+    } catch (e) {
+      if (e instanceof RemoteFetchError && e.status === 404) return null;
+      // A real 404 means this player genuinely doesn't have a card (not on any roster
+      // this app tracks) — that's a normal "not found". Anything else is a transient
+      // fetch failure surviving 3 retries; degrading to null here (same "not found"
+      // page) beats crashing the whole page on a raw.githubusercontent.com hiccup.
+      console.error(`getPlayer(${gsisId}) failed after retries:`, e);
+      return null;
+    }
   }
 
   const { readFile } = await import("node:fs/promises");

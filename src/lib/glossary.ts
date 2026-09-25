@@ -1,3 +1,5 @@
+import { fetchRemoteJson } from "./fetchRemoteJson";
+
 export type GlossaryRow = { tag: string; "what it means": string; "why it matters": string };
 
 export type GlossaryGroup = { key: string; title: string; lede: string; rows: GlossaryRow[] };
@@ -9,9 +11,7 @@ const REMOTE_URL = process.env.GLOSSARY_URL;
 /** Same pattern as `getActionBoard` — see src/lib/action-board.ts for why. */
 export async function getGlossary(): Promise<Glossary> {
   if (REMOTE_URL) {
-    const res = await fetch(REMOTE_URL, { next: { revalidate: 86400 } });
-    if (!res.ok) throw new Error(`GLOSSARY_URL fetch failed: ${res.status} ${res.statusText}`);
-    return res.json();
+    return fetchRemoteJson(REMOTE_URL, 86400, "GLOSSARY_URL");
   }
 
   const { readFile } = await import("node:fs/promises");

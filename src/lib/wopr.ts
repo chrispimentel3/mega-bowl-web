@@ -1,3 +1,5 @@
+import { fetchRemoteJson } from "./fetchRemoteJson";
+
 export type WoprRow = {
   name: string;
   pos: string;
@@ -30,9 +32,7 @@ const REMOTE_URL = process.env.WOPR_URL;
 /** Same pattern as `getActionBoard` — see src/lib/action-board.ts for why. */
 export async function getWopr(): Promise<Wopr> {
   if (REMOTE_URL) {
-    const res = await fetch(REMOTE_URL, { next: { revalidate: 3600 } });
-    if (!res.ok) throw new Error(`WOPR_URL fetch failed: ${res.status} ${res.statusText}`);
-    return res.json();
+    return fetchRemoteJson(REMOTE_URL, 3600, "WOPR_URL");
   }
 
   const { readFile } = await import("node:fs/promises");

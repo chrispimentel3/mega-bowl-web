@@ -1,3 +1,5 @@
+import { fetchRemoteJson } from "./fetchRemoteJson";
+
 export type TrendRow = { player: string; week: number; value: number };
 
 export type Trend = { available: boolean; players: string[]; rows: TrendRow[] };
@@ -9,9 +11,11 @@ const EMPTY: Trend = { available: false, players: [], rows: [] };
  * pattern as every other export; see src/lib/action-board.ts for why. */
 async function getTrend(remoteUrl: string | undefined, filename: string): Promise<Trend> {
   if (remoteUrl) {
-    const res = await fetch(remoteUrl, { next: { revalidate: 3600 } });
-    if (!res.ok) return EMPTY;
-    return res.json();
+    try {
+      return await fetchRemoteJson<Trend>(remoteUrl, 3600, filename);
+    } catch {
+      return EMPTY;
+    }
   }
 
   const { readFile } = await import("node:fs/promises");

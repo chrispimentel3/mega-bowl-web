@@ -1,3 +1,5 @@
+import { fetchRemoteJson } from "./fetchRemoteJson";
+
 export type LineupRow = {
   lineup: string;
   player: string;
@@ -37,11 +39,7 @@ const REMOTE_URL = process.env.START_SIT_URL;
 /** Same pattern as `getActionBoard` — see src/lib/action-board.ts for why. */
 export async function getStartSit(): Promise<StartSit> {
   if (REMOTE_URL) {
-    const res = await fetch(REMOTE_URL, { next: { revalidate: 3600 } });
-    if (!res.ok) {
-      throw new Error(`START_SIT_URL fetch failed: ${res.status} ${res.statusText}`);
-    }
-    return res.json();
+    return fetchRemoteJson(REMOTE_URL, 3600, "START_SIT_URL");
   }
 
   const { readFile } = await import("node:fs/promises");
