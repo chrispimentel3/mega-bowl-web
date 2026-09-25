@@ -26,6 +26,11 @@ const LINKS = [
     label: "Ask the data",
     matches: ["/ask", "/downloads"],
   },
+  {
+    href: "/logic",
+    label: "Logic",
+    matches: ["/logic"],
+  },
 ];
 
 export function NavTabs() {
