@@ -27,6 +27,13 @@ const GROUPS = [
       { href: "/draft", label: "Draft value" },
     ],
   },
+  {
+    links: [
+      { href: "/players", label: "Player card" },
+      { href: "/glossary", label: "Glossary" },
+      { href: "/news", label: "News" },
+    ],
+  },
 ];
 
 /** Second-level nav for pages that are sub-tabs of the same top-level Streamlit page. */
