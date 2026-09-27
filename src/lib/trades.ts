@@ -26,8 +26,75 @@ export type TradeGroup = {
   offers: TradeOffer[];
 };
 
+/** HANDOFF v1.3 Pass 4 (ff-dashboard mega/trade_theses.py): one engine-built offer.
+ *  d_* numbers are points per week (d_week: this week only; d_ros: rest of season) and
+ *  d_title is a change in title PROBABILITY (0.012 = +1.2 percentage points). */
+export type ThesisSide = {
+  d_week: number;
+  d_ros: number;
+  d_title: number;
+  se_title: number;
+  title_noise: boolean;
+  p_title?: number;
+  p_playoffs?: number;
+  p_playoffs_now?: number;
+};
+
+export type ThesisPlayer = { name: string; pos: string; ros_pg: number };
+
+export type ThesisRank = {
+  name: string;
+  pos: string;
+  our_rank: number | null;
+  ecr_rank: number | null;
+  driver: string | null;
+  view: string;
+};
+
+export type TradeThesis = {
+  partner: string;
+  shape: string;
+  give: ThesisPlayer[];
+  get: ThesisPlayer[];
+  tags: string[];
+  all_tags: string[];
+  thesis: string;
+  kill: string;
+  second: { tag: string; thesis: string } | null;
+  us: ThesisSide;
+  them: ThesisSide;
+  i_would_start: string[];
+  i_would_bench: string[];
+  they_would_start: string[];
+  they_would_bench: string[];
+  fa_add: string | null;
+  netted_free_swap: boolean;
+  pitch: string;
+  p_accept: number;
+  flag: "LIKELY" | "EXPLOIT" | "NEEDS_PITCH" | "LONGSHOT";
+  fairness: number;
+  ranks: { give: ThesisRank[]; get: ThesisRank[] };
+};
+
+export type TradesMeta = {
+  evaluated?: number;
+  simulated?: number;
+  shown?: number;
+  p_playoffs?: number | null;
+  p_title?: number | null;
+  posture?: "protect" | "balanced" | "swing" | null;
+  seasons?: number;
+  priors?: string;
+  league_trades?: number;
+  refit_at?: number;
+  bias_teams?: string[];
+};
+
 export type Trades = {
   available: boolean;
+  version?: number;
+  cards?: TradeThesis[];
+  meta?: TradesMeta;
   groups: TradeGroup[];
   roster_src: string | null;
   impact_available: boolean;
