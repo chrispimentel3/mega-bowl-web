@@ -63,6 +63,16 @@ export function WaiverLaneCard({ row }: { row: WaiverLaneRow }) {
       </div>
 
       <p className="mt-2 text-sm text-muted">{row.why}</p>
+      {row.d_title != null ? (
+        <p className="mt-1 text-xs text-muted">
+          Title odds{" "}
+          <span className="font-semibold text-ink">
+            {row.title_noise
+              ? "±0 (inside the simulation's noise)"
+              : `${row.d_title >= 0 ? "+" : ""}${(row.d_title * 100).toFixed(1)}pp`}
+          </span>
+        </p>
+      ) : null}
 
       {row.drop ? (
         <p className="mt-2 border-t border-line pt-2 text-xs text-muted">

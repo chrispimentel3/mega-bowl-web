@@ -32,6 +32,9 @@ export type WaiverLaneRow = {
   max_bid: number;
   role: string | null;
   why: string;
+  d_title?: number | null;
+  se_title?: number | null;
+  title_noise?: boolean | null;
 };
 
 export type WaiverChip = { player: string; pos: string; nfl_team: string; flip: number; flip_buyers: number };
@@ -48,7 +51,14 @@ export type Waivers = {
   lanes: { bid_now: WaiverLaneRow[]; early_signal: WaiverLaneRow[]; stash: WaiverLaneRow[] };
   trade_chips: WaiverChip[];
   roster_notes: string[];
-  meta: { weeks?: number[]; tau_bid?: number; fit_min?: number; budget_left?: number; error?: string };
+  meta: {
+    weeks?: number[];
+    tau_bid?: number;
+    fit_min?: number;
+    budget_left?: number;
+    error?: string;
+    title?: { p_playoffs?: number; p_title?: number; posture?: "protect" | "balanced" | "swing"; seasons?: number };
+  };
   blind_board: WaiverBlindRow[];
 };
 

@@ -4,7 +4,7 @@ import { Masthead } from "@/components/Masthead";
 import { SectionHeading } from "@/components/SectionHeading";
 import { TradeOfferCard } from "@/components/TradeOfferCard";
 import { TradeSearchExplorer } from "@/components/TradeSearchExplorer";
-import { TradeThesisCard } from "@/components/TradeThesisCard";
+import { TradeThesisList } from "@/components/TradeThesisList";
 import { PostureChip } from "@/components/PostureChip";
 import Link from "next/link";
 
@@ -43,11 +43,7 @@ export default async function TradesPage() {
                 answer — standing pat is a move.
               </div>
             ) : (
-              <div className="mt-4 grid gap-3">
-                {tr.cards.map((c, i) => (
-                  <TradeThesisCard key={i} card={c} />
-                ))}
-              </div>
+              <TradeThesisList cards={tr.cards} />
             )}
             <p className="mt-4 text-xs text-muted">
               Acceptance odds use {tr.meta?.priors ?? "estimated"} priors — the league has{" "}

@@ -1,10 +1,10 @@
-import { getWaivers, type WaiverLaneRow } from "@/lib/waivers";
+import { getWaivers } from "@/lib/waivers";
 import { getActionBoard } from "@/lib/action-board";
 import { Masthead } from "@/components/Masthead";
 import { AnswerCard } from "@/components/AnswerCard";
 import { KpiRow } from "@/components/KpiRow";
-import { SectionHeading } from "@/components/SectionHeading";
-import { WaiverLaneCard } from "@/components/WaiverLaneCard";
+import { WaiverLanes } from "@/components/WaiverLanes";
+import { PostureChip } from "@/components/PostureChip";
 
 export const revalidate = 3600;
 
@@ -22,6 +22,13 @@ export default async function WaiversPage() {
         ) : (
           <>
             <AnswerCard headline={wv.headline} subhead={wv.subhead} />
+            <div className="mt-3">
+              <PostureChip
+                posture={wv.meta.title?.posture}
+                pPlayoffs={wv.meta.title?.p_playoffs}
+                pTitle={wv.meta.title?.p_title}
+              />
+            </div>
 
             <div className="mt-4">
               <KpiRow
@@ -60,22 +67,7 @@ export default async function WaiversPage() {
               </ul>
             ) : null}
 
-            <Lane
-              title="Bid now"
-              rows={wv.lanes.bid_now}
-              blurb={`Adds more than ${wv.meta.tau_bid ?? 1} pts/wk to your lineup over the next three weeks.`}
-              empty="Nothing available improves your lineup over the next three weeks. That's a real answer, not a missing one — hold the budget for a week when it isn't true."
-            />
-            <Lane
-              title="Early signal"
-              rows={wv.lanes.early_signal}
-              blurb="Usage is rising before the points have. Ranked by the chance his role grows (fitted on 2021–25) times what it's worth to you if it does."
-            />
-            <Lane
-              title="Stash"
-              rows={wv.lanes.stash}
-              blurb="Worth a bench spot for what he insures or covers, not for what he scores this week."
-            />
+            <WaiverLanes lanes={wv.lanes} tau={wv.meta.tau_bid ?? 1} />
 
             {wv.trade_chips.length ? (
               <p className="mt-6 text-sm text-muted">
@@ -118,35 +110,6 @@ function RosterBlindBoard({ rows }: { rows: Record<string, unknown>[] }) {
           </div>
         ))}
       </div>
-    </>
-  );
-}
-
-function Lane({
-  title,
-  rows,
-  blurb,
-  empty,
-}: {
-  title: string;
-  rows: WaiverLaneRow[];
-  blurb: string;
-  empty?: string;
-}) {
-  if (!rows.length && !empty) return null;
-  return (
-    <>
-      <SectionHeading title={title} />
-      <p className="mb-3 text-sm text-muted">{blurb}</p>
-      {rows.length === 0 ? (
-        <EmptyNote text={empty ?? ""} />
-      ) : (
-        <div className="grid gap-3 sm:grid-cols-2">
-          {rows.map((row) => (
-            <WaiverLaneCard key={row.player} row={row} />
-          ))}
-        </div>
-      )}
     </>
   );
 }
