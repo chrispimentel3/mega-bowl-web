@@ -1,26 +1,40 @@
 import { fetchRemoteJson } from "./fetchRemoteJson";
 
-export type WaiverWorthRow = {
+/** One free agent in a HANDOFF v1.3 lane (ff-dashboard mega/waiver_value.py). Every
+ *  number is points per week across the rest of the season unless its name says
+ *  otherwise; `next3` is the next three weeks only. */
+export type WaiverLaneRow = {
   player: string;
   pos: string;
   nfl_team: string;
-  ppg: number;
-  gain: number;
+  ppg: number | null;
+  lane: "bid_now" | "early_signal" | "stash";
+  fit_pts: number;
+  start: number;
+  cover: number;
+  insure: number;
+  next3: number;
+  mechanism: "START" | "COVER" | "INSURE" | "";
+  handcuff: boolean;
+  insures: string | null;
+  drop: string | null;
+  drop_cost: number | null;
+  drop_insure: number | null;
+  drop_flip: number | null;
+  signal: string | null;
+  p_expand: number | null;
+  gain_if_expands: number | null;
+  signal_score: number | null;
+  pct_ros: number | null;
+  market_on: boolean;
+  flip: number | null;
   bid: number;
   max_bid: number;
-  drop: string | null;
+  role: string | null;
   why: string;
 };
 
-export type WaiverSpecRow = {
-  player: string;
-  pos: string;
-  nfl_team: string;
-  ppg: number;
-  add_score: number;
-  upside: string;
-  why: string;
-};
+export type WaiverChip = { player: string; pos: string; nfl_team: string; flip: number; flip_buyers: number };
 
 export type WaiverBlindRow = Record<string, unknown> & { player: string; pos: string };
 
@@ -31,8 +45,10 @@ export type Waivers = {
   subhead: string;
   faab: { known: boolean; mine?: number; richer?: number; max_rival?: number; median_rival?: number; teams?: number } | null;
   market: { claims: number; median: number; max: number; contested: number; listed_spend: number; league_spend: number; unlisted_spend: number } | null;
-  worth: WaiverWorthRow[];
-  speculative: WaiverSpecRow[];
+  lanes: { bid_now: WaiverLaneRow[]; early_signal: WaiverLaneRow[]; stash: WaiverLaneRow[] };
+  trade_chips: WaiverChip[];
+  roster_notes: string[];
+  meta: { weeks?: number[]; tau_bid?: number; fit_min?: number; budget_left?: number; error?: string };
   blind_board: WaiverBlindRow[];
 };
 

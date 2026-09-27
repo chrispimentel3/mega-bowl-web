@@ -1,11 +1,10 @@
-import { getWaivers } from "@/lib/waivers";
+import { getWaivers, type WaiverLaneRow } from "@/lib/waivers";
 import { getActionBoard } from "@/lib/action-board";
 import { Masthead } from "@/components/Masthead";
 import { AnswerCard } from "@/components/AnswerCard";
 import { KpiRow } from "@/components/KpiRow";
 import { SectionHeading } from "@/components/SectionHeading";
-import { WaiverWorthCard } from "@/components/WaiverWorthCard";
-import { WaiverSpecCard } from "@/components/WaiverSpecCard";
+import { WaiverLaneCard } from "@/components/WaiverLaneCard";
 
 export const revalidate = 3600;
 
@@ -33,41 +32,57 @@ export default async function WaiversPage() {
                     sub: wv.faab?.known ? `${wv.faab.richer} of ${(wv.faab.teams ?? 1) - 1} hold more` : "not cached",
                   },
                   {
-                    label: "Worth bidding on",
-                    value: String(wv.worth.length),
-                    sub: "change your lineup",
+                    label: "Bid now",
+                    value: String(wv.lanes.bid_now.length),
+                    sub: "help in the next 3 weeks",
                   },
                   {
-                    label: "League has paid",
-                    value: wv.market?.claims ? `$${wv.market.median.toFixed(0)}` : "—",
-                    sub: wv.market?.claims ? `${wv.market.claims} settled claims` : "no claims yet",
+                    label: "League has spent",
+                    value: wv.market?.league_spend ? `$${wv.market.league_spend.toFixed(0)}` : "—",
+                    sub: "total FAAB, incl. unlisted",
                   },
                 ]}
               />
             </div>
 
-            <SectionHeading title="Worth bidding on" />
-            {wv.worth.length === 0 ? (
-              <EmptyNote text="Nothing available improves your starting lineup this week. That's a real answer, not a missing one — hold the budget for a week when it isn't true." />
-            ) : (
-              <div className="grid gap-3 sm:grid-cols-2">
-                {wv.worth.map((row) => (
-                  <WaiverWorthCard key={row.player} row={row} />
-                ))}
-              </div>
-            )}
-
-            <SectionHeading title="Speculative" />
-            <p className="mb-3 text-sm text-muted">
-              These add nothing to your lineup today, so they&apos;re ranked by who&apos;s
-              trending instead. A dollar at most, and only for a bench spot you don&apos;t mind
-              wasting.
+            <p className="mt-4 text-sm text-muted">
+              Every free agent is valued against your roster for the rest of the season — byes,
+              injuries and IR returns included — and split by why he helps: he <b>starts</b>, he{" "}
+              <b>covers</b> a bye or injury, or he <b>insures</b> a starter who might miss time. A
+              player with none of the three sits in no lane, however many managers are adding him.
             </p>
-            <div className="space-y-2">
-              {wv.speculative.map((row) => (
-                <WaiverSpecCard key={row.player} row={row} />
-              ))}
-            </div>
+
+            {wv.roster_notes.length ? (
+              <ul className="mt-3 space-y-1 rounded-xl border border-line bg-card px-4 py-3 text-sm text-ink">
+                {wv.roster_notes.map((n) => (
+                  <li key={n}>{n}</li>
+                ))}
+              </ul>
+            ) : null}
+
+            <Lane
+              title="Bid now"
+              rows={wv.lanes.bid_now}
+              blurb={`Adds more than ${wv.meta.tau_bid ?? 1} pts/wk to your lineup over the next three weeks.`}
+              empty="Nothing available improves your lineup over the next three weeks. That's a real answer, not a missing one — hold the budget for a week when it isn't true."
+            />
+            <Lane
+              title="Early signal"
+              rows={wv.lanes.early_signal}
+              blurb="Usage is rising before the points have. Ranked by the chance his role grows (fitted on 2021–25) times what it's worth to you if it does."
+            />
+            <Lane
+              title="Stash"
+              rows={wv.lanes.stash}
+              blurb="Worth a bench spot for what he insures or covers, not for what he scores this week."
+            />
+
+            {wv.trade_chips.length ? (
+              <p className="mt-6 text-sm text-muted">
+                <b>Trade chips</b> — no fit on your roster, but two or more teams would start them:{" "}
+                {wv.trade_chips.map((c) => c.player).join(", ")}.
+              </p>
+            ) : null}
 
             {wv.market?.unlisted_spend ? (
               <p className="mt-4 text-xs text-muted">
@@ -103,6 +118,35 @@ function RosterBlindBoard({ rows }: { rows: Record<string, unknown>[] }) {
           </div>
         ))}
       </div>
+    </>
+  );
+}
+
+function Lane({
+  title,
+  rows,
+  blurb,
+  empty,
+}: {
+  title: string;
+  rows: WaiverLaneRow[];
+  blurb: string;
+  empty?: string;
+}) {
+  if (!rows.length && !empty) return null;
+  return (
+    <>
+      <SectionHeading title={title} />
+      <p className="mb-3 text-sm text-muted">{blurb}</p>
+      {rows.length === 0 ? (
+        <EmptyNote text={empty ?? ""} />
+      ) : (
+        <div className="grid gap-3 sm:grid-cols-2">
+          {rows.map((row) => (
+            <WaiverLaneCard key={row.player} row={row} />
+          ))}
+        </div>
+      )}
     </>
   );
 }
