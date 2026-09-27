@@ -24,6 +24,11 @@ export type TradeSearchRow = {
   flag: "LIKELY" | "EXPLOIT" | "NEEDS_PITCH" | "LONGSHOT";
   odds: number | null;
   their_odds: number | null;
+  /** change in title probability (0.01 = +1pt), from the v1.3 player-level sim; absent on
+   *  an older API deploy */
+  title?: number | null;
+  their_title?: number | null;
+  title_noise?: boolean | null;
   watch: string | null;
   i_would_start: string[];
   i_would_bench: string[];

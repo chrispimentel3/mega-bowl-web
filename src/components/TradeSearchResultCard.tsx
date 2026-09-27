@@ -96,6 +96,14 @@ export function TradeSearchResultCard({ row }: { row: TradeSearchRow }) {
               {row.their_odds != null ? (row.their_odds * 100).toFixed(1) : "—"}pt
             </span>
           </span>
+          {row.title != null ? (
+            <span>
+              <span className="text-muted">Your title odds </span>
+              <span className={`font-bold ${row.title_noise ? "text-muted" : pctColor(row.title)}`}>
+                {row.title_noise ? "±0 (noise)" : `${row.title >= 0 ? "+" : ""}${(row.title * 100).toFixed(1)}pt`}
+              </span>
+            </span>
+          ) : null}
           {row.watch === "arms a rival" ? (
             <span className="rounded-md bg-crimson/10 px-1.5 py-0.5 font-bold text-crimson">
               arms a rival
