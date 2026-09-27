@@ -86,7 +86,6 @@ export type TradesMeta = {
   seasons?: number;
   priors?: string;
   league_trades?: number;
-  refit_at?: number;
   bias_teams?: string[];
 };
 

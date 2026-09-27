@@ -78,6 +78,11 @@ export function TradeSearchResultCard({ row }: { row: TradeSearchRow }) {
                       benches={row.i_would_bench} excluding={row.give} />
         <LineupVerdict label="Their lineup:" delta={row.d_them} starts={row.they_would_start}
                       benches={row.they_would_bench} excluding={row.get} />
+        {row.netted && row.fa_add?.length ? (
+          <p className="text-[11px] text-muted">
+            Already net of picking up {row.fa_add.join(" & ")}, which you could do without trading.
+          </p>
+        ) : null}
       </div>
 
       {row.odds != null ? (

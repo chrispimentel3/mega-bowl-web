@@ -31,7 +31,9 @@ export default async function TradesPage() {
               week), priced at what the other manager would accept on FantasyCalc, then the best{" "}
               {tr.meta?.simulated ?? 25} played through {tr.meta?.seasons?.toLocaleString() ?? "6,000"} simulated
               seasons for both teams. Only offers that raise your title odds beyond the simulation&apos;s own
-              noise are shown. Each says why, what would prove it wrong, and what it does to them. See{" "}
+              noise are shown. Each says why, what would prove it wrong, and what it does to them. The
+              acceptance odds are estimates — Yahoo never shows the offers that get turned down, so
+              there is nothing to fit them to yet. See{" "}
               <Link href="/logic#trade_theses" className="text-navy hover:underline">
                 Logic → how offers are built
               </Link>
@@ -45,11 +47,6 @@ export default async function TradesPage() {
             ) : (
               <TradeThesisList cards={tr.cards} />
             )}
-            <p className="mt-4 text-xs text-muted">
-              Acceptance odds use {tr.meta?.priors ?? "estimated"} priors — the league has{" "}
-              {tr.meta?.league_trades ?? 0} trade{tr.meta?.league_trades === 1 ? "" : "s"} on record, and they
-              refit from its own trades once there are {tr.meta?.refit_at ?? 5}.
-            </p>
           </>
         ) : !tr.available ? (
           <div className="mt-4 rounded-xl border border-dashed border-line bg-card/50 px-4 py-3 text-sm text-muted">

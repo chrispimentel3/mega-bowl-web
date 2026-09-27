@@ -62,8 +62,11 @@ export function TradeThesisCard({ card }: { card: TradeThesis }) {
             {TAG_LABEL[t] ?? t}
           </span>
         ))}
-        <span className={`rounded-md px-2 py-0.5 text-xs font-bold ${FLAG_STYLE[card.flag]}`}>
-          {card.flag.replace("_", " ").toLowerCase()} · {Math.round(card.p_accept * 100)}% accept
+        <span
+          className={`rounded-md px-2 py-0.5 text-xs font-bold ${FLAG_STYLE[card.flag]}`}
+          title="Acceptance odds are an estimate: Yahoo only shows trades that went through, never the ones turned down, so there is nothing to fit them to yet."
+        >
+          {card.flag.replace("_", " ").toLowerCase()} · est. {Math.round(card.p_accept * 100)}% accept
         </span>
       </div>
 

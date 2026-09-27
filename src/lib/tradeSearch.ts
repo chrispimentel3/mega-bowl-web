@@ -22,6 +22,10 @@ export type TradeSearchRow = {
   d_them: number;
   mkt_ratio: number;
   flag: "LIKELY" | "EXPLOIT" | "NEEDS_PITCH" | "LONGSHOT";
+  /** a 2-for-1 credited net of the free agent that fills the open spot, who you could add
+   *  without trading; absent on an older API deploy */
+  netted?: boolean;
+  fa_add?: string[];
   odds: number | null;
   their_odds: number | null;
   /** change in title probability (0.01 = +1pt), from the v1.3 player-level sim; absent on
