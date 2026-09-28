@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getTradePool, searchTrades, type TradePoolRow, type TradeSearchResult } from "@/lib/tradeSearch";
 import { TradeSearchResultCard } from "@/components/TradeSearchResultCard";
 
@@ -14,12 +14,18 @@ export function TradeSearchExplorer() {
   const [result, setResult] = useState<TradeSearchResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const latest = useRef(0);   // only the newest search may write its result
 
-  useEffect(() => {
+  const fetchPool = useCallback(() => {
     getTradePool()
       .then(setPool)
-      .catch(() => setPoolError("Can't reach the trade search API right now. Try again in a minute."));
+      .catch(() => setPoolError("Can't reach the trade search service right now."));
   }, []);
+  useEffect(fetchPool, [fetchPool]);
+  const retryPool = () => {
+    setPoolError(null);
+    fetchPool();
+  };
 
   const results = useMemo(() => {
     if (!pool || !q.trim()) return [];
@@ -30,16 +36,22 @@ export function TradeSearchExplorer() {
   async function run(row: TradePoolRow, o: "accept" | "gain" = order, two: boolean = twoPlayer) {
     setPicked(row);
     setQ("");
+    setResult(null);
+    if (row.ir) {
+      setLoading(false);
+      setError("He's on IR, and trades for players on IR aren't modeled yet — the engine only trades active rosters.");
+      return;
+    }
+    const id = ++latest.current;
     setLoading(true);
     setError(null);
     try {
       const res = await searchTrades(row.pid, row.mine, { order: o, twoPlayer: two });
-      setResult(res);
+      if (id === latest.current) setResult(res);
     } catch (e) {
-      setResult(null);
-      setError(e instanceof Error ? e.message : "Something went wrong.");
+      if (id === latest.current) setError(e instanceof Error ? e.message : "Something went wrong.");
     } finally {
-      setLoading(false);
+      if (id === latest.current) setLoading(false);
     }
   }
 
@@ -60,7 +72,18 @@ export function TradeSearchExplorer() {
         placeholder="Search — e.g. Kelce, Bijan, Nabers…"
         className="w-full rounded-xl border border-line bg-card px-4 py-2.5 text-sm text-ink outline-none focus:border-navy"
       />
-      {q.trim() ? (
+      {poolError ? (
+        <p className="mt-2 text-sm text-muted">
+          {poolError}{" "}
+          <button onClick={retryPool} className="font-semibold text-navy hover:underline">
+            Try again
+          </button>
+        </p>
+      ) : !pool && q.trim() ? (
+        <p className="mt-2 py-3 text-center text-sm text-muted">
+          Loading the player list — the search service may be waking up, which can take up to a minute…
+        </p>
+      ) : q.trim() ? (
         <div className="mt-2 space-y-1.5">
           {results.length === 0 ? (
             <p className="py-3 text-center text-sm text-muted">No players match &quot;{q}&quot;.</p>
@@ -71,13 +94,12 @@ export function TradeSearchExplorer() {
                 onClick={() => run(r)}
                 className="flex w-full items-center justify-between gap-3 rounded-xl border border-line bg-card p-2.5 text-left text-sm shadow-sm transition-colors hover:border-navy/40"
               >
-                <span className="font-medium text-ink">{r.label}</span>
+                <span className={`font-medium ${r.ir ? "text-muted" : "text-ink"}`}>{r.label}</span>
+                {r.ir ? <span className="shrink-0 text-xs text-muted">on IR — not searchable yet</span> : null}
               </button>
             ))
           )}
         </div>
-      ) : poolError ? (
-        <p className="mt-3 text-sm text-muted">{poolError}</p>
       ) : null}
 
       {picked ? (
@@ -117,7 +139,11 @@ export function TradeSearchExplorer() {
             </div>
           </div>
 
-          {loading ? <p className="mt-3 text-sm text-muted">Rebuilding both rosters for every trade…</p> : null}
+          {loading ? (
+            <p className="mt-3 text-sm text-muted">
+              Rebuilding both rosters for every trade… the first search after a quiet spell can take up to a minute.
+            </p>
+          ) : null}
           {error ? (
             <div className="mt-3 rounded-xl border border-crimson/30 bg-crimson/5 px-4 py-3 text-sm text-crimson">
               {error}

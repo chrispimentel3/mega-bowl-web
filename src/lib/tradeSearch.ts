@@ -11,6 +11,9 @@ export type TradePoolRow = {
   value: number;
   pid: string;
   mine: boolean;
+  /** in an IR slot — listed, but the engine only trades active rosters; absent on an
+   *  older API deploy */
+  ir?: boolean;
 };
 
 export type TradeSearchRow = {
@@ -48,8 +51,27 @@ export type TradeSearchResult = {
   rows: TradeSearchRow[];
 };
 
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+/** The API is on Render's free tier, which sleeps after ~15 idle minutes and answers
+ *  502/503 (or not at all) for up to a minute while it wakes or redeploys. Retry through
+ *  that instead of failing on the first try. */
+async function fetchWaking(url: string, init?: RequestInit, waits = [3000, 8000, 15000, 30000]): Promise<Response> {
+  for (let i = 0; ; i++) {
+    try {
+      const res = await fetch(url, init);
+      if (![502, 503, 504].includes(res.status) || i >= waits.length) return res;
+      // a 503 carrying our own JSON detail is a real answer, not a wake-up
+      if (res.headers.get("content-type")?.includes("application/json")) return res;
+    } catch (e) {
+      if (i >= waits.length) throw e;
+    }
+    await sleep(waits[i]);
+  }
+}
+
 export async function getTradePool(): Promise<TradePoolRow[]> {
-  const res = await fetch(`${API_URL}/trade-pool`);
+  const res = await fetchWaking(`${API_URL}/trade-pool`);
   if (!res.ok) throw new Error(`Trade API /trade-pool failed: ${res.status}`);
   return res.json();
 }
@@ -59,7 +81,7 @@ export async function searchTrades(
   mine: boolean,
   opts: { flags?: string[]; twoPlayer?: boolean; order?: "accept" | "gain" } = {},
 ): Promise<TradeSearchResult> {
-  const res = await fetch(`${API_URL}/trade-search`, {
+  const res = await fetchWaking(`${API_URL}/trade-search`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
