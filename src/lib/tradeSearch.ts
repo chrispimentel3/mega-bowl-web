@@ -11,8 +11,7 @@ export type TradePoolRow = {
   value: number;
   pid: string;
   mine: boolean;
-  /** in an IR slot — listed, but the engine only trades active rosters; absent on an
-   *  older API deploy */
+  /** in an IR slot; absent on an older API deploy */
   ir?: boolean;
 };
 
@@ -29,6 +28,9 @@ export type TradeSearchRow = {
    *  without trading; absent on an older API deploy */
   netted?: boolean;
   fa_add?: string[];
+  /** players in the offer on injured reserve, with the share of the remaining games each
+   *  is projected to play — how they're valued */
+  on_ir?: { name: string; avail: number | null }[];
   odds: number | null;
   their_odds: number | null;
   /** change in title probability (0.01 = +1pt), from the v1.3 player-level sim; absent on

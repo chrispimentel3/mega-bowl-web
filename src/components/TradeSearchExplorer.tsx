@@ -37,11 +37,6 @@ export function TradeSearchExplorer() {
     setPicked(row);
     setQ("");
     setResult(null);
-    if (row.ir) {
-      setLoading(false);
-      setError("He's on IR, and trades for players on IR aren't modeled yet — the engine only trades active rosters.");
-      return;
-    }
     const id = ++latest.current;
     setLoading(true);
     setError(null);
@@ -94,8 +89,8 @@ export function TradeSearchExplorer() {
                 onClick={() => run(r)}
                 className="flex w-full items-center justify-between gap-3 rounded-xl border border-line bg-card p-2.5 text-left text-sm shadow-sm transition-colors hover:border-navy/40"
               >
-                <span className={`font-medium ${r.ir ? "text-muted" : "text-ink"}`}>{r.label}</span>
-                {r.ir ? <span className="shrink-0 text-xs text-muted">on IR — not searchable yet</span> : null}
+                <span className="font-medium text-ink">{r.label}</span>
+                {r.ir ? <span className="shrink-0 text-xs text-muted">on IR</span> : null}
               </button>
             ))
           )}

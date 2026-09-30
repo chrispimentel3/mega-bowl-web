@@ -78,6 +78,12 @@ export function TradeSearchResultCard({ row }: { row: TradeSearchRow }) {
                       benches={row.i_would_bench} excluding={row.give} />
         <LineupVerdict label="Their lineup:" delta={row.d_them} starts={row.they_would_start}
                       benches={row.they_would_bench} excluding={row.get} />
+        {row.on_ir?.map((p) => (
+          <p key={p.name} className="text-[11px] text-muted">
+            {p.name} is on IR — counted for the {p.avail != null ? `${Math.round(p.avail * 100)}%` : "share"} of
+            the remaining games he&apos;s projected to play, and for whoever gets cut when he&apos;s back.
+          </p>
+        ))}
         {row.netted && row.fa_add?.length ? (
           <p className="text-[11px] text-muted">
             Already net of picking up {row.fa_add.join(" & ")}, which you could do without trading.
