@@ -54,7 +54,7 @@ export default async function WoprPage() {
 
             <SectionHeading title="Opportunity over time" />
             <p className="mb-3 text-sm text-muted">
-              Your WR/TE&apos;s weighted opportunity rating, week by week.
+              Every WR/TE&apos;s weighted opportunity rating, week by week — who is gaining or losing a role.
             </p>
             <TrendChart trend={trend} percent yLabel="WOPR" />
           </>

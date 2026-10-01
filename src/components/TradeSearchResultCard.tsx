@@ -66,11 +66,11 @@ export function TradeSearchResultCard({ row, pricing = false }: { row: TradeSear
       <div className="mt-3 space-y-1.5 text-sm">
         <div>
           <span className="text-[11px] uppercase tracking-wide text-muted">You give</span>
-          <p className="font-medium text-ink"><PlayerList names={row.give} /></p>
+          <p className="font-medium text-ink"><PlayerList names={row.give} schedule /></p>
         </div>
         <div>
           <span className="text-[11px] uppercase tracking-wide text-muted">You get</span>
-          <p className="font-medium text-ink"><PlayerList names={row.get} /></p>
+          <p className="font-medium text-ink"><PlayerList names={row.get} schedule /></p>
         </div>
       </div>
 

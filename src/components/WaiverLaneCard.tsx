@@ -3,6 +3,7 @@ import { PlayerAvatar } from "./PlayerAvatar";
 import { TeamLogo } from "./TeamLogo";
 import type { WaiverLaneRow } from "@/lib/waivers";
 import { PlayerName } from "@/components/PlayerCardProvider";
+import { ScheduleTag } from "@/components/ScheduleTag";
 
 const fmt = (n: number | null | undefined) =>
   n == null ? "—" : `${n >= 0 ? "+" : ""}${n.toFixed(2)}`;
@@ -39,6 +40,7 @@ export function WaiverLaneCard({ row }: { row: WaiverLaneRow }) {
               <TeamLogo team={row.nfl_team} size={14} />
               {row.nfl_team} · {row.ppg?.toFixed(1) ?? "—"} pts/g
               {row.pct_ros != null ? ` · ${Math.round(row.pct_ros)}% rostered` : ""}
+              <ScheduleTag name={row.player} className="ml-1" />
             </p>
           </div>
         </div>

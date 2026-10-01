@@ -1,6 +1,7 @@
 import { PosBadge } from "./PosBadge";
 import type { ThesisSide, TradeThesis } from "@/lib/trades";
 import { PlayerName } from "@/components/PlayerCardProvider";
+import { ScheduleTag } from "@/components/ScheduleTag";
 
 const pts = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(1)}`;
 const pp = (s: ThesisSide) =>
@@ -34,6 +35,7 @@ export function TradeThesisCard({ card }: { card: TradeThesis }) {
       <span key={p.name} className="mr-2 inline-flex items-center gap-1">
         <PosBadge pos={p.pos} />
         <PlayerName name={p.name} pos={p.pos} className="font-semibold text-ink" />
+        <ScheduleTag name={p.name} />
       </span>
     ));
 

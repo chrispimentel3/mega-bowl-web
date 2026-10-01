@@ -2,12 +2,29 @@ import { fetchRemoteJson } from "./fetchRemoteJson";
 
 export type TrendRow = { player: string; week: number; value: number };
 
-export type Trend = { available: boolean; players: string[]; rows: TrendRow[] };
+export type TrendMover = {
+  player: string;
+  pos: string;
+  mine: boolean;
+  prev: number;
+  last: number;
+  delta: number;
+};
+
+export type Trend = {
+  available: boolean;
+  players: string[];
+  rows: TrendRow[];
+  /** name -> position, and whether he's on our roster; absent in older exports */
+  info?: Record<string, { pos: string; mine: boolean }>;
+  /** change between each player's last two snapshots, biggest first */
+  movers?: { weeks: number[]; up: TrendMover[]; down: TrendMover[] };
+};
 
 const EMPTY: Trend = { available: false, players: [], rows: [] };
 
-/** Weekly snapshots (mega/history.py) are new as of 2026-09-25 — these will be sparse
- * (often a single week) until a few more Tuesdays accumulate. Same fetch-with-fallback
+/** Weekly snapshots (mega/history.py) started 2026-09-25 and cover the whole league, so
+ * a trend is a line per player plus who moved most. Same fetch-with-fallback
  * pattern as every other export; see src/lib/action-board.ts for why. */
 async function getTrend(remoteUrl: string | undefined, filename: string): Promise<Trend> {
   if (remoteUrl) {

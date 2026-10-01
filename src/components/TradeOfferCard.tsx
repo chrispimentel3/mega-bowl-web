@@ -62,12 +62,12 @@ export function TradeOfferCard({ row }: { row: TradeOffer }) {
           <span className="text-[11px] uppercase tracking-wide text-muted">You give</span>
           <span className="text-xs text-muted">value {row.give_val}</span>
         </div>
-        <p className="font-medium text-ink"><PlayerList text={row.give} /></p>
+        <p className="font-medium text-ink"><PlayerList text={row.give} schedule /></p>
         <div className="flex items-baseline justify-between gap-2 pt-1">
           <span className="text-[11px] uppercase tracking-wide text-muted">You get</span>
           <span className="text-xs text-muted">value {row.get_val}</span>
         </div>
-        <p className="font-medium text-ink"><PlayerList text={row.get} /></p>
+        <p className="font-medium text-ink"><PlayerList text={row.get} schedule /></p>
       </div>
 
       {row.impact ? (

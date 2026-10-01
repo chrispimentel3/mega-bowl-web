@@ -6,6 +6,7 @@ import type { PlayerDetail } from "@/lib/players";
 import { OwnershipBadge } from "./OwnershipBadge";
 import { PlayerAvatar } from "./PlayerAvatar";
 import { MatchupScore } from "./MatchupScore";
+import { ScheduleTag } from "@/components/ScheduleTag";
 
 /** Click any player's name, anywhere on the site, and his card opens over the page —
  *  the season stats his position is judged on, each with where he ranks at it. The full
@@ -259,7 +260,7 @@ export function PlayerName({
 
 /** A trade package — either names, or the "George Kittle (TE) + Malik Nabers (WR)" string
  *  the trade exports carry — with each name opening its card. */
-export function PlayerList({ names, text, className = "" }: { names?: string[]; text?: string; className?: string }) {
+export function PlayerList({ names, text, className = "", schedule = false }: { names?: string[]; text?: string; className?: string; schedule?: boolean }) {
   const parts = names
     ? names.map((n) => ({ name: n, pos: undefined as string | undefined }))
     : (text ?? "").split(" + ").map((t) => {
@@ -273,6 +274,7 @@ export function PlayerList({ names, text, className = "" }: { names?: string[]; 
           {i ? " + " : ""}
           <PlayerName name={p.name} pos={p.pos} />
           {p.pos ? <span className="text-muted"> ({p.pos})</span> : null}
+          {schedule ? <ScheduleTag name={p.name} className="ml-1.5 align-middle" /> : null}
         </span>
       ))}
     </span>

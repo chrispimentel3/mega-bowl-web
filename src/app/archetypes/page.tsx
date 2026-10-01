@@ -38,7 +38,7 @@ export default async function ArchetypesPage() {
             <SectionHeading title="Best fits — who to target" />
             <ArchetypeBoard rows={arch.board} />
 
-            <SectionHeading title="Your roster's fit score over time" />
+            <SectionHeading title="Fit score over time" />
             <TrendChart trend={trend} yLabel="Fit (0–100)" />
           </>
         )}

@@ -1,4 +1,5 @@
 import { getTrades } from "@/lib/trades";
+import { getTradeValueTrend } from "@/lib/trends";
 import { getActionBoard } from "@/lib/action-board";
 import { Masthead } from "@/components/Masthead";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -6,12 +7,13 @@ import { TradeOfferCard } from "@/components/TradeOfferCard";
 import { TradeSearchExplorer } from "@/components/TradeSearchExplorer";
 import { TradeThesisList } from "@/components/TradeThesisList";
 import { PostureChip } from "@/components/PostureChip";
+import { TrendChart } from "@/components/TrendChart";
 import Link from "next/link";
 
 export const revalidate = 3600;
 
 export default async function TradesPage() {
-  const [tr, ab] = await Promise.all([getTrades(), getActionBoard()]);
+  const [tr, ab, valueTrend] = await Promise.all([getTrades(), getActionBoard(), getTradeValueTrend()]);
 
   return (
     <>
@@ -69,6 +71,17 @@ export default async function TradesPage() {
             </div>
           ))
         )}
+
+        {valueTrend.available ? (
+          <>
+            <SectionHeading title="Trade value, week by week" />
+            <p className="mb-3 text-sm text-muted">
+              What the market (FantasyCalc) will pay for each player, and who moved most since the last
+              snapshot — a riser is a sell, a faller a buy, if you believe the role hasn&apos;t changed.
+            </p>
+            <TrendChart trend={valueTrend} unit="int" yLabel="Trade value" />
+          </>
+        ) : null}
 
         {tr.roster_src ? (
           <p className="mt-6 text-xs text-muted">Rosters: {tr.roster_src}.</p>

@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { getActionBoard } from "@/lib/action-board";
 import { getStatsTable } from "@/lib/statsTable";
 import { Masthead } from "@/components/Masthead";
@@ -14,10 +15,14 @@ export default async function ChartPage() {
         <h1 className="font-display text-xl font-bold text-ink">Chart builder</h1>
         <p className="mb-4 mt-1 text-sm text-muted">
           Put any two stats against each other for every player at the positions you pick —
-          the same season numbers the player cards rank on. Hover a dot for the player, click it
-          for his card.
+          the same season numbers the player cards rank on. Start from a preset or pick your own,
+          name the players you care about, and copy the link to send the exact chart. Hover a dot
+          for the player, click it for his card.
         </p>
-        <ChartBuilder table={table} />
+        {/* the builder reads its starting chart from the address, which needs a Suspense boundary */}
+        <Suspense fallback={null}>
+          <ChartBuilder table={table} />
+        </Suspense>
       </main>
     </>
   );
