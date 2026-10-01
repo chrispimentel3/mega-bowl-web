@@ -3,10 +3,13 @@ import { PlayerAvatar } from "./PlayerAvatar";
 import { TeamLogo } from "./TeamLogo";
 import type { LineupRow as LineupRowType } from "@/lib/start-sit";
 import { PlayerName } from "@/components/PlayerCardProvider";
+import { STEPS, defenseSentence, ptsShort, step, vegasLineSentence } from "@/lib/matchupVerdict";
 
 export function LineupRow({ row }: { row: LineupRowType }) {
   const edge = row.vegas_edge;
-  const edgeColor = edge == null ? "" : edge >= 0 ? "text-pos-rb" : "text-crimson";
+  const m = row.matchup_pct != null ? STEPS[step(row.matchup_pct)] : null;
+  const defense = defenseSentence(row.opp, row.matchup_def_rank, row.pos);
+  const teamLine = vegasLineSentence(row.nfl_team, row.matchup_vegas_pct, row.matchup_basis);
 
   return (
     <div className="rounded-xl border border-line bg-card p-4 shadow-sm">
@@ -41,12 +44,11 @@ export function LineupRow({ row }: { row: LineupRowType }) {
         </div>
       </div>
 
-      {(row.vegas != null || row.close_call) ? (
+      {m || row.close_call ? (
         <div className="mt-3 flex flex-wrap items-center gap-2">
-          {row.vegas != null ? (
-            <span className={`rounded-md bg-ink/5 px-2 py-0.5 text-xs font-bold ${edgeColor}`}>
-              Vegas {row.vegas.toFixed(1)} ({edge != null && edge >= 0 ? "+" : ""}
-              {edge?.toFixed(1)})
+          {m ? (
+            <span className={`rounded-md px-2 py-0.5 text-xs font-bold ${m.chip}`}>
+              {m.label} matchup{ptsShort(row.matchup_pts) ? ` · ${ptsShort(row.matchup_pts)}` : ""}
             </span>
           ) : null}
           {row.close_call ? (
@@ -55,6 +57,23 @@ export function LineupRow({ row }: { row: LineupRowType }) {
             </span>
           ) : null}
         </div>
+      ) : null}
+
+      {defense || teamLine || row.vegas != null ? (
+        <ul className="mt-2 space-y-0.5 text-xs text-muted">
+          {defense ? <li>{defense}</li> : null}
+          {teamLine ? <li>{teamLine}</li> : null}
+          {row.vegas != null ? (
+            <li>
+              Vegas player props project <b className="text-ink">{row.vegas.toFixed(1)}</b> pts
+              {edge != null && Math.abs(edge) >= 0.5 ? (
+                <> — <span className={edge > 0 ? "text-pos-rb" : "text-crimson"}>
+                  {Math.abs(edge).toFixed(1)} {edge > 0 ? "more" : "less"}
+                </span> than our projection</>
+              ) : <>, in line with our projection</>}.
+            </li>
+          ) : null}
+        </ul>
       ) : null}
     </div>
   );

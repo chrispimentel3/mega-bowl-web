@@ -17,6 +17,13 @@ export type LineupRow = {
   tm_rank: number | null;
   start_sit: string | null;
   close_call: string | null;
+  /** the fitted matchup model: % on a normal week, worth in points, and its two parts —
+   *  absent on an older export */
+  matchup_pct?: number | null;
+  matchup_pts?: number | null;
+  matchup_def_rank?: number | null;
+  matchup_vegas_pct?: number | null;
+  matchup_basis?: "defense+vegas" | "defense_only" | null;
 };
 
 export type StartSit = {

@@ -1,48 +1,9 @@
 import Link from "next/link";
 import type { ThisWeek } from "@/lib/players";
 
-// The fitted model only sorts matchups reliably outside about ±3% (see Logic), so that
-// whole band reads "Neutral".
-const NEUTRAL_BAND = 3;
-
-const STEPS = [
-  { label: "Very tough", tone: "text-crimson", dot: "bg-crimson" },
-  { label: "Tough", tone: "text-crimson", dot: "bg-crimson" },
-  { label: "Neutral", tone: "text-ink", dot: "bg-muted" },
-  { label: "Good", tone: "text-pos-rb", dot: "bg-pos-rb" },
-  { label: "Great", tone: "text-pos-rb", dot: "bg-pos-rb" },
-];
-
-function step(pct: number): number {
-  if (pct <= -8) return 0;
-  if (pct <= -NEUTRAL_BAND) return 1;
-  if (pct < NEUTRAL_BAND) return 2;
-  if (pct < 8) return 3;
-  return 4;
-}
-
-/** "about 1.1 pts less than a normal week" */
-function impact(delta: number | null | undefined): string | null {
-  if (delta == null) return null;
-  if (Math.abs(delta) < 0.5) return "About the same as a normal week for him.";
-  return `About ${Math.abs(delta).toFixed(1)} pts ${delta > 0 ? "more" : "less"} than a normal week for him.`;
-}
-
-/** Why, in one sentence: the defense, and the betting line when it says much. */
-function why(tw: ThisWeek, pos: string): string | null {
-  const parts: string[] = [];
-  const r = tw.matchup_def_rank;
-  if (r != null && tw.opponent) {
-    if (r <= 8) parts.push(`${tw.opponent} is one of the easiest defenses for ${pos}s`);
-    else if (r >= 25) parts.push(`${tw.opponent} is one of the toughest defenses for ${pos}s`);
-    else parts.push(`${tw.opponent} is an average defense for ${pos}s`);
-  }
-  const v = tw.matchup_vegas_pct;
-  if (tw.matchup_basis === "defense+vegas" && v != null && Math.abs(v) >= 5) {
-    parts.push(`Vegas expects his team to score ${v > 0 ? "more" : "less"} than usual`);
-  }
-  return parts.length ? `${parts.join(", and ")}.` : null;
-}
+import {
+  STEPS, defenseSentence, ptsSentence, step, vegasLineSentence,
+} from "@/lib/matchupVerdict";
 
 /** This week's matchup in plain words: a verdict, what it's worth, and why. */
 export function MatchupScore({ tw, pos, week }: { tw: ThisWeek; pos: string; week?: number }) {
@@ -70,8 +31,10 @@ export function MatchupScore({ tw, pos, week }: { tw: ThisWeek; pos: string; wee
 
   const i = step(tw.matchup_pct);
   const s = STEPS[i];
-  const reason = why(tw, pos);
-  const pts = impact(tw.delta_pts);
+  const pts = ptsSentence(tw.delta_pts);
+  const vegas = tw.matchup_vegas_pct != null && Math.abs(tw.matchup_vegas_pct) >= 2
+    ? vegasLineSentence("his team", tw.matchup_vegas_pct, tw.matchup_basis) : null;
+  const reason = [defenseSentence(tw.opponent, tw.matchup_def_rank, pos), vegas].filter(Boolean).join(" ");
 
   return (
     <div className="rounded-xl border border-line p-3">
