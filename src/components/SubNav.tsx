@@ -31,6 +31,7 @@ const GROUPS = [
       { href: "/axe", label: "Points vs opportunity" },
       { href: "/usage", label: "Usage trends" },
       { href: "/league", label: "The league" },
+      { href: "/history", label: "History" },
     ],
   },
   {

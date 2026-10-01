@@ -14,7 +14,7 @@ const LINKS = [
   {
     href: "/roster",
     label: "Season",
-    matches: ["/roster", "/axe", "/usage", "/league"],
+    matches: ["/roster", "/axe", "/usage", "/league", "/history"],
   },
   {
     href: "/players",
