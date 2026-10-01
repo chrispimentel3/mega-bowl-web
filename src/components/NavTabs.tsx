@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const LINKS = [
-  { href: "/", label: "This Week", matches: ["/", "/digest"] },
+  { href: "/", label: "This Week", matches: ["/", "/digest", "/live"] },
   { href: "/start-sit", label: "Lineup & Matchups", matches: ["/start-sit", "/matchups"] },
   {
     href: "/waivers",
