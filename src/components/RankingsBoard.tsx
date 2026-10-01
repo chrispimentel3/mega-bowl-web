@@ -8,7 +8,7 @@ import { TeamLogo } from "./TeamLogo";
 import type { RankingRow } from "@/lib/rankings";
 
 const POSITIONS = ["QB", "RB", "WR", "TE"] as const;
-const NEUTRAL_BAND = 3; // matches ThisWeekNote.tsx — the matchup model's own noise floor
+const NEUTRAL_BAND = 3; // matches MatchupScore.tsx — the matchup model's own noise floor
 // nflverse_estimate() covers every player who has ever played, third-stringers included —
 // cap at roughly this league's real fantasy-relevant depth (12 teams, half-PPR) rather than
 // scrolling into backups nobody would ever start.

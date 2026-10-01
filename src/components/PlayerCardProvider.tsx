@@ -5,6 +5,7 @@ import { createContext, useCallback, useContext, useEffect, useState } from "rea
 import type { PlayerDetail } from "@/lib/players";
 import { OwnershipBadge } from "./OwnershipBadge";
 import { PlayerAvatar } from "./PlayerAvatar";
+import { MatchupScore } from "./MatchupScore";
 
 /** Click any player's name, anywhere on the site, and his card opens over the page —
  *  the season stats his position is judged on, each with where he ranks at it. The full
@@ -105,13 +106,11 @@ function Card({ p, onClose }: { p: PlayerDetail; onClose: () => void }) {
             ))}
           </div>
 
-          {tw && !tw.bye && tw.opponent ? (
-            <p className="mt-2 text-xs text-muted">
-              This week: {tw.home ? "vs" : "@"} {tw.opponent}
-              {tw.projection != null ? ` · projected ${tw.projection.toFixed(1)}` : ""}
-              {tw.ease_rank != null ? ` · matchup #${tw.ease_rank} easiest of 32` : ""}
-            </p>
-          ) : tw?.bye ? <p className="mt-2 text-xs text-muted">This week: bye</p> : null}
+          {tw ? (
+            <div className="mt-3">
+              <MatchupScore tw={tw} pos={p.pos} />
+            </div>
+          ) : null}
 
           <div className="mt-3 overflow-hidden rounded-xl border border-line">
             <table className="w-full text-sm">

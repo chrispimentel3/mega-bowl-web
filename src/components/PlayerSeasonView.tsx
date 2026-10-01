@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { KpiRow } from "./KpiRow";
 import { RoleCard } from "./RoleCard";
-import { ThisWeekNote } from "./ThisWeekNote";
+import { MatchupScore } from "./MatchupScore";
 import { SectionHeading } from "./SectionHeading";
 import { SeasonDetailCard } from "./SeasonDetailCard";
 import { GameLogTable } from "./GameLogTable";
@@ -55,8 +55,8 @@ export function PlayerSeasonView({ player, nextWeek }: { player: PlayerDetail; n
       ) : null}
 
       {s.this_week ? (
-        <div className="mt-4 rounded-xl border border-line bg-card p-3 shadow-sm">
-          <ThisWeekNote thisWeek={s.this_week} nextWeek={nextWeek} />
+        <div className="mt-4 rounded-xl bg-card shadow-sm">
+          <MatchupScore tw={s.this_week} pos={player.pos} week={nextWeek} />
         </div>
       ) : null}
 

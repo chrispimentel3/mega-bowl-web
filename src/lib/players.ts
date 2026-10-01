@@ -69,6 +69,10 @@ export type ThisWeek = {
   matchup_baseline?: number | null;
   expected_pts?: number | null;
   delta_pts?: number | null;
+  /** 1-10: this matchup's rank among the week's matchups at his position, 10 the best */
+  matchup_score?: number | null;
+  matchup_rank?: number | null;
+  matchup_n?: number | null;
 };
 
 export type GameLogRow = Record<string, number | string | null>;

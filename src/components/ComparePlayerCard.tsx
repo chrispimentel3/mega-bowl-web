@@ -2,7 +2,7 @@ import { PosBadge } from "./PosBadge";
 import { PlayerAvatar } from "./PlayerAvatar";
 import { TeamLogo } from "./TeamLogo";
 import { RoleCard } from "./RoleCard";
-import { ThisWeekNote } from "./ThisWeekNote";
+import { MatchupScore } from "./MatchupScore";
 import { SeasonDetailCard } from "./SeasonDetailCard";
 import type { PlayerDetail } from "@/lib/players";
 
@@ -37,8 +37,8 @@ export function ComparePlayerCard({ player, nextWeek }: { player: PlayerDetail; 
           </div>
 
           {s.this_week ? (
-            <div className="mt-3 rounded-lg bg-ink/[0.03] p-2">
-              <ThisWeekNote thisWeek={s.this_week} nextWeek={nextWeek} />
+            <div className="mt-3">
+              <MatchupScore tw={s.this_week} pos={player.pos} week={nextWeek} />
             </div>
           ) : null}
 
