@@ -50,7 +50,7 @@ function LineupVerdict({
   );
 }
 
-export function TradeSearchResultCard({ row }: { row: TradeSearchRow }) {
+export function TradeSearchResultCard({ row, pricing = false }: { row: TradeSearchRow; pricing?: boolean }) {
   return (
     <div className="rounded-xl border border-line bg-card p-4 shadow-sm">
       <div className="flex flex-wrap items-center justify-between gap-2">
@@ -123,6 +123,10 @@ export function TradeSearchResultCard({ row }: { row: TradeSearchRow }) {
             <span className="text-muted">{row.watch.toLowerCase()}</span>
           ) : null}
         </div>
+      ) : pricing ? (
+        <p className="mt-3 animate-pulse border-t border-line pt-3 text-xs text-muted">
+          Simulating playoff &amp; title odds…
+        </p>
       ) : null}
 
       <p className="mt-2 text-[11px] text-muted">market ratio {row.mkt_ratio.toFixed(2)}</p>

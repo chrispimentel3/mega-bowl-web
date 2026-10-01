@@ -50,8 +50,13 @@ export type TradeSearchResult = {
   padded: number;
   matched: number;
   sim_available: boolean;
+  /** true on the offers-only answer; the odds come from a second call */
+  odds_pending?: boolean;
   rows: TradeSearchRow[];
 };
+
+/** Only the best this-many offers get priced in playoff/title odds (SIM_TOP in the service). */
+export const ODDS_TOP = 12;
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -81,7 +86,7 @@ export async function getTradePool(): Promise<TradePoolRow[]> {
 export async function searchTrades(
   pid: string,
   mine: boolean,
-  opts: { flags?: string[]; twoPlayer?: boolean; order?: "accept" | "gain" } = {},
+  opts: { flags?: string[]; twoPlayer?: boolean; order?: "accept" | "gain"; odds?: boolean } = {},
 ): Promise<TradeSearchResult> {
   const res = await fetchWaking(`${API_URL}/trade-search`, {
     method: "POST",
@@ -92,6 +97,7 @@ export async function searchTrades(
       flags: opts.flags ?? ["LIKELY", "EXPLOIT", "NEEDS_PITCH"],
       two_player: opts.twoPlayer ?? true,
       order: opts.order ?? "accept",
+      odds: opts.odds ?? true,
     }),
   });
   if (res.status === 400 || res.status === 503) {

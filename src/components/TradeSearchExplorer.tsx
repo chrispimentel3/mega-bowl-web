@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { getTradePool, searchTrades, type TradePoolRow, type TradeSearchResult } from "@/lib/tradeSearch";
+import { getTradePool, searchTrades, ODDS_TOP, type TradePoolRow, type TradeSearchResult } from "@/lib/tradeSearch";
 import { TradeSearchResultCard } from "@/components/TradeSearchResultCard";
 
 export function TradeSearchExplorer() {
@@ -13,6 +13,8 @@ export function TradeSearchExplorer() {
   const [order, setOrder] = useState<"accept" | "gain">("accept");
   const [result, setResult] = useState<TradeSearchResult | null>(null);
   const [loading, setLoading] = useState(false);
+  const [pricing, setPricing] = useState(false);   // offers shown, odds still coming
+  const [oddsFailed, setOddsFailed] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const latest = useRef(0);   // only the newest search may write its result
 
@@ -39,14 +41,33 @@ export function TradeSearchExplorer() {
     setResult(null);
     const id = ++latest.current;
     setLoading(true);
+    setPricing(false);
+    setOddsFailed(false);
     setError(null);
+    // offers first (a few seconds), then the same search again with playoff/title odds,
+    // which the service answers from the search it just ran
+    let offers: TradeSearchResult;
     try {
-      const res = await searchTrades(row.pid, row.mine, { order: o, twoPlayer: two });
-      if (id === latest.current) setResult(res);
+      offers = await searchTrades(row.pid, row.mine, { order: o, twoPlayer: two, odds: false });
     } catch (e) {
-      if (id === latest.current) setError(e instanceof Error ? e.message : "Something went wrong.");
+      if (id === latest.current) {
+        setError(e instanceof Error ? e.message : "Something went wrong.");
+        setLoading(false);
+      }
+      return;
+    }
+    if (id !== latest.current) return;
+    setResult(offers);
+    setLoading(false);
+    if (!offers.odds_pending || offers.rows.length === 0) return;   // an older API priced them already
+    setPricing(true);
+    try {
+      const full = await searchTrades(row.pid, row.mine, { order: o, twoPlayer: two, odds: true });
+      if (id === latest.current) setResult(full);
+    } catch {
+      if (id === latest.current) setOddsFailed(true);
     } finally {
-      if (id === latest.current) setLoading(false);
+      if (id === latest.current) setPricing(false);
     }
   }
 
@@ -136,7 +157,7 @@ export function TradeSearchExplorer() {
 
           {loading ? (
             <p className="mt-3 text-sm text-muted">
-              Rebuilding both rosters for every trade… the first search after a quiet spell can take up to a minute.
+              Rebuilding both rosters for every trade… usually a few seconds, up to a minute if the service was asleep.
             </p>
           ) : null}
           {error ? (
@@ -152,11 +173,19 @@ export function TradeSearchExplorer() {
                 try allowing two-player packages.
               </div>
             ) : (
-              <div className="mt-3 grid gap-3 sm:grid-cols-2">
-                {result.rows.map((row, i) => (
-                  <TradeSearchResultCard key={i} row={row} />
-                ))}
-              </div>
+              <>
+                {oddsFailed ? (
+                  <p className="mt-3 text-xs text-muted">
+                    Couldn&apos;t price these in playoff odds this time — the offers and lineup
+                    changes above still stand. Search again to retry.
+                  </p>
+                ) : null}
+                <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                  {result.rows.map((row, i) => (
+                    <TradeSearchResultCard key={i} row={row} pricing={pricing && i < ODDS_TOP} />
+                  ))}
+                </div>
+              </>
             )
           ) : null}
         </div>
