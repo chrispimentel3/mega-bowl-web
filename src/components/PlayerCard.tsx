@@ -1,5 +1,6 @@
 import { PosBadge } from "./PosBadge";
 import type { ShopHoldRow } from "@/lib/action-board";
+import { PlayerName } from "@/components/PlayerCardProvider";
 
 export function PlayerCard({ row, tone }: { row: ShopHoldRow; tone: "sell" | "buy" }) {
   const diffColor = tone === "sell" ? "text-crimson" : "text-pos-rb";
@@ -11,7 +12,7 @@ export function PlayerCard({ row, tone }: { row: ShopHoldRow; tone: "sell" | "bu
         <div className="min-w-0">
           <div className="flex items-center gap-2">
             <PosBadge pos={row.pos} />
-            <span className="truncate font-semibold text-ink">{row.player}</span>
+            <PlayerName name={row.player} pos={row.pos} className="truncate font-semibold text-ink" />
           </div>
           <p className="mt-0.5 text-xs text-muted">
             {row.slot}

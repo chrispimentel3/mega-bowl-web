@@ -38,6 +38,10 @@
     --color-card: #131c2e;
     --color-line: #223049;
     --color-muted: #94a3b8;
+    /* chart builder: the dark steps of the same validated slots */
+    --chart-mine-c: #3987e5;
+    --chart-fa-c: #d95926;
+    --chart-other-c: #64748b;
   }
 }
 
@@ -45,4 +49,12 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+/* recharts takes focus on a mouse click and draws its outline round the whole chart;
+   keep it for keyboard focus only */
+.recharts-wrapper:focus:not(:focus-visible),
+.recharts-surface:focus:not(:focus-visible),
+.recharts-wrapper *:focus:not(:focus-visible) {
+  outline: none;
 }

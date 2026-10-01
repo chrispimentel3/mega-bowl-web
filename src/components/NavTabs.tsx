@@ -19,7 +19,7 @@ const LINKS = [
   {
     href: "/players",
     label: "Player Lookup",
-    matches: ["/players", "/rankings", "/compare", "/glossary", "/news"],
+    matches: ["/players", "/rankings", "/compare", "/chart", "/glossary", "/news"],
   },
   {
     href: "/ask",

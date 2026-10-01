@@ -5,6 +5,7 @@ import { PosBadge } from "./PosBadge";
 import { PlayerAvatar } from "./PlayerAvatar";
 import { TeamLogo } from "./TeamLogo";
 import type { ArchBoardRow } from "@/lib/archetypes";
+import { PlayerName } from "@/components/PlayerCardProvider";
 
 const POSITIONS = ["QB", "RB", "WR", "TE"] as const;
 
@@ -55,7 +56,7 @@ export function ArchetypeBoard({ rows }: { rows: ArchBoardRow[] }) {
                 <PlayerAvatar player={row.player} size={28} />
                 <PosBadge pos={row.pos} />
                 <div className="min-w-0">
-                  <p className="truncate text-sm font-semibold text-ink">{row.player}</p>
+                  <p className="truncate text-sm font-semibold text-ink"><PlayerName name={row.player} pos={row.pos} team={row.team} /></p>
                   <p className="flex items-center gap-1 text-xs text-muted">
                     <TeamLogo team={row.team} size={14} />
                     {row.team}

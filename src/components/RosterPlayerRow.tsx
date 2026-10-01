@@ -1,6 +1,7 @@
 import { PosBadge } from "./PosBadge";
 import { PlayerAvatar } from "./PlayerAvatar";
 import type { RosterRow } from "@/lib/roster";
+import { PlayerName } from "@/components/PlayerCardProvider";
 
 export function RosterPlayerRow({ row }: { row: RosterRow }) {
   const diff = row.xfp_diff;
@@ -17,7 +18,7 @@ export function RosterPlayerRow({ row }: { row: RosterRow }) {
           <PosBadge pos={row.pos} />
           <div className="min-w-0">
             <p className="truncate text-sm font-semibold text-ink">
-              {row.player}
+              <PlayerName name={row.player} pos={row.pos} />
               {row.report_status ? (
                 <span className="ml-1.5 rounded-md bg-crimson/10 px-1.5 py-0.5 text-[10px] font-bold text-crimson">
                   {row.report_status}

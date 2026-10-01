@@ -2,6 +2,7 @@ import { PosBadge } from "./PosBadge";
 import { PlayerAvatar } from "./PlayerAvatar";
 import { TeamLogo } from "./TeamLogo";
 import type { WoprRow } from "@/lib/wopr";
+import { PlayerName } from "@/components/PlayerCardProvider";
 
 const TAG_STYLES: Record<string, string> = {
   SELL_HIGH: "bg-crimson/10 text-crimson",
@@ -46,7 +47,7 @@ export function WoprTable({ rows, showOwner = false }: { rows: WoprRow[]; showOw
               <PlayerAvatar player={row.name} size={28} />
               <PosBadge pos={row.pos} />
               <div className="min-w-0">
-                <p className="truncate text-sm font-semibold text-ink">{row.name}</p>
+                <p className="truncate text-sm font-semibold text-ink"><PlayerName name={row.name} pos={row.pos} /></p>
                 <p className="flex items-center gap-1 text-xs text-muted">
                   <TeamLogo team={row.team_2026_nfl} size={14} />
                   {row.team_2026_nfl}

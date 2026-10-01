@@ -2,6 +2,7 @@ import { PosBadge } from "./PosBadge";
 import { PlayerAvatar } from "./PlayerAvatar";
 import { TeamLogo } from "./TeamLogo";
 import type { LineupRow as LineupRowType } from "@/lib/start-sit";
+import { PlayerName } from "@/components/PlayerCardProvider";
 
 export function LineupRow({ row }: { row: LineupRowType }) {
   const edge = row.vegas_edge;
@@ -17,7 +18,7 @@ export function LineupRow({ row }: { row: LineupRowType }) {
             </span>
             <PlayerAvatar player={row.player} size={28} />
             <PosBadge pos={row.pos} />
-            <span className="truncate font-semibold text-ink">{row.player}</span>
+            <PlayerName name={row.player} pos={row.pos} className="truncate font-semibold text-ink" />
             <TeamLogo team={row.nfl_team} size={16} />
             {row.report_status ? (
               <span className="rounded-md bg-crimson/10 px-1.5 py-0.5 text-[11px] font-bold text-crimson">

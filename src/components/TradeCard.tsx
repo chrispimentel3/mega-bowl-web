@@ -1,4 +1,5 @@
 import type { TradeRow } from "@/lib/action-board";
+import { PlayerList } from "@/components/PlayerCardProvider";
 
 export function TradeCard({ row }: { row: TradeRow }) {
   const fairnessPct = Math.round(row.fairness * 100);
@@ -15,12 +16,12 @@ export function TradeCard({ row }: { row: TradeRow }) {
           <span className="text-[11px] uppercase tracking-wide text-muted">You give</span>
           <span className="text-xs text-muted">value {row.give_val}</span>
         </div>
-        <p className="font-medium text-ink">{row.give}</p>
+        <p className="font-medium text-ink"><PlayerList text={row.give} /></p>
         <div className="flex items-baseline justify-between gap-2 pt-1">
           <span className="text-[11px] uppercase tracking-wide text-muted">You get</span>
           <span className="text-xs text-muted">value {row.get_val}</span>
         </div>
-        <p className="font-medium text-ink">{row.get}</p>
+        <p className="font-medium text-ink"><PlayerList text={row.get} /></p>
       </div>
       <span className="mt-3 inline-block rounded-md bg-crimson/10 px-2 py-0.5 text-xs font-bold text-crimson">
         addresses {row.addresses}

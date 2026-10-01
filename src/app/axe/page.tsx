@@ -2,6 +2,7 @@ import { getAxe } from "@/lib/axe";
 import { getActionBoard } from "@/lib/action-board";
 import { Masthead } from "@/components/Masthead";
 import { BarCompareChart } from "@/components/BarCompareChart";
+import { PlayerName } from "@/components/PlayerCardProvider";
 
 export const revalidate = 3600;
 
@@ -34,7 +35,7 @@ export default async function AxePage() {
               {axe.rows.map((row) => (
                 <div key={row.player} className="rounded-xl border border-line bg-card p-3 shadow-sm">
                   <div className="flex items-center justify-between">
-                    <p className="text-sm font-semibold text-ink">{row.player}</p>
+                    <p className="text-sm font-semibold text-ink"><PlayerName name={row.player} /></p>
                     <span
                       className={`rounded-md px-1.5 py-0.5 text-xs font-bold ${
                         row.diff >= 0 ? "bg-crimson/10 text-crimson" : "bg-pos-rb/10 text-pos-rb"

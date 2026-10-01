@@ -1,6 +1,7 @@
 import { PosBadge } from "./PosBadge";
 import { VerdictBadge } from "./VerdictBadge";
 import type { PlayerDifficultyRow as Row } from "@/lib/matchups";
+import { PlayerName } from "@/components/PlayerCardProvider";
 
 export function PlayerDifficultyRow({ row }: { row: Row }) {
   return (
@@ -8,7 +9,7 @@ export function PlayerDifficultyRow({ row }: { row: Row }) {
       <div className="flex min-w-0 items-center gap-2">
         <PosBadge pos={row.pos} />
         <div className="min-w-0">
-          <p className="truncate text-sm font-semibold text-ink">{row.player}</p>
+          <p className="truncate text-sm font-semibold text-ink"><PlayerName name={row.player} pos={row.pos} /></p>
           <p className="text-xs text-muted">
             {row.matchup} · {row.pa_pg.toFixed(1)} pa/g
           </p>

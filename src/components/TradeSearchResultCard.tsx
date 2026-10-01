@@ -1,4 +1,5 @@
 import type { TradeSearchRow } from "@/lib/tradeSearch";
+import { PlayerList } from "@/components/PlayerCardProvider";
 
 const FLAG_STYLE: Record<string, string> = {
   LIKELY: "bg-pos-rb/10 text-pos-rb",
@@ -65,11 +66,11 @@ export function TradeSearchResultCard({ row, pricing = false }: { row: TradeSear
       <div className="mt-3 space-y-1.5 text-sm">
         <div>
           <span className="text-[11px] uppercase tracking-wide text-muted">You give</span>
-          <p className="font-medium text-ink">{row.give.join(" + ")}</p>
+          <p className="font-medium text-ink"><PlayerList names={row.give} /></p>
         </div>
         <div>
           <span className="text-[11px] uppercase tracking-wide text-muted">You get</span>
-          <p className="font-medium text-ink">{row.get.join(" + ")}</p>
+          <p className="font-medium text-ink"><PlayerList names={row.get} /></p>
         </div>
       </div>
 

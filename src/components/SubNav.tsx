@@ -38,6 +38,7 @@ const GROUPS = [
       { href: "/players", label: "Player card" },
       { href: "/rankings", label: "Rankings" },
       { href: "/compare", label: "Compare" },
+      { href: "/chart", label: "Chart builder" },
       { href: "/glossary", label: "Glossary" },
       { href: "/news", label: "News" },
     ],

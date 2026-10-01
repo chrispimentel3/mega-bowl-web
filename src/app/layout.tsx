@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Archivo_Narrow } from "next/font/google";
 import { getHeadshots } from "@/lib/headshots";
 import { HeadshotsProvider } from "@/components/HeadshotsProvider";
+import { PlayerCardProvider } from "@/components/PlayerCardProvider";
 import "./globals.css";
 
 const inter = Inter({
@@ -29,7 +30,9 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       className={`${inter.variable} ${archivo.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
-        <HeadshotsProvider headshots={headshots}>{children}</HeadshotsProvider>
+        <HeadshotsProvider headshots={headshots}>
+          <PlayerCardProvider>{children}</PlayerCardProvider>
+        </HeadshotsProvider>
       </body>
     </html>
   );

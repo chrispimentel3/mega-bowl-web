@@ -4,6 +4,7 @@ import { getActionBoard } from "@/lib/action-board";
 import { Masthead } from "@/components/Masthead";
 import { SectionHeading } from "@/components/SectionHeading";
 import { SimpleTable } from "@/components/SimpleTable";
+import { PlayerList, PlayerName } from "@/components/PlayerCardProvider";
 
 export const revalidate = 3600;
 
@@ -167,7 +168,7 @@ export default async function DigestPage() {
                   <p className="font-semibold text-ink">{d.todo.headline}</p>
                   {d.todo.waiver ? (
                     <p className="mt-2 text-muted">
-                      Top claim: <span className="font-medium text-ink">{d.todo.waiver.player}</span> ({d.todo.waiver.pos}),
+                      Top claim: <PlayerName name={d.todo.waiver.player} pos={d.todo.waiver.pos} className="font-medium text-ink" /> ({d.todo.waiver.pos}),
                       bid ${d.todo.waiver.bid}{d.todo.waiver.drop ? `, drop ${d.todo.waiver.drop}` : ""} —{" "}
                       {d.todo.waiver.why}.{" "}
                       <Link href="/waivers" className="text-navy hover:underline">All waivers</Link>
@@ -175,8 +176,8 @@ export default async function DigestPage() {
                   ) : null}
                   {d.todo.trade ? (
                     <p className="mt-1 text-muted">
-                      Top trade: give <span className="font-medium text-ink">{d.todo.trade.give}</span> to{" "}
-                      {d.todo.trade.partner} for <span className="font-medium text-ink">{d.todo.trade.get}</span>.{" "}
+                      Top trade: give <PlayerList text={d.todo.trade.give} className="font-medium text-ink" /> to{" "}
+                      {d.todo.trade.partner} for <PlayerList text={d.todo.trade.get} className="font-medium text-ink" />.{" "}
                       <Link href="/trades" className="text-navy hover:underline">All trades</Link>
                     </p>
                   ) : null}

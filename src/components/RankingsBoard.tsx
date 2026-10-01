@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Link from "next/link";
+import { useOpenPlayer } from "./PlayerCardProvider";
 import { PosBadge } from "./PosBadge";
 import { PlayerAvatar } from "./PlayerAvatar";
 import { TeamLogo } from "./TeamLogo";
@@ -20,6 +20,7 @@ function pctColor(pct: number): string {
 }
 
 export function RankingsBoard({ rows }: { rows: RankingRow[] }) {
+  const openPlayer = useOpenPlayer();
   const [pos, setPos] = useState<(typeof POSITIONS)[number]>("QB");
   const [mineOnly, setMineOnly] = useState(false);
 
@@ -53,10 +54,11 @@ export function RankingsBoard({ rows }: { rows: RankingRow[] }) {
 
       <div className="space-y-1.5">
         {filtered.map((row) => (
-          <Link
+          <button
+            type="button"
             key={row.gsis_id}
-            href={`/players/${row.gsis_id}`}
-            className="flex items-center gap-3 rounded-xl border border-line bg-card p-2.5 shadow-sm transition-colors hover:border-navy/30"
+            onClick={() => openPlayer({ name: row.player, gsis: row.gsis_id, pos: row.pos })}
+            className="flex w-full items-center gap-3 rounded-xl border border-line bg-card p-2.5 text-left shadow-sm transition-colors hover:border-navy/30"
           >
             <span className="w-6 shrink-0 text-right text-sm font-bold text-muted">{row.rank}</span>
             <PlayerAvatar player={row.player} size={28} />
@@ -87,7 +89,7 @@ export function RankingsBoard({ rows }: { rows: RankingRow[] }) {
                 <p className="mt-1 text-[11px] text-muted">—</p>
               )}
             </div>
-          </Link>
+          </button>
         ))}
         {filtered.length === 0 ? (
           <p className="p-4 text-center text-sm text-muted">No {pos}s{mineOnly ? " on your roster" : ""} yet.</p>

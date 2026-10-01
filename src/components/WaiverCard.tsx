@@ -1,6 +1,7 @@
 import { PosBadge } from "./PosBadge";
 import { PlayerAvatar } from "./PlayerAvatar";
 import type { WaiverRow } from "@/lib/action-board";
+import { PlayerName } from "@/components/PlayerCardProvider";
 
 export function WaiverCard({ row }: { row: WaiverRow }) {
   const hasBid = row.bid != null;
@@ -12,7 +13,7 @@ export function WaiverCard({ row }: { row: WaiverRow }) {
           <div className="flex items-center gap-2">
             <PlayerAvatar player={row.player} size={28} />
             <PosBadge pos={row.pos} />
-            <span className="truncate font-semibold text-ink">{row.player}</span>
+            <PlayerName name={row.player} pos={row.pos} className="truncate font-semibold text-ink" />
           </div>
           {row.drop ? <p className="mt-0.5 text-xs text-muted">drop {row.drop}</p> : null}
         </div>

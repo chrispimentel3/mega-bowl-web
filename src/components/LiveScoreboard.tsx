@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import type { LiveResponse } from "@/app/api/live/route";
 import type { LiveStarter, LiveTeam } from "@/lib/liveScoring";
+import { PlayerName } from "@/components/PlayerCardProvider";
 
 const f2 = (v: number) => v.toFixed(2);
 
@@ -23,7 +24,7 @@ function StarterRow({ s }: { s: LiveStarter }) {
       <div className="min-w-0">
         <p className={`truncate text-sm ${s.player ? "text-ink" : "italic text-crimson"}`}>
           <span className="mr-1.5 inline-block w-8 text-[11px] font-semibold text-muted">{s.slot}</span>
-          {s.player ?? "nobody"}
+          {s.player ? <PlayerName name={s.player} pos={s.slot === "K" || s.slot === "DEF" ? s.slot : undefined} team={s.nfl_team} /> : "nobody"}
           {s.nfl_team ? <span className="text-xs text-muted"> · {s.nfl_team}</span> : null}
         </p>
         <p className="truncate pl-[2.4rem] text-[11px] text-muted">

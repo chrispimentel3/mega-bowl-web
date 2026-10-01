@@ -5,6 +5,7 @@ import { PosBadge } from "./PosBadge";
 import { PlayerAvatar } from "./PlayerAvatar";
 import { TeamLogo } from "./TeamLogo";
 import type { VegasPlayerRow } from "@/lib/matchups";
+import { PlayerName } from "@/components/PlayerCardProvider";
 
 export function VegasPlayersTable({ rows, myTeam }: { rows: VegasPlayerRow[]; myTeam: string }) {
   const [myRosterOnly, setMyRosterOnly] = useState(false);
@@ -61,7 +62,7 @@ export function VegasPlayersTable({ rows, myTeam }: { rows: VegasPlayerRow[]; my
                   <div className="flex items-center gap-2">
                     <PlayerAvatar player={r.player} size={24} />
                     <PosBadge pos={r.pos} />
-                    <span className="font-medium text-ink">{r.player}</span>
+                    <PlayerName name={r.player} pos={r.pos} team={r.team} gsis={r.gsis_id} className="font-medium text-ink" />
                   </div>
                 </td>
                 <td className="px-3 py-2 text-muted">

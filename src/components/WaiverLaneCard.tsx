@@ -2,6 +2,7 @@ import { PosBadge } from "./PosBadge";
 import { PlayerAvatar } from "./PlayerAvatar";
 import { TeamLogo } from "./TeamLogo";
 import type { WaiverLaneRow } from "@/lib/waivers";
+import { PlayerName } from "@/components/PlayerCardProvider";
 
 const fmt = (n: number | null | undefined) =>
   n == null ? "—" : `${n >= 0 ? "+" : ""}${n.toFixed(2)}`;
@@ -32,7 +33,7 @@ export function WaiverLaneCard({ row }: { row: WaiverLaneRow }) {
           <div className="min-w-0">
             <div className="flex items-center gap-2">
               <PosBadge pos={row.pos} />
-              <span className="truncate font-semibold text-ink">{row.player}</span>
+              <PlayerName name={row.player} pos={row.pos} className="truncate font-semibold text-ink" />
             </div>
             <p className="mt-0.5 flex items-center gap-1 text-xs text-muted">
               <TeamLogo team={row.nfl_team} size={14} />
