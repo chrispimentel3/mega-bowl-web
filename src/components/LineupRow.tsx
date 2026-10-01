@@ -3,14 +3,9 @@ import { PlayerAvatar } from "./PlayerAvatar";
 import { TeamLogo } from "./TeamLogo";
 import type { LineupRow as LineupRowType } from "@/lib/start-sit";
 import { PlayerName } from "@/components/PlayerCardProvider";
-import { STEPS, defenseSentence, ptsShort, step, vegasLineSentence } from "@/lib/matchupVerdict";
+import { MatchupTags } from "./MatchupTags";
 
 export function LineupRow({ row }: { row: LineupRowType }) {
-  const edge = row.vegas_edge;
-  const m = row.matchup_pct != null ? STEPS[step(row.matchup_pct)] : null;
-  const defense = defenseSentence(row.opp, row.matchup_def_rank, row.pos);
-  const teamLine = vegasLineSentence(row.nfl_team, row.matchup_vegas_pct, row.matchup_basis);
-
   return (
     <div className="rounded-xl border border-line bg-card p-4 shadow-sm">
       <div className="flex items-start justify-between gap-3">
@@ -44,37 +39,17 @@ export function LineupRow({ row }: { row: LineupRowType }) {
         </div>
       </div>
 
-      {m || row.close_call ? (
-        <div className="mt-3 flex flex-wrap items-center gap-2">
-          {m ? (
-            <span className={`rounded-md px-2 py-0.5 text-xs font-bold ${m.chip}`}>
-              {m.label} matchup{ptsShort(row.matchup_pts) ? ` · ${ptsShort(row.matchup_pts)}` : ""}
-            </span>
-          ) : null}
-          {row.close_call ? (
+      <MatchupTags
+          className="mt-3"
+          pct={row.matchup_pct} pts={row.matchup_pts} pos={row.pos} opp={row.opp} team={row.nfl_team}
+          defRank={row.matchup_def_rank} vegasPct={row.matchup_vegas_pct} basis={row.matchup_basis}
+          props={row.vegas} propsEdge={row.vegas_edge}
+          extra={row.close_call ? (
             <span className="rounded-md bg-amber-100 px-2 py-0.5 text-xs font-bold text-amber-800 dark:bg-amber-950/40 dark:text-amber-300">
               close call {row.close_call}
             </span>
           ) : null}
-        </div>
-      ) : null}
-
-      {defense || teamLine || row.vegas != null ? (
-        <ul className="mt-2 space-y-0.5 text-xs text-muted">
-          {defense ? <li>{defense}</li> : null}
-          {teamLine ? <li>{teamLine}</li> : null}
-          {row.vegas != null ? (
-            <li>
-              Vegas player props project <b className="text-ink">{row.vegas.toFixed(1)}</b> pts
-              {edge != null && Math.abs(edge) >= 0.5 ? (
-                <> — <span className={edge > 0 ? "text-pos-rb" : "text-crimson"}>
-                  {Math.abs(edge).toFixed(1)} {edge > 0 ? "more" : "less"}
-                </span> than our projection</>
-              ) : <>, in line with our projection</>}.
-            </li>
-          ) : null}
-        </ul>
-      ) : null}
+      />
     </div>
   );
 }

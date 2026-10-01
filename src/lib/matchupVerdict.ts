@@ -20,10 +20,9 @@ export function step(pct: number): number {
   return 4;
 }
 
-/** "+1.1 pts" / "−0.8 pts" / "±0 pts" */
+/** "+1.1 pts" / "−0.8 pts"; nothing when it's under half a point */
 export function ptsShort(delta: number | null | undefined): string | null {
-  if (delta == null) return null;
-  if (Math.abs(delta) < 0.5) return "±0 pts";
+  if (delta == null || Math.abs(delta) < 0.5) return null;
   return `${delta > 0 ? "+" : "−"}${Math.abs(delta).toFixed(1)} pts`;
 }
 
@@ -47,7 +46,7 @@ export function vegasLineSentence(team: string | null | undefined, vegasPct: num
                                   basis: string | null | undefined): string | null {
   if (basis === "defense_only") return "No betting line for this game yet.";
   if (vegasPct == null) return null;
-  const who = team ?? "His team";
+  const who = team ?? "his team";
   if (Math.abs(vegasPct) < 2) return `Vegas expects ${who} to score about as usual.`;
   return `Vegas expects ${who} to score ${Math.abs(vegasPct).toFixed(0)}% ${vegasPct > 0 ? "more" : "less"} than usual.`;
 }
