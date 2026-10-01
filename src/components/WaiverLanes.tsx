@@ -57,7 +57,7 @@ export function WaiverLanes({
                 on ? "bg-navy text-white" : "text-muted hover:text-ink"
               }`}
             >
-              {l.title} <span className={on ? "text-white/70" : "text-muted"}>{n}</span>
+              {l.title} <span className={on ? "text-white" : "text-muted"}>{n}</span>
             </button>
           );
         })}

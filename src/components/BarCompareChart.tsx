@@ -10,6 +10,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { legendText } from "./chartLegend";
 
 export function BarCompareChart({
   rows,
@@ -40,7 +41,7 @@ export function BarCompareChart({
           }}
           formatter={(value) => Number(value).toFixed(1)}
         />
-        <Legend wrapperStyle={{ fontSize: 12 }} />
+        <Legend wrapperStyle={{ fontSize: 12 }} formatter={legendText} />
         <Bar dataKey="expected" name="Expected" fill="var(--color-muted)" radius={[0, 4, 4, 0]} barSize={10} />
         <Bar dataKey="actual" name="Actual" fill="var(--color-navy)" radius={[0, 4, 4, 0]} barSize={10} />
       </BarChart>

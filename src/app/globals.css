@@ -10,14 +10,20 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-inter);
   --font-display: var(--font-archivo);
+}
 
+/* Colors are a plain (not `inline`) @theme on purpose: `inline` bakes each hex into its
+   utility (`.text-ink{color:#101828}`), which left the dark-mode block below unable to
+   reach any of them — cards stayed white and text stayed near-black on a dark page. As
+   variables, the dark block just redefines them. */
+@theme {
   /* Brand — carried over from the Streamlit dashboard's NFL-shield theme. */
   --color-navy: #013369;
   --color-navy-dark: #011f42;
   --color-crimson: #d50a0a;
   --color-crimson-dark: #a80707;
 
-  /* Position accents */
+  /* Position accents (badge fills under white text — the same in both themes) */
   --color-pos-qb: #d50a0a;
   --color-pos-rb: #0f9d58;
   --color-pos-wr: #e69500;
@@ -31,17 +37,34 @@
   --color-line: #e4e7ec;
 }
 
+/* Dark: every text color clears 4.5:1 on both the page (#0b1220) and a card (#131c2e) —
+   ink 15:1, muted 6.6:1, navy 8.1:1, crimson 6.2:1, pos-rb 7.8:1 (6.6:1 on its tint). */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0b1220;
     --foreground: #eef1f6;
+    --color-ink: #eef1f6;
+    --color-muted: #94a3b8;
     --color-card: #131c2e;
     --color-line: #223049;
-    --color-muted: #94a3b8;
+    /* navy and crimson are mostly text, links and tints here, so they go light */
+    --color-navy: #8ab4f8;
+    --color-navy-dark: #6c9be6;
+    --color-crimson: #f87171;
+    --color-crimson-dark: #ef4444;
+    /* green is "buy"/"better" text on its own 10% tint: 4.3:1 at the light step */
+    --color-pos-rb: #34c77b;
     /* chart builder: the dark steps of the same validated slots */
     --chart-mine-c: #3987e5;
     --chart-fa-c: #d95926;
     --chart-other-c: #64748b;
+  }
+
+  /* ...except as a solid fill under white text (active pills, buttons, the headline
+     card), where light blue would sink the white: a mid blue that keeps white at 5.1:1
+     and still stands 3.3:1 off a card. */
+  .bg-navy {
+    background-color: #3a6cc0;
   }
 }
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { legendText } from "./chartLegend";
 
 const HIGHLIGHT_COLORS = [
   "var(--color-navy)",
@@ -63,7 +64,7 @@ export function MultiLineChart({
           }}
           formatter={(value) => (percent ? `${(Number(value) * 100).toFixed(1)}%` : Number(value))}
         />
-        <Legend wrapperStyle={{ fontSize: 12 }} />
+        <Legend wrapperStyle={{ fontSize: 12 }} formatter={legendText} />
         {series
           .filter((s) => !highlighted.includes(s))
           .map((s) => (

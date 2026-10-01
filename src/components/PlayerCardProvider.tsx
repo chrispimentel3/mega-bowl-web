@@ -214,7 +214,7 @@ export function PlayerCardProvider({ children }: { children: React.ReactNode }) 
     <Ctx.Provider value={open}>
       {children}
       {want ? (
-        <div className="fixed inset-0 z-50 flex items-end justify-center bg-ink/40 sm:items-center sm:p-4" onClick={close}>
+        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 sm:items-center sm:p-4" onClick={close}>
           <div
             role="dialog"
             aria-modal="true"

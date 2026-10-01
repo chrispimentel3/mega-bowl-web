@@ -7,7 +7,7 @@ export function AnswerCard({ headline, subhead }: { headline: string; subhead: s
         aria-hidden
       />
       <p className="relative z-10 font-display text-xl font-bold leading-snug sm:text-2xl">{headline}</p>
-      <p className="relative z-10 mt-1.5 text-sm text-white/70">{subhead}</p>
+      <p className="relative z-10 mt-1.5 text-sm text-white/95">{subhead}</p>
     </div>
   );
 }

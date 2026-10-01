@@ -2,6 +2,7 @@
 
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import type { GameLogRow } from "@/lib/players";
+import { legendText } from "./chartLegend";
 
 export function ActualVsExpectedChart({ rows }: { rows: GameLogRow[] }) {
   const data = rows
@@ -24,7 +25,7 @@ export function ActualVsExpectedChart({ rows }: { rows: GameLogRow[] }) {
             fontSize: 12,
           }}
         />
-        <Legend wrapperStyle={{ fontSize: 12 }} />
+        <Legend wrapperStyle={{ fontSize: 12 }} formatter={legendText} />
         <Line type="monotone" dataKey="Expected" stroke="var(--color-muted)" strokeWidth={2} dot={{ r: 3 }} isAnimationActive={false} />
         <Line type="monotone" dataKey="Actual" stroke="var(--color-navy)" strokeWidth={2} dot={{ r: 3 }} isAnimationActive={false} />
       </LineChart>
