@@ -16,7 +16,7 @@ const DISPLAY_CAP: Record<(typeof POSITIONS)[number], number> = { QB: 32, RB: 60
 
 function pctColor(pct: number): string {
   if (Math.abs(pct) < NEUTRAL_BAND) return "text-muted";
-  return pct > 0 ? "text-pos-rb" : "text-crimson";
+  return pct > 0 ? "text-pos-rb-text" : "text-crimson";
 }
 
 export function RankingsBoard({ rows }: { rows: RankingRow[] }) {

@@ -38,7 +38,7 @@ export default async function AxePage() {
                     <p className="text-sm font-semibold text-ink"><PlayerName name={row.player} /></p>
                     <span
                       className={`rounded-md px-1.5 py-0.5 text-xs font-bold ${
-                        row.diff >= 0 ? "bg-crimson/10 text-crimson" : "bg-pos-rb/10 text-pos-rb"
+                        row.diff >= 0 ? "bg-crimson/10 text-crimson" : "bg-pos-rb/10 text-pos-rb-text"
                       }`}
                     >
                       {row.diff >= 0 ? "+" : ""}

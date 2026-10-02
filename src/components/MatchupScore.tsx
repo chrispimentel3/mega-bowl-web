@@ -2,6 +2,7 @@ import type { ThisWeek } from "@/lib/players";
 
 import { STEPS, ptsShort, ptsSentence, step } from "@/lib/matchupVerdict";
 import { MatchupTags } from "./MatchupTags";
+import { TapTip } from "./TapTip";
 
 /** This week's matchup in plain words: a verdict, what it's worth, and why. */
 export function MatchupScore({ tw, pos, week }: { tw: ThisWeek; pos: string; week?: number }) {
@@ -34,8 +35,10 @@ export function MatchupScore({ tw, pos, week }: { tw: ThisWeek; pos: string; wee
   return (
     <div className="rounded-xl border border-line p-3">
       <div className="flex items-center justify-between gap-3">
-        <p className={`text-base font-bold ${s.tone}`} title={ptsSentence(tw.delta_pts) ?? undefined}>
-          {s.label} matchup{pts ? <span className="ml-1.5 text-sm font-semibold">{pts}</span> : null}
+        <p className={`text-base font-bold ${s.tone}`}>
+          <TapTip tip={ptsSentence(tw.delta_pts)}>
+            {s.label} matchup{pts ? <span className="ml-1.5 text-sm font-semibold">{pts}</span> : null}
+          </TapTip>
         </p>
         <p className="text-xs text-muted">
           {head}

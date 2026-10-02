@@ -7,8 +7,8 @@ import { PlayerName } from "@/components/PlayerCardProvider";
 const TAG_STYLES: Record<string, string> = {
   SELL_HIGH: "bg-crimson/10 text-crimson",
   FADE: "bg-crimson/10 text-crimson",
-  BUY_LOW: "bg-pos-rb/10 text-pos-rb",
-  UNDERPRICED: "bg-pos-rb/10 text-pos-rb",
+  BUY_LOW: "bg-pos-rb/10 text-pos-rb-text",
+  UNDERPRICED: "bg-pos-rb/10 text-pos-rb-text",
   RISER: "bg-navy/10 text-navy",
   ROLE_JUMP: "bg-navy/10 text-navy",
 };

@@ -3,7 +3,7 @@ import type { ShopHoldRow } from "@/lib/action-board";
 import { PlayerName } from "@/components/PlayerCardProvider";
 
 export function PlayerCard({ row, tone }: { row: ShopHoldRow; tone: "sell" | "buy" }) {
-  const diffColor = tone === "sell" ? "text-crimson" : "text-pos-rb";
+  const diffColor = tone === "sell" ? "text-crimson" : "text-pos-rb-text";
   const diffBg = tone === "sell" ? "bg-crimson/10" : "bg-pos-rb/10";
 
   return (

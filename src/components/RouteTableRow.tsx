@@ -35,7 +35,7 @@ export function RouteTableRow({ row }: { row: Row }) {
         </div>
       </div>
       {row.route_flag ? (
-        <span className="mt-2 inline-block rounded-md bg-pos-rb/10 px-1.5 py-0.5 text-[11px] font-bold text-pos-rb">
+        <span className="mt-2 inline-block rounded-md bg-pos-rb/10 px-1.5 py-0.5 text-[11px] font-bold text-pos-rb-text">
           {row.route_flag}
         </span>
       ) : null}

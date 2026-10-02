@@ -65,7 +65,7 @@ export function GameLogTable({ rows }: { rows: GameLogRow[] }) {
                   className={`px-2.5 py-2 ${c === "week" || c === "game" ? "text-ink" : "text-right text-ink"} ${
                     c === "vs_exp" && typeof row[c] === "number"
                       ? (row[c] as number) >= 0
-                        ? "font-semibold text-pos-rb"
+                        ? "font-semibold text-pos-rb-text"
                         : "font-semibold text-crimson"
                       : ""
                   }`}

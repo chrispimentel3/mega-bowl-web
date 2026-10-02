@@ -38,7 +38,7 @@ export function RoleCard({ role }: { role: RoleSection }) {
                       r.vs_role != null && r.vs_role >= 120
                         ? "text-crimson"
                         : r.vs_role != null && r.vs_role <= 80
-                          ? "text-pos-rb"
+                          ? "text-pos-rb-text"
                           : "text-muted"
                     }`}
                   >

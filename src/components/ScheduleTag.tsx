@@ -2,7 +2,8 @@
 
 import { createContext, useContext } from "react";
 import type { Schedule } from "@/lib/schedule";
-import { STEPS, step } from "@/lib/matchupVerdict";
+import { STEPS, stepAvg } from "@/lib/matchupVerdict";
+import { TapTip } from "./TapTip";
 
 const EMPTY: Schedule = { available: false, from_week: 0, games: 4, table: {}, names: {} };
 const ScheduleContext = createContext<Schedule>(EMPTY);
@@ -23,14 +24,16 @@ export function ScheduleTag({ name, className = "" }: { name: string; className?
   const row = key ? s.table[key] : undefined;
   if (!row || row.g.length === 0) return null;
 
-  const x = STEPS[step(row.pct)];
+  const x = STEPS[stepAvg(row.pct, row.g.length)];
   const pos = key.split("|")[1];
   const title =
     `${key.split("|")[0]}'s next ${row.g.length} games, how the opponents' defenses and betting lines treat ${pos}s vs a normal week: ` +
     `${row.g.map(([w, opp, p]) => `wk ${w} ${opp} ${signed(p)}`).join(", ")}. Average ${signed(row.pct)}.`;
   return (
-    <span title={title} className={`inline-block rounded-md px-1.5 py-0.5 text-[11px] font-semibold ${x.chip} ${className}`}>
-      Next {row.g.length}: {x.label}
+    <span className={`inline-block ${className}`}>
+      <TapTip tip={title} className={`rounded-md px-1.5 py-0.5 text-[11px] font-semibold ${x.chip}`}>
+        Next {row.g.length}: {x.label}
+      </TapTip>
     </span>
   );
 }

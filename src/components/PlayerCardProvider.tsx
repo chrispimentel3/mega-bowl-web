@@ -30,7 +30,7 @@ function rankTone(r: string) {
   const m = /#(\d+) of (\d+)/.exec(r);
   if (!m) return "text-muted";
   const pct = parseInt(m[1], 10) / parseInt(m[2], 10);
-  return pct <= 0.2 ? "text-pos-rb font-semibold" : pct >= 0.7 ? "text-crimson" : "text-muted";
+  return pct <= 0.2 ? "text-pos-rb-text font-semibold" : pct >= 0.7 ? "text-crimson" : "text-muted";
 }
 
 const LOG: Record<string, { key: string; label: string; fmt?: "pct" | "1" }[]> = {

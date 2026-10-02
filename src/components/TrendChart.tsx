@@ -140,7 +140,7 @@ export function TrendChart({
             Biggest changes from week {m.weeks[0]} to week {m.weeks[1]} — tap a player to chart him.
           </p>
           <div className="mb-4 grid gap-3 sm:grid-cols-2">
-            <MoverList title="Rising" rows={m.up} selected={selected} onToggle={toggle} fmt={fmt} tone="text-pos-rb" />
+            <MoverList title="Rising" rows={m.up} selected={selected} onToggle={toggle} fmt={fmt} tone="text-pos-rb-text" />
             <MoverList title="Falling" rows={m.down} selected={selected} onToggle={toggle} fmt={fmt} tone="text-crimson" />
           </div>
         </>

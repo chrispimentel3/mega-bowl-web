@@ -1,6 +1,7 @@
+import { TapTip } from "./TapTip";
 import { STEPS, defenseSentence, ptsShort, ptsSentence, step, vegasLineSentence } from "@/lib/matchupVerdict";
 
-/** One line of short tags for a player's matchup; the full sentence is on hover.
+/** One line of short tags for a player's matchup; the full sentence is on hover or tap.
  *  The defense and Vegas tags only appear when they say something. */
 export function MatchupTags({
   pct, pts, pos, opp, team, defRank, vegasPct, basis, props, propsEdge, extra, hideVerdict = false, className = "",
@@ -31,28 +32,28 @@ export function MatchupTags({
   return (
     <div className={`flex flex-wrap items-center gap-1.5 ${className}`}>
       {m ? (
-        <span className={`${tag} font-bold ${m.chip}`} title={ptsSentence(pts) ?? undefined}>
+        <TapTip className={`${tag} font-bold ${m.chip}`} tip={ptsSentence(pts)}>
           {m.label} matchup{ptsShort(pts) ? ` ${ptsShort(pts)}` : ""}
-        </span>
+        </TapTip>
       ) : null}
       {easy || tough ? (
-        <span className={`${tag} bg-ink/5 ${easy ? "text-pos-rb" : "text-crimson"}`}
-              title={defenseSentence(opp, defRank, pos) ?? undefined}>
+        <TapTip className={`${tag} bg-ink/5 ${easy ? "text-pos-rb-text" : "text-crimson"}`}
+                tip={defenseSentence(opp, defRank, pos)}>
           {easy ? "Easy D" : "Tough D"}
-        </span>
+        </TapTip>
       ) : null}
       {line != null ? (
-        <span className={`${tag} bg-ink/5 ${line > 0 ? "text-pos-rb" : "text-crimson"}`}
-              title={vegasLineSentence(team, line, basis) ?? undefined}>
+        <TapTip className={`${tag} bg-ink/5 ${line > 0 ? "text-pos-rb-text" : "text-crimson"}`}
+                tip={vegasLineSentence(team, line, basis)}>
           Vegas: team {line > 0 ? "+" : "−"}{Math.abs(line).toFixed(0)}%
-        </span>
+        </TapTip>
       ) : null}
       {props != null ? (
-        <span className={`${tag} bg-ink/5 ${up ? "text-pos-rb" : down ? "text-crimson" : "text-muted"}`}
-              title={`Vegas player props project ${props.toFixed(1)} pts${propsEdge != null && (up || down)
-                ? `, ${Math.abs(propsEdge).toFixed(1)} ${up ? "more" : "less"} than our projection` : ", in line with our projection"}.`}>
+        <TapTip className={`${tag} bg-ink/5 ${up ? "text-pos-rb-text" : down ? "text-crimson" : "text-muted"}`}
+                tip={`Vegas player props project ${props.toFixed(1)} pts${propsEdge != null && (up || down)
+                  ? `, ${Math.abs(propsEdge).toFixed(1)} ${up ? "more" : "less"} than our projection` : ", in line with our projection"}.`}>
           Props {props.toFixed(1)}{up ? " ▲" : down ? " ▼" : ""}
-        </span>
+        </TapTip>
       ) : null}
       {extra}
     </div>

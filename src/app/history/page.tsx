@@ -41,7 +41,7 @@ export default async function HistoryPage() {
               {champs.map((s) => (
                 <li key={s.year} className="flex items-baseline justify-between rounded-xl border border-line bg-card px-4 py-2.5 shadow-sm">
                   <span className="font-display text-lg font-bold text-ink">{s.year}</span>
-                  <span className={`text-sm font-semibold ${s.champion === lg.my_team ? "text-pos-rb" : "text-ink"}`}>
+                  <span className={`text-sm font-semibold ${s.champion === lg.my_team ? "text-pos-rb-text" : "text-ink"}`}>
                     {s.champion}
                   </span>
                 </li>

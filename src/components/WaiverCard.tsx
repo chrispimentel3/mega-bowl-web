@@ -20,7 +20,7 @@ export function WaiverCard({ row }: { row: WaiverRow }) {
         <div className="shrink-0 text-right">
           {hasBid ? (
             <>
-              <p className="font-display text-xl font-bold leading-none text-pos-rb">
+              <p className="font-display text-xl font-bold leading-none text-pos-rb-text">
                 ${Math.round(row.bid ?? 0)}
               </p>
               <p className="text-[11px] text-muted">
@@ -38,7 +38,7 @@ export function WaiverCard({ row }: { row: WaiverRow }) {
         </div>
       </div>
       {hasBid && row.gain != null ? (
-        <span className="mt-3 inline-block rounded-md bg-pos-rb/10 px-2 py-0.5 text-xs font-bold text-pos-rb">
+        <span className="mt-3 inline-block rounded-md bg-pos-rb/10 px-2 py-0.5 text-xs font-bold text-pos-rb-text">
           +{row.gain.toFixed(2)} to your starting nine
         </span>
       ) : null}

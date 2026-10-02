@@ -45,14 +45,14 @@ export function WaiverLaneCard({ row }: { row: WaiverLaneRow }) {
           </div>
         </div>
         <div className="shrink-0 text-right">
-          <p className="font-display text-xl font-bold leading-none text-pos-rb">{lead.value}</p>
+          <p className="font-display text-xl font-bold leading-none text-pos-rb-text">{lead.value}</p>
           <p className="text-[11px] text-muted">{lead.label}</p>
         </div>
       </div>
 
       <div className="mt-3 flex flex-wrap gap-1.5">
         {chips.map((c) => (
-          <span key={c.text} className="rounded-md bg-pos-rb/10 px-2 py-0.5 text-xs font-bold text-pos-rb">
+          <span key={c.text} className="rounded-md bg-pos-rb/10 px-2 py-0.5 text-xs font-bold text-pos-rb-text">
             {c.text}
           </span>
         ))}

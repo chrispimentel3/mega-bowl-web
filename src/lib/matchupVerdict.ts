@@ -8,8 +8,8 @@ export const STEPS = [
   { label: "Very tough", tone: "text-crimson", chip: "bg-crimson/10 text-crimson", dot: "bg-crimson" },
   { label: "Tough", tone: "text-crimson", chip: "bg-crimson/10 text-crimson", dot: "bg-crimson" },
   { label: "Neutral", tone: "text-ink", chip: "bg-ink/5 text-muted", dot: "bg-muted" },
-  { label: "Good", tone: "text-pos-rb", chip: "bg-pos-rb/10 text-pos-rb", dot: "bg-pos-rb" },
-  { label: "Great", tone: "text-pos-rb", chip: "bg-pos-rb/10 text-pos-rb", dot: "bg-pos-rb" },
+  { label: "Good", tone: "text-pos-rb-text", chip: "bg-pos-rb/10 text-pos-rb-text", dot: "bg-pos-rb" },
+  { label: "Great", tone: "text-pos-rb-text", chip: "bg-pos-rb/10 text-pos-rb-text", dot: "bg-pos-rb" },
 ] as const;
 
 export function step(pct: number): number {
@@ -18,6 +18,13 @@ export function step(pct: number): number {
   if (pct < NEUTRAL_BAND) return 2;
   if (pct < 8) return 3;
   return 4;
+}
+
+/** The same five steps for an average over `n` games. Each game's matchup read is its own
+ *  noisy estimate, so the average of n is about √n steadier: the neutral band and the
+ *  "very" cut-off shrink by √n (four games: ±1.5% and ±4%). */
+export function stepAvg(pct: number, n: number): number {
+  return step(pct * Math.sqrt(Math.max(1, n)));
 }
 
 /** "+1.1 pts" / "−0.8 pts"; nothing when it's under half a point */

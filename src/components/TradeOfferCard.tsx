@@ -3,7 +3,7 @@ import { PlayerList } from "@/components/PlayerCardProvider";
 
 function deltaColor(delta: number): string {
   if (Math.abs(delta) < 0.5) return "text-muted";
-  return delta > 0 ? "text-pos-rb" : "text-crimson";
+  return delta > 0 ? "text-pos-rb-text" : "text-crimson";
 }
 
 /** `benches` includes the player traded away (he necessarily "stops starting" — he left

@@ -5,7 +5,7 @@ import { PlayerName } from "@/components/PlayerCardProvider";
 
 export function RosterPlayerRow({ row }: { row: RosterRow }) {
   const diff = row.xfp_diff;
-  const diffColor = diff == null ? "" : diff >= 0 ? "text-crimson" : "text-pos-rb";
+  const diffColor = diff == null ? "" : diff >= 0 ? "text-crimson" : "text-pos-rb-text";
 
   return (
     <div className="rounded-xl border border-line bg-card p-3 shadow-sm">

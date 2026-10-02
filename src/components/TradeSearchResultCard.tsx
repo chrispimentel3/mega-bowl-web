@@ -2,7 +2,7 @@ import type { TradeSearchRow } from "@/lib/tradeSearch";
 import { PlayerList } from "@/components/PlayerCardProvider";
 
 const FLAG_STYLE: Record<string, string> = {
-  LIKELY: "bg-pos-rb/10 text-pos-rb",
+  LIKELY: "bg-pos-rb/10 text-pos-rb-text",
   EXPLOIT: "bg-navy/10 text-navy",
   NEEDS_PITCH: "bg-ink/5 text-muted",
   LONGSHOT: "bg-crimson/10 text-crimson",
@@ -16,12 +16,12 @@ const FLAG_LABEL: Record<string, string> = {
 
 function deltaColor(delta: number): string {
   if (Math.abs(delta) < 0.5) return "text-muted";
-  return delta > 0 ? "text-pos-rb" : "text-crimson";
+  return delta > 0 ? "text-pos-rb-text" : "text-crimson";
 }
 
 function pctColor(delta: number | null): string {
   if (delta == null || Math.abs(delta) < 0.01) return "text-muted";
-  return delta > 0 ? "text-pos-rb" : "text-crimson";
+  return delta > 0 ? "text-pos-rb-text" : "text-crimson";
 }
 
 function LineupVerdict({

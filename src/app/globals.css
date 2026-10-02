@@ -30,11 +30,29 @@
   --color-pos-te: #6c4ce0;
   --color-pos-k: #667085;
   --color-pos-def: #013369;
+  /* the same hues as TEXT: the fills above are too light to read as 11-14px text on their own
+     10-15% tint (green 3.1:1, orange 2.1:1); these clear 4.5:1 on white and on the tint */
+  --color-pos-rb-text: #0a7a42;
+  --color-pos-wr-text: #8a5200;
 
   --color-ink: #101828;
-  --color-muted: #667085;
+  /* 4.6:1 even on a 10% ink tint, where the old #667085 was 4.06:1 */
+  --color-muted: #5d687a;
   --color-card: #ffffff;
   --color-line: #e4e7ec;
+}
+
+/* Line-chart series, in the fixed order the dataviz validator passed (blue, orange, aqua,
+   yellow, magenta, green, violet): adjacent CVD ΔE >= 6, normal-vision ΔE >= 19. The old
+   set used navy and a darker navy side by side, which no one could tell apart. */
+:root {
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --series-4: #eda100;
+  --series-5: #e87ba4;
+  --series-6: #008300;
+  --series-7: #4a3aa7;
 }
 
 /* Dark: every text color clears 4.5:1 on both the page (#0b1220) and a card (#131c2e) —
@@ -54,7 +72,16 @@
     --color-crimson-dark: #ef4444;
     /* green is "buy"/"better" text on its own 10% tint: 4.3:1 at the light step */
     --color-pos-rb: #34c77b;
+    --color-pos-rb-text: #34c77b;
+    --color-pos-wr-text: #f5b942;
     /* chart builder: the dark steps of the same validated slots */
+    --series-1: #3987e5;
+    --series-2: #d95926;
+    --series-3: #199e70;
+    --series-4: #c98500;
+    --series-5: #d55181;
+    --series-6: #008300;
+    --series-7: #9085e9;
     --chart-mine-c: #3987e5;
     --chart-fa-c: #d95926;
     --chart-other-c: #64748b;

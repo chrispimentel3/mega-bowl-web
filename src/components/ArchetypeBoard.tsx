@@ -18,7 +18,7 @@ const STATUS_LABEL: Record<string, string> = {
 const STATUS_STYLE: Record<string, string> = {
   mine: "bg-navy/10 text-navy",
   rostered: "bg-ink/5 text-muted",
-  available: "bg-pos-rb/10 text-pos-rb",
+  available: "bg-pos-rb/10 text-pos-rb-text",
 };
 
 export function ArchetypeBoard({ rows }: { rows: ArchBoardRow[] }) {

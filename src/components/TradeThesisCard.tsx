@@ -8,10 +8,10 @@ const pp = (s: ThesisSide) =>
   s.title_noise ? "±0 (noise)" : `${s.d_title >= 0 ? "+" : ""}${(s.d_title * 100).toFixed(1)}pp`;
 
 const FLAG_STYLE: Record<TradeThesis["flag"], string> = {
-  LIKELY: "bg-pos-rb/10 text-pos-rb",
-  EXPLOIT: "bg-pos-wr/15 text-pos-wr",
+  LIKELY: "bg-pos-rb/10 text-pos-rb-text",
+  EXPLOIT: "bg-pos-wr/15 text-pos-wr-text",
   NEEDS_PITCH: "bg-navy/10 text-navy dark:text-muted",
-  LONGSHOT: "bg-line text-muted",
+  LONGSHOT: "bg-line text-ink",
 };
 
 const TAG_LABEL: Record<string, string> = {
@@ -54,7 +54,7 @@ export function TradeThesisCard({ card }: { card: TradeThesis }) {
           </div>
         </div>
         <div className="shrink-0 text-right">
-          <p className="font-display text-2xl font-bold leading-none text-pos-rb">{pp(card.us)}</p>
+          <p className="font-display text-2xl font-bold leading-none text-pos-rb-text">{pp(card.us)}</p>
           <p className="text-[11px] text-muted">your title odds</p>
         </div>
       </header>

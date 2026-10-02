@@ -1,7 +1,7 @@
 /** HANDOFF v1.3 §5 risk posture — falls out of the title-odds simulation: over 70% playoff
  *  odds, protect the floor; 35–70% balanced; under 35%, swing for variance. */
 const STYLE = {
-  protect: "bg-pos-rb/10 text-pos-rb",
+  protect: "bg-pos-rb/10 text-pos-rb-text",
   balanced: "bg-navy/10 text-navy dark:text-muted",
   swing: "bg-crimson/10 text-crimson",
 } as const;

@@ -3,15 +3,7 @@
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { legendText } from "./chartLegend";
 
-const HIGHLIGHT_COLORS = [
-  "var(--color-navy)",
-  "var(--color-crimson)",
-  "var(--color-pos-rb)",
-  "var(--color-pos-wr)",
-  "var(--color-pos-te)",
-  "var(--color-navy-dark)",
-  "var(--color-pos-k)",
-];
+const HIGHLIGHT_COLORS = [1, 2, 3, 4, 5, 6, 7].map((n) => `var(--series-${n})`);
 
 /**
  * Every series draws (as a faint grey backdrop); only `highlighted` ones get a color and a
