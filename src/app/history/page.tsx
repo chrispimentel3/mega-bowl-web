@@ -11,6 +11,9 @@ export const revalidate = 3600;
 export default async function HistoryPage() {
   const [h, lg, ab] = await Promise.all([getHistory(), getLeague(), getActionBoard()]);
   const champs = h.seasons.filter((s) => s.champion);
+  // a team seen in one season and never a champion says nothing across years
+  const longRunning = h.all_time.rows.filter((r) => r.seasons >= 2 || r.titles > 0);
+  const hidden = h.all_time.rows.length - longRunning.length;
 
   return (
     <>
@@ -65,12 +68,12 @@ export default async function HistoryPage() {
               </>
             ) : null}
 
-            {h.all_time.rows.length ? (
+            {longRunning.length ? (
               <>
                 <SectionHeading title="All-time" />
                 <SimpleTable
                   rowKey={(r) => `${r.seat ?? "n"}-${r.team}`}
-                  rows={h.all_time.rows}
+                  rows={longRunning}
                   myTeam={lg.my_team}
                   columns={[
                     { key: "team", label: "Team" },
@@ -82,9 +85,9 @@ export default async function HistoryPage() {
                   ]}
                 />
                 <p className="mt-2 text-xs text-muted">
-                  Old standings list team names only, so a team is merged across years only where its names
-                  are known
-                  {h.all_time.named_only ? `; ${h.all_time.named_only} rows are a single name and a renamed team may appear twice` : ""}.
+                  Old standings list team names, not managers, so a team is one row only while it kept its
+                  name — a renamed team starts a new row.
+                  {hidden ? ` ${hidden} teams that played one season under a name and never won are not listed.` : ""}
                 </p>
               </>
             ) : null}
