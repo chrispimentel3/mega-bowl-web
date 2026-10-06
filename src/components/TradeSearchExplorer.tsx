@@ -297,7 +297,7 @@ export function TradeSearchExplorer() {
                 ) : null}
                 {picked.kind === "team" && result.shape_counts && Object.keys(result.shape_counts).length > 1 ? (
                   <div className="mt-3 flex flex-wrap gap-1.5 text-xs">
-                    {[null, ...["1-for-1", "2-for-1", "1-for-2", "2-for-2", "3-for-1"].filter((x) => result.shape_counts?.[x])].map((sh) => (
+                    {[null, ...["1-for-1", "2-for-1", "1-for-2", "2-for-2", "3-for-1", "3-for-2"].filter((x) => result.shape_counts?.[x])].map((sh) => (
                       <button
                         key={sh ?? "all"}
                         onClick={() => run(picked, order, twoPlayer, size, sh)}
