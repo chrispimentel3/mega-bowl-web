@@ -5,6 +5,7 @@ import { AnswerCard } from "@/components/AnswerCard";
 import { KpiRow } from "@/components/KpiRow";
 import { WaiverLanes } from "@/components/WaiverLanes";
 import { PostureChip } from "@/components/PostureChip";
+import { StreamerBoard } from "@/components/StreamerBoard";
 
 export const revalidate = 3600;
 
@@ -68,6 +69,8 @@ export default async function WaiversPage() {
             ) : null}
 
             <WaiverLanes lanes={wv.lanes} tau={wv.meta.tau_bid ?? 1} />
+
+            <StreamerBoard streamers={wv.streamers} />
 
             {wv.trade_chips.length ? (
               <p className="mt-6 text-sm text-muted">

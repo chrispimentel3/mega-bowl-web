@@ -8,7 +8,7 @@ import {
 import { formatMetric, toRows, type Metric, type StatRow, type StatsTable } from "@/lib/statsTable";
 import { PlayerName, useOpenPlayer } from "./PlayerCardProvider";
 
-const POSITIONS = ["QB", "RB", "WR", "TE"] as const;
+const POSITIONS = ["QB", "RB", "WR", "TE", "K", "DEF"] as const;
 
 // Ownership is the color (validated with the dataviz checks, light and dark); position is
 // the marker shape, so the two never compete for the same channel.
@@ -20,7 +20,7 @@ const GROUPS = [
 type Group = (typeof GROUPS)[number]["key"];
 const groupOf = (r: StatRow): Group => (r.mine ? "mine" : r.owner === "FA" ? "fa" : "other");
 
-const SHAPE_LABEL: Record<string, string> = { QB: "◆ QB", RB: "▲ RB", WR: "● WR", TE: "■ TE" };
+const SHAPE_LABEL: Record<string, string> = { QB: "◆ QB", RB: "▲ RB", WR: "● WR", TE: "■ TE", K: "▼ K", DEF: "⬟ DEF" };
 
 // One-click starting points: the pairs of stats that answer a question. A preset only applies
 // where both stats exist for the positions it names, so a renamed stat just drops its button.
@@ -49,6 +49,15 @@ function Marker({ cx, cy, payload, fill }: { cx?: number; cy?: number; payload?:
       break;
     case "TE":
       mark = <rect x={cx - r} y={cy - r} width={2 * r} height={2 * r} rx={1.5} {...common} />;
+      break;
+    case "K":
+      mark = <polygon points={`${cx},${cy + r + 1} ${cx + r + 1},${cy - r} ${cx - r - 1},${cy - r}`} {...common} />;
+      break;
+    case "DEF":
+      mark = <polygon points={[0, 1, 2, 3, 4].map((i) => {
+        const a = -Math.PI / 2 + (i * 2 * Math.PI) / 5;
+        return `${cx + (r + 1) * Math.cos(a)},${cy + (r + 1) * Math.sin(a)}`;
+      }).join(" ")} {...common} />;
       break;
     default:
       mark = <circle cx={cx} cy={cy} r={r} {...common} />;

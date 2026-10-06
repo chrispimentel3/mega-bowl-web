@@ -7,12 +7,12 @@ import { PlayerAvatar } from "./PlayerAvatar";
 import { TeamLogo } from "./TeamLogo";
 import type { RankingRow } from "@/lib/rankings";
 
-const POSITIONS = ["QB", "RB", "WR", "TE"] as const;
+const POSITIONS = ["QB", "RB", "WR", "TE", "K", "DEF"] as const;
 const NEUTRAL_BAND = 3; // matches MatchupScore.tsx — the matchup model's own noise floor
 // nflverse_estimate() covers every player who has ever played, third-stringers included —
 // cap at roughly this league's real fantasy-relevant depth (12 teams, half-PPR) rather than
 // scrolling into backups nobody would ever start.
-const DISPLAY_CAP: Record<(typeof POSITIONS)[number], number> = { QB: 32, RB: 60, WR: 72, TE: 30 };
+const DISPLAY_CAP: Record<(typeof POSITIONS)[number], number> = { QB: 32, RB: 60, WR: 72, TE: 30, K: 32, DEF: 32 };
 
 function pctColor(pct: number): string {
   if (Math.abs(pct) < NEUTRAL_BAND) return "text-muted";
@@ -61,7 +61,7 @@ export function RankingsBoard({ rows }: { rows: RankingRow[] }) {
             className="flex w-full items-center gap-3 rounded-xl border border-line bg-card p-2.5 text-left shadow-sm transition-colors hover:border-navy/30"
           >
             <span className="w-6 shrink-0 text-right text-sm font-bold text-muted">{row.rank}</span>
-            <PlayerAvatar player={row.player} size={28} />
+            {row.pos === "DEF" ? <TeamLogo team={row.team} size={28} /> : <PlayerAvatar player={row.player} size={28} />}
             <PosBadge pos={row.pos} />
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-semibold text-ink">

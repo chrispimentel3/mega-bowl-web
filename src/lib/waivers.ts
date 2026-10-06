@@ -46,6 +46,20 @@ export type WaiverLaneRow = {
   bid_note?: string | null;
 };
 
+export type StreamWeek = { week: number; opp: string | null; proj: number };
+export type StreamRow = {
+  player: string; team: string; pos: "K" | "DEF"; weeks: StreamWeek[];
+  gain_next: number; gain_avg: number; bid: number; max_bid: number;
+  rival_top: number; rival_team: string; rivals_n: number; bid_note: string;
+};
+/** mega/kdef.py streamers: free-agent defenses and kickers against the one you'd start */
+export type Streamers = {
+  available: boolean;
+  weeks: number[];
+  K: { mine: { player: string; weeks: StreamWeek[] }[]; rows: StreamRow[] } | null;
+  DEF: { mine: { player: string; weeks: StreamWeek[] }[]; rows: StreamRow[] } | null;
+};
+
 export type WaiverChip = { player: string; pos: string; nfl_team: string; flip: number; flip_buyers: number };
 
 export type WaiverBlindRow = Record<string, unknown> & { player: string; pos: string };
@@ -69,6 +83,7 @@ export type Waivers = {
     title?: { p_playoffs?: number; p_title?: number; posture?: "protect" | "balanced" | "swing"; seasons?: number };
   };
   blind_board: WaiverBlindRow[];
+  streamers?: Streamers | null;
 };
 
 const REMOTE_URL = process.env.WAIVERS_URL;

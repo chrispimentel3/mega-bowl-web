@@ -182,6 +182,7 @@ export function PlayerCardProvider({ children }: { children: React.ReactNode }) 
   const [error, setError] = useState<string | null>(null);
 
   const open = useCallback((w: Want) => {
+    if (w.pos === "K" || w.pos === "DEF" || w.gsis?.startsWith("DEF-")) return; // no card for these
     setWant(w);
     setPlayer(null);
     setError(null);
