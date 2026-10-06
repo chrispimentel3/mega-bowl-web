@@ -61,8 +61,15 @@ export function TradeSearchResultCard({
         <p className="text-sm font-semibold text-ink">
           {row.partner} <span className="font-normal text-muted">· {row.shape}</span>
         </p>
-        <span className={`rounded-md px-2 py-0.5 text-xs font-bold ${FLAG_STYLE[row.flag] ?? ""}`}>
-          {FLAG_LABEL[row.flag] ?? row.flag}
+        <span className="flex items-center gap-1.5">
+          {row.p_accept != null ? (
+            <span className="text-xs text-muted" title="Estimated: their lineup and title odds, fairness by the rankings they see, and whether you fill a position they're short at">
+              ~{Math.round(row.p_accept * 100)}% they say yes
+            </span>
+          ) : null}
+          <span className={`rounded-md px-2 py-0.5 text-xs font-bold ${FLAG_STYLE[row.flag] ?? ""}`}>
+            {FLAG_LABEL[row.flag] ?? row.flag}
+          </span>
         </span>
       </div>
       {hideNeeds ? null : <PartnerNeeds profile={row.partner_profile} givePos={row.give_pos} />}

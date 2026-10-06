@@ -42,6 +42,11 @@ export type TradeSearchRow = {
   /** injured but not in an IR slot: `share` of his remaining games he is already ruled out
    *  of (his value is cut by that much), `back` the first week he plays again */
   out_now?: { name: string; share: number; back: number | null }[];
+  /** estimated chance they accept (their lineup and title odds, fairness, whether what you
+   *  send fills a position they're short at); null if it couldn't be built */
+  p_accept?: number | null;
+  /** what you send plays a position their roster is short at */
+  need_fit?: boolean;
   odds: number | null;
   their_odds: number | null;
   /** change in title probability (0.01 = +1pt), from the v1.3 player-level sim; absent on

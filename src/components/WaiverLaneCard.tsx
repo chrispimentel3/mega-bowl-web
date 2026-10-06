@@ -95,6 +95,12 @@ export function WaiverLaneCard({ row }: { row: WaiverLaneRow }) {
           ) : null}
         </p>
       ) : null}
+      {row.bid_note ? (
+        <p className={`mt-1 text-xs ${row.bid ? "text-muted" : "font-semibold text-crimson"}`}>
+          {row.bid ? `$${Math.round(row.bid)}: ` : "Pass: "}
+          {row.bid_note}
+        </p>
+      ) : null}
     </div>
   );
 }

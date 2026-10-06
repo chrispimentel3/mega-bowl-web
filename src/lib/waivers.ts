@@ -38,6 +38,12 @@ export type WaiverLaneRow = {
   /** injured: already priced (his weeks before `out_back` count for nothing); this labels it */
   out_status?: string | null;
   out_back?: number | null;
+  /** the likeliest top rival bid (same pricing as yours, on his roster and budget) */
+  rival_top?: number | null;
+  rival_team?: string | null;
+  rivals_n?: number | null;
+  /** how the bid was set against the rivals, e.g. "beats BillsMafia's likely $3" */
+  bid_note?: string | null;
 };
 
 export type WaiverChip = { player: string; pos: string; nfl_team: string; flip: number; flip_buyers: number };
