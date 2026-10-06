@@ -51,8 +51,12 @@ export type ThesisRank = {
   view: string;
 };
 
+import type { TeamProfile } from "@/lib/tradeSearch";
+
 export type TradeThesis = {
   partner: string;
+  /** what the partner is thin at and can spare; absent in files exported before this existed */
+  partner_profile?: TeamProfile | null;
   shape: string;
   give: ThesisPlayer[];
   get: ThesisPlayer[];

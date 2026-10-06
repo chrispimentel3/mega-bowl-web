@@ -1,5 +1,6 @@
 import type { TradeSearchRow } from "@/lib/tradeSearch";
 import { PlayerList } from "@/components/PlayerCardProvider";
+import { PartnerNeeds } from "@/components/PartnerNeeds";
 
 const FLAG_STYLE: Record<string, string> = {
   LIKELY: "bg-pos-rb/10 text-pos-rb-text",
@@ -51,7 +52,9 @@ function LineupVerdict({
   );
 }
 
-export function TradeSearchResultCard({ row, pricing = false }: { row: TradeSearchRow; pricing?: boolean }) {
+export function TradeSearchResultCard({
+  row, pricing = false, hideNeeds = false,
+}: { row: TradeSearchRow; pricing?: boolean; hideNeeds?: boolean }) {
   return (
     <div className="rounded-xl border border-line bg-card p-4 shadow-sm">
       <div className="flex flex-wrap items-center justify-between gap-2">
@@ -62,6 +65,7 @@ export function TradeSearchResultCard({ row, pricing = false }: { row: TradeSear
           {FLAG_LABEL[row.flag] ?? row.flag}
         </span>
       </div>
+      {hideNeeds ? null : <PartnerNeeds profile={row.partner_profile} givePos={row.give_pos} />}
 
       <div className="mt-3 space-y-1.5 text-sm">
         <div>

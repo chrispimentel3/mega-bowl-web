@@ -1,3 +1,4 @@
+import { PartnerNeeds } from "@/components/PartnerNeeds";
 import { PosBadge } from "./PosBadge";
 import type { ThesisSide, TradeThesis } from "@/lib/trades";
 import { PlayerName } from "@/components/PlayerCardProvider";
@@ -44,6 +45,7 @@ export function TradeThesisCard({ card }: { card: TradeThesis }) {
       <header className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <p className="text-xs font-semibold uppercase tracking-wide text-muted">{card.partner}</p>
+          <PartnerNeeds profile={card.partner_profile} givePos={card.give.map((p) => p.pos)} />
           <div className="mt-1 flex flex-wrap items-center gap-y-1 text-sm">
             <span className="mr-2 text-xs text-muted">Give</span>
             {names(card.give)}

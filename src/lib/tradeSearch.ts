@@ -15,8 +15,16 @@ export type TradePoolRow = {
   ir?: boolean;
 };
 
+/** Where a team is thin (points a week below the league's average starters there) and bench
+ *  players who'd start for the typical team. */
+export type TeamProfile = { needs: { pos: string; gap: number }[]; spare: { name: string; pos: string; ppg: number }[] };
+
 export type TradeSearchRow = {
   partner: string;
+  /** the partner's needs and spare players; absent on an older API deploy */
+  partner_profile?: TeamProfile | null;
+  /** positions of the players you give, to see whether the offer fills a need */
+  give_pos?: string[];
   shape: string;
   give: string[];
   get: string[];
@@ -63,7 +71,7 @@ export type TradeSearchResult = {
   targets?: { name: string; pos: string | null; best_d_me: number; offers: number }[];
   /** team search only: where the team is thin (points a week below the league's average
    *  starters there) and bench players who'd start for the typical team */
-  profile?: { needs: { pos: string; gap: number }[]; spare: { name: string; pos: string; ppg: number }[] };
+  profile?: TeamProfile;
   /** team search only: how many offers of each shape were found, before the 60-per-view cap */
   shape_counts?: Record<string, number>;
 };

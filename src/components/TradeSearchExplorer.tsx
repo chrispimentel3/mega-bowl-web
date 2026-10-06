@@ -338,7 +338,7 @@ export function TradeSearchExplorer() {
                 ) : null}
                 <div className="mt-3 grid gap-3 sm:grid-cols-2">
                   {result.rows.map((row, i) => (
-                    <TradeSearchResultCard key={i} row={row} pricing={pricing && i < ODDS_TOP} />
+                    <TradeSearchResultCard key={i} row={row} pricing={pricing && i < ODDS_TOP} hideNeeds={picked.kind === "team"} />
                   ))}
                 </div>
               </>
