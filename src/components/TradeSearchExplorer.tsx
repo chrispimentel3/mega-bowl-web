@@ -332,7 +332,7 @@ export function TradeSearchExplorer() {
                             </span>
                             {t.out ? (
                               <span className="ml-1 font-bold text-crimson">
-                                · out{t.out.back != null ? ` til wk ${t.out.back}` : ""}
+                                · out{t.out.back != null ? ` til wk ${t.out.back}` : " for the season"}
                               </span>
                             ) : null}
                           </button>

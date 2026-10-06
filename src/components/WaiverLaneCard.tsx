@@ -58,7 +58,7 @@ export function WaiverLaneCard({ row }: { row: WaiverLaneRow }) {
         ))}
         {row.out_status && row.out_back != null ? (
           <span className="rounded-md bg-crimson/10 px-2 py-0.5 text-xs font-bold text-crimson">
-            {row.out_status === "IR" ? "On IR" : row.out_status} · back week {row.out_back}
+            {row.out_back > 17 ? "Out for the season" : `${row.out_status === "IR" ? "On IR" : row.out_status} · back week ${row.out_back}`}
           </span>
         ) : null}
         <span
