@@ -53,6 +53,10 @@ export type TradeSearchResult = {
   /** true on the offers-only answer; the odds come from a second call */
   odds_pending?: boolean;
   rows: TradeSearchRow[];
+  /** team search only: the team searched, and their players ranked by what each would add to
+   *  your lineup (best offer's gain in points per week) */
+  team?: string;
+  targets?: { name: string; pos: string | null; best_d_me: number; offers: number }[];
 };
 
 /** Only the best this-many offers get priced in playoff/title odds (SIM_TOP in the service). */
@@ -105,5 +109,29 @@ export async function searchTrades(
     throw new Error(body.detail || "Search failed.");
   }
   if (!res.ok) throw new Error(`Trade API /trade-search failed: ${res.status}`);
+  return res.json();
+}
+
+/** Every offer to one team, plus their players ranked as targets (service /trade-team). */
+export async function searchTeam(
+  team: string,
+  opts: { flags?: string[]; twoPlayer?: boolean; order?: "accept" | "gain"; odds?: boolean } = {},
+): Promise<TradeSearchResult> {
+  const res = await fetchWaking(`${API_URL}/trade-team`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      team,
+      flags: opts.flags ?? ["LIKELY", "EXPLOIT", "NEEDS_PITCH"],
+      two_player: opts.twoPlayer ?? true,
+      order: opts.order ?? "accept",
+      odds: opts.odds ?? true,
+    }),
+  });
+  if (res.status === 400 || res.status === 503) {
+    const body = await res.json().catch(() => ({ detail: "Search failed." }));
+    throw new Error(body.detail || "Search failed.");
+  }
+  if (!res.ok) throw new Error(`Trade API /trade-team failed: ${res.status}`);
   return res.json();
 }

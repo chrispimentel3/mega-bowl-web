@@ -1,14 +1,18 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { getTradePool, searchTrades, ODDS_TOP, type TradePoolRow, type TradeSearchResult } from "@/lib/tradeSearch";
+import { getTradePool, searchTrades, searchTeam, ODDS_TOP, type TradePoolRow, type TradeSearchResult } from "@/lib/tradeSearch";
 import { TradeSearchResultCard } from "@/components/TradeSearchResultCard";
+
+/** What was searched: one player in the league, or every offer to one team. */
+type Target = { kind: "player"; row: TradePoolRow } | { kind: "team"; team: string };
 
 export function TradeSearchExplorer() {
   const [pool, setPool] = useState<TradePoolRow[] | null>(null);
   const [poolError, setPoolError] = useState<string | null>(null);
   const [q, setQ] = useState("");
-  const [picked, setPicked] = useState<TradePoolRow | null>(null);
+  const [mode, setMode] = useState<"player" | "team">("player");
+  const [picked, setPicked] = useState<Target | null>(null);
   const [twoPlayer, setTwoPlayer] = useState(true);
   const [order, setOrder] = useState<"accept" | "gain">("accept");
   const [result, setResult] = useState<TradeSearchResult | null>(null);
@@ -35,7 +39,17 @@ export function TradeSearchExplorer() {
     return pool.filter((r) => r.label.toLowerCase().includes(needle)).slice(0, 10);
   }, [pool, q]);
 
-  async function run(row: TradePoolRow, o: "accept" | "gain" = order, two: boolean = twoPlayer) {
+  // the other eleven teams, as the pool names them
+  const teams = useMemo(
+    () => (pool ? [...new Set(pool.filter((r) => !r.mine).map((r) => r.team))].sort() : []),
+    [pool],
+  );
+  const search = (t: Target, o: "accept" | "gain", two: boolean, odds: boolean) =>
+    t.kind === "player"
+      ? searchTrades(t.row.pid, t.row.mine, { order: o, twoPlayer: two, odds })
+      : searchTeam(t.team, { order: o, twoPlayer: two, odds });
+
+  async function run(row: Target, o: "accept" | "gain" = order, two: boolean = twoPlayer) {
     setPicked(row);
     setQ("");
     setResult(null);
@@ -48,7 +62,7 @@ export function TradeSearchExplorer() {
     // which the service answers from the search it just ran
     let offers: TradeSearchResult;
     try {
-      offers = await searchTrades(row.pid, row.mine, { order: o, twoPlayer: two, odds: false });
+      offers = await search(row, o, two, false);
     } catch (e) {
       if (id === latest.current) {
         setError(e instanceof Error ? e.message : "Something went wrong.");
@@ -62,7 +76,7 @@ export function TradeSearchExplorer() {
     if (!offers.odds_pending || offers.rows.length === 0) return;   // an older API priced them already
     setPricing(true);
     try {
-      const full = await searchTrades(row.pid, row.mine, { order: o, twoPlayer: two, odds: true });
+      const full = await search(row, o, two, true);
       if (id === latest.current) setResult(full);
     } catch {
       if (id === latest.current) setOddsFailed(true);
@@ -73,6 +87,56 @@ export function TradeSearchExplorer() {
 
   return (
     <div>
+      <div className="mb-3 inline-flex rounded-lg border border-line bg-card p-0.5 text-sm">
+        {(["player", "team"] as const).map((m) => (
+          <button
+            key={m}
+            onClick={() => setMode(m)}
+            className={`rounded-md px-3 py-1 font-medium transition-colors ${
+              mode === m ? "bg-navy text-white" : "text-muted hover:text-ink"
+            }`}
+          >
+            {m === "player" ? "A player" : "A team"}
+          </button>
+        ))}
+      </div>
+      {mode === "team" ? (
+        <>
+          <p className="mb-3 text-sm text-muted">
+            Pick a team to see every offer that would work with them, and which of their players
+            would help your lineup most. Tap a target to trade around just him.
+          </p>
+          {poolError ? (
+            <p className="text-sm text-muted">
+              {poolError}{" "}
+              <button onClick={retryPool} className="font-semibold text-navy hover:underline">
+                Try again
+              </button>
+            </p>
+          ) : !pool ? (
+            <p className="py-3 text-sm text-muted">Loading the teams — the search service may be waking up…</p>
+          ) : (
+            <div className="flex flex-wrap gap-1.5">
+              {teams.map((t) => {
+                const on = picked?.kind === "team" && picked.team === t;
+                return (
+                  <button
+                    key={t}
+                    onClick={() => run({ kind: "team", team: t })}
+                    className={`rounded-full border px-3 py-1.5 text-sm transition-colors ${
+                      on ? "border-navy bg-navy text-white" : "border-line bg-card text-ink hover:border-navy/40"
+                    }`}
+                  >
+                    {t}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </>
+      ) : null}
+      {mode === "player" ? (
+      <>
       <p className="mb-3 text-sm text-muted">
         Pick anyone in the league. If he&apos;s <b>yours</b>, this is what could come back for
         him. If he&apos;s <b>someone else&apos;s</b>, it&apos;s what it would take to get him —
@@ -107,7 +171,7 @@ export function TradeSearchExplorer() {
             results.map((r) => (
               <button
                 key={r.pid}
-                onClick={() => run(r)}
+                onClick={() => run({ kind: "player", row: r })}
                 className="flex w-full items-center justify-between gap-3 rounded-xl border border-line bg-card p-2.5 text-left text-sm shadow-sm transition-colors hover:border-navy/40"
               >
                 <span className="font-medium text-ink">{r.label}</span>
@@ -117,14 +181,20 @@ export function TradeSearchExplorer() {
           )}
         </div>
       ) : null}
+      </>
+      ) : null}
 
       {picked ? (
         <div className="mt-4">
           <div className="flex flex-wrap items-center gap-2">
             <p className="text-sm">
-              <span className="font-semibold text-ink">{picked.player}</span>{" "}
+              <span className="font-semibold text-ink">
+                {picked.kind === "player" ? picked.row.player : picked.team}
+              </span>{" "}
               <span className="text-muted">
-                · {picked.pos} · {picked.mine ? "yours" : `on ${picked.team}`}
+                {picked.kind === "player"
+                  ? `· ${picked.row.pos} · ${picked.row.mine ? "yours" : `on ${picked.row.team}`}`
+                  : "· every offer to this team"}
                 {result ? ` · ${result.evaluated.toLocaleString()} trades evaluated` : ""}
               </span>
             </p>
@@ -179,6 +249,31 @@ export function TradeSearchExplorer() {
                     Couldn&apos;t price these in playoff odds this time — the offers and lineup
                     changes above still stand. Search again to retry.
                   </p>
+                ) : null}
+                {picked.kind === "team" && result.targets?.length ? (
+                  <div className="mt-3">
+                    <p className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-muted">
+                      Best targets on {picked.team}
+                    </p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {result.targets.map((t) => {
+                        const row = pool?.find((r) => !r.mine && r.player === t.name);
+                        return (
+                          <button
+                            key={t.name}
+                            disabled={!row}
+                            onClick={() => row && run({ kind: "player", row })}
+                            className="rounded-lg border border-line bg-card px-2.5 py-1.5 text-left text-xs hover:border-navy/40 disabled:opacity-60"
+                          >
+                            <span className="font-medium text-ink">{t.name}</span>{" "}
+                            <span className="text-muted">
+                              {t.pos} · +{t.best_d_me.toFixed(1)} pts/wk · {t.offers} offers
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
                 ) : null}
                 <div className="mt-3 grid gap-3 sm:grid-cols-2">
                   {result.rows.map((row, i) => (
