@@ -131,6 +131,31 @@ export function TradeSearchResultCard({ row, pricing = false }: { row: TradeSear
       ) : null}
 
       <p className="mt-2 text-[11px] text-muted">market ratio {row.mkt_ratio.toFixed(2)}</p>
+
+      {row.n_variants ? (
+        <details className="mt-2 border-t border-line pt-2 text-xs">
+          <summary className="cursor-pointer font-semibold text-navy">
+            {row.n_variants} similar {row.n_variants === 1 ? "offer" : "offers"} — same pitch, different throw-in
+          </summary>
+          <ul className="mt-1.5 space-y-1 text-muted">
+            {(row.variants ?? []).map((v, i) => (
+              <li key={i}>
+                <span className="text-ink">{v.give.join(" + ")}</span> for{" "}
+                <span className="text-ink">{v.get.join(" + ")}</span> ·{" "}
+                <span className={deltaColor(v.d_me)}>
+                  {v.d_me >= 0 ? "+" : ""}
+                  {v.d_me.toFixed(1)}
+                </span>{" "}
+                you · <span className={deltaColor(v.d_them)}>{v.d_them >= 0 ? "+" : ""}{v.d_them.toFixed(1)}</span> them ·{" "}
+                {FLAG_LABEL[v.flag] ?? v.flag}
+              </li>
+            ))}
+            {row.n_variants > (row.variants?.length ?? 0) ? (
+              <li>…and {row.n_variants - (row.variants?.length ?? 0)} more.</li>
+            ) : null}
+          </ul>
+        </details>
+      ) : null}
     </div>
   );
 }

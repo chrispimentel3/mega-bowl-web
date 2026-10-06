@@ -38,6 +38,10 @@ export type TradeSearchRow = {
   title?: number | null;
   their_title?: number | null;
   title_noise?: boolean | null;
+  /** near-duplicates folded into this offer: same shape and the same headline players, a different
+   *  throw-in (shown up to a handful; n_variants counts them all); absent on an older API deploy */
+  variants?: { give: string[]; get: string[]; d_me: number; d_them: number; flag: string }[];
+  n_variants?: number;
   watch: string | null;
   i_would_start: string[];
   i_would_bench: string[];
