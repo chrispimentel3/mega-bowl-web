@@ -35,6 +35,9 @@ export type WaiverLaneRow = {
   d_title?: number | null;
   se_title?: number | null;
   title_noise?: boolean | null;
+  /** injured: already priced (his weeks before `out_back` count for nothing); this labels it */
+  out_status?: string | null;
+  out_back?: number | null;
 };
 
 export type WaiverChip = { player: string; pos: string; nfl_team: string; flip: number; flip_buyers: number };

@@ -56,6 +56,11 @@ export function WaiverLaneCard({ row }: { row: WaiverLaneRow }) {
             {c.text}
           </span>
         ))}
+        {row.out_status && row.out_back != null ? (
+          <span className="rounded-md bg-crimson/10 px-2 py-0.5 text-xs font-bold text-crimson">
+            {row.out_status === "IR" ? "On IR" : row.out_status} · back week {row.out_back}
+          </span>
+        ) : null}
         <span
           className={`rounded-md px-2 py-0.5 text-xs font-bold ${
             row.market_on ? "bg-crimson/10 text-crimson" : "bg-navy/10 text-navy dark:text-muted"

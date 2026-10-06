@@ -39,6 +39,9 @@ export type TradeSearchRow = {
   /** players in the offer on injured reserve, with the share of the remaining games each
    *  is projected to play — how they're valued */
   on_ir?: { name: string; avail: number | null }[];
+  /** injured but not in an IR slot: `share` of his remaining games he is already ruled out
+   *  of (his value is cut by that much), `back` the first week he plays again */
+  out_now?: { name: string; share: number; back: number | null }[];
   odds: number | null;
   their_odds: number | null;
   /** change in title probability (0.01 = +1pt), from the v1.3 player-level sim; absent on
@@ -68,7 +71,7 @@ export type TradeSearchResult = {
   /** team search only: the team searched, and their players ranked by what each would add to
    *  your lineup (best offer's gain in points per week) */
   team?: string;
-  targets?: { name: string; pos: string | null; best_d_me: number; offers: number }[];
+  targets?: { name: string; pos: string | null; best_d_me: number; offers: number; out?: { share: number; back: number | null } | null }[];
   /** team search only: where the team is thin (points a week below the league's average
    *  starters there) and bench players who'd start for the typical team */
   profile?: TeamProfile;

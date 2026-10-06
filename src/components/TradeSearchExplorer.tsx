@@ -330,6 +330,11 @@ export function TradeSearchExplorer() {
                             <span className="text-muted">
                               {t.pos} · +{t.best_d_me.toFixed(1)} pts/wk · {t.offers} offers
                             </span>
+                            {t.out ? (
+                              <span className="ml-1 font-bold text-crimson">
+                                · out{t.out.back != null ? ` til wk ${t.out.back}` : ""}
+                              </span>
+                            ) : null}
                           </button>
                         );
                       })}

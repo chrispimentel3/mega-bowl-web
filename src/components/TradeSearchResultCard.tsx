@@ -89,6 +89,12 @@ export function TradeSearchResultCard({
             the remaining games he&apos;s projected to play, and for whoever gets cut when he&apos;s back.
           </p>
         ))}
+        {row.out_now?.map((p) => (
+          <p key={p.name} className="text-[11px] font-semibold text-crimson">
+            {p.name} is out{p.back != null ? ` until week ${p.back}` : " for the season"} — his value is cut by
+            the {Math.round(p.share * 100)}% of his remaining games he misses.
+          </p>
+        ))}
         {row.netted && row.fa_add?.length ? (
           <p className="text-[11px] text-muted">
             Already net of picking up {row.fa_add.join(" & ")}, which you could do without trading.
