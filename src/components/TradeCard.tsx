@@ -7,25 +7,29 @@ export function TradeCard({ row }: { row: TradeRow }) {
     <div className="rounded-xl border border-line bg-card p-4 shadow-sm">
       <div className="flex items-center justify-between gap-2">
         <span className="text-sm font-semibold text-ink">{row.partner}</span>
-        <span className="rounded-md bg-navy/10 px-2 py-0.5 text-xs font-bold text-navy">
-          {fairnessPct}% fair
-        </span>
+        {row.p_accept != null ? (
+          <span className="rounded-md bg-navy/10 px-2 py-0.5 text-xs font-bold text-navy">
+            ~{Math.round(row.p_accept * 100)}% they say yes
+          </span>
+        ) : null}
       </div>
       <div className="mt-3 space-y-2 text-sm">
-        <div className="flex items-baseline justify-between gap-2">
-          <span className="text-[11px] uppercase tracking-wide text-muted">You give</span>
-          <span className="text-xs text-muted">value {row.give_val}</span>
-        </div>
+        <span className="text-[11px] uppercase tracking-wide text-muted">You give</span>
         <p className="font-medium text-ink"><PlayerList text={row.give} /></p>
-        <div className="flex items-baseline justify-between gap-2 pt-1">
-          <span className="text-[11px] uppercase tracking-wide text-muted">You get</span>
-          <span className="text-xs text-muted">value {row.get_val}</span>
-        </div>
+        <span className="block pt-1 text-[11px] uppercase tracking-wide text-muted">You get</span>
         <p className="font-medium text-ink"><PlayerList text={row.get} /></p>
       </div>
-      <span className="mt-3 inline-block rounded-md bg-crimson/10 px-2 py-0.5 text-xs font-bold text-crimson">
-        addresses {row.addresses}
-      </span>
+      <p className="mt-3 text-xs text-muted">
+        {row.d_me != null ? (
+          <>
+            <span className={`font-bold ${row.d_me >= 0 ? "text-pos-rb-text" : "text-crimson"}`}>
+              {row.d_me >= 0 ? "+" : ""}{row.d_me.toFixed(1)} pts/wk
+            </span>{" "}
+            to your lineup ·{" "}
+          </>
+        ) : null}
+        they get {fairnessPct}% of the market value they give up · addresses {row.addresses}
+      </p>
     </div>
   );
 }

@@ -33,6 +33,11 @@ export type TradeRow = {
   get_val: number;
   addresses: string;
   fairness: number;
+  /** pts/wk the deal adds to your lineup, rest of season; absent on the fallback board */
+  d_me?: number | null;
+  /** estimated chance they accept */
+  p_accept?: number | null;
+  flag?: string | null;
 };
 
 export type ActionBoard = {
