@@ -11,7 +11,7 @@ export function PlayerDifficultyRow({ row }: { row: Row }) {
         <div className="min-w-0">
           <p className="truncate text-sm font-semibold text-ink"><PlayerName name={row.player} pos={row.pos} /></p>
           <p className="text-xs text-muted">
-            {row.matchup} · {row.pa_pg.toFixed(1)} pa/g
+            {row.matchup && row.pa_pg != null ? `${row.matchup} · ${row.pa_pg.toFixed(1)} pa/g` : "Bye week"}
           </p>
         </div>
       </div>

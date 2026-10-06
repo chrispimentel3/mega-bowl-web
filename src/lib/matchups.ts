@@ -24,9 +24,10 @@ export type VegasPlayerRow = {
 export type PlayerDifficultyRow = {
   player: string;
   pos: string;
-  matchup: string;
-  ease_rank: number;
-  pa_pg: number;
+  /** null on the player's bye week */
+  matchup: string | null;
+  ease_rank: number | null;
+  pa_pg: number | null;
   verdict: "great" | "good" | "tough" | "avoid" | string;
 };
 
