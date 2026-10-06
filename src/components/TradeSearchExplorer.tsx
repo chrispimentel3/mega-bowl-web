@@ -14,6 +14,8 @@ export function TradeSearchExplorer() {
   const [mode, setMode] = useState<"player" | "team">("player");
   const [picked, setPicked] = useState<Target | null>(null);
   const [twoPlayer, setTwoPlayer] = useState(true);
+  const [size, setSize] = useState<1 | 2 | 3>(3);          // team search: most players on a side
+  const [shape, setShape] = useState<string | null>(null); // team search: only this shape
   const [order, setOrder] = useState<"accept" | "gain">("accept");
   const [result, setResult] = useState<TradeSearchResult | null>(null);
   const [loading, setLoading] = useState(false);
@@ -44,13 +46,20 @@ export function TradeSearchExplorer() {
     () => (pool ? [...new Set(pool.filter((r) => !r.mine).map((r) => r.team))].sort() : []),
     [pool],
   );
-  const search = (t: Target, o: "accept" | "gain", two: boolean, odds: boolean) =>
+  const search = (t: Target, o: "accept" | "gain", two: boolean, sz: 1 | 2 | 3, sh: string | null, odds: boolean) =>
     t.kind === "player"
       ? searchTrades(t.row.pid, t.row.mine, { order: o, twoPlayer: two, odds })
-      : searchTeam(t.team, { order: o, twoPlayer: two, odds });
+      : searchTeam(t.team, { order: o, size: sz, shape: sh, odds });
 
-  async function run(row: Target, o: "accept" | "gain" = order, two: boolean = twoPlayer) {
+  async function run(
+    row: Target,
+    o: "accept" | "gain" = order,
+    two: boolean = twoPlayer,
+    sz: 1 | 2 | 3 = size,
+    sh: string | null = null,
+  ) {
     setPicked(row);
+    setShape(sh);
     setQ("");
     setResult(null);
     const id = ++latest.current;
@@ -62,7 +71,7 @@ export function TradeSearchExplorer() {
     // which the service answers from the search it just ran
     let offers: TradeSearchResult;
     try {
-      offers = await search(row, o, two, false);
+      offers = await search(row, o, two, sz, sh, false);
     } catch (e) {
       if (id === latest.current) {
         setError(e instanceof Error ? e.message : "Something went wrong.");
@@ -76,7 +85,7 @@ export function TradeSearchExplorer() {
     if (!offers.odds_pending || offers.rows.length === 0) return;   // an older API priced them already
     setPricing(true);
     try {
-      const full = await search(row, o, two, true);
+      const full = await search(row, o, two, sz, sh, true);
       if (id === latest.current) setResult(full);
     } catch {
       if (id === latest.current) setOddsFailed(true);
@@ -199,23 +208,39 @@ export function TradeSearchExplorer() {
               </span>
             </p>
             <div className="ml-auto flex items-center gap-2 text-xs">
-              <label className="flex items-center gap-1 text-muted">
-                <input
-                  type="checkbox"
-                  checked={twoPlayer}
+              {picked.kind === "player" ? (
+                <label className="flex items-center gap-1 text-muted">
+                  <input
+                    type="checkbox"
+                    checked={twoPlayer}
+                    onChange={(e) => {
+                      setTwoPlayer(e.target.checked);
+                      run(picked, order, e.target.checked);
+                    }}
+                  />
+                  2-player packages
+                </label>
+              ) : (
+                <select
+                  value={size}
                   onChange={(e) => {
-                    setTwoPlayer(e.target.checked);
-                    run(picked, order, e.target.checked);
+                    const v = Number(e.target.value) as 1 | 2 | 3;
+                    setSize(v);
+                    run(picked, order, twoPlayer, v);
                   }}
-                />
-                2-player packages
-              </label>
+                  className="rounded-md border border-line bg-card px-1.5 py-1 text-muted"
+                >
+                  <option value={1}>1-for-1 only</option>
+                  <option value={2}>Up to 2 players</option>
+                  <option value={3}>Up to 3 players</option>
+                </select>
+              )}
               <select
                 value={order}
                 onChange={(e) => {
                   const v = e.target.value as "accept" | "gain";
                   setOrder(v);
-                  run(picked, v, twoPlayer);
+                  run(picked, v, twoPlayer, size, shape);
                 }}
                 className="rounded-md border border-line bg-card px-1.5 py-1 text-muted"
               >
@@ -249,6 +274,42 @@ export function TradeSearchExplorer() {
                     Couldn&apos;t price these in playoff odds this time — the offers and lineup
                     changes above still stand. Search again to retry.
                   </p>
+                ) : null}
+                {picked.kind === "team" && result.profile ? (
+                  <p className="mt-3 text-sm text-muted">
+                    {result.profile.needs.length ? (
+                      <>
+                        <b className="text-ink">Needs</b>{" "}
+                        {result.profile.needs.map((n) => `${n.pos} (${n.gap.toFixed(1)} pts/wk under the league average)`).join(", ")}
+                        {" — lead with that. "}
+                      </>
+                    ) : (
+                      "No clear hole — pitch on value, not need. "
+                    )}
+                    {result.profile.spare.length ? (
+                      <>
+                        <b className="text-ink">Spare</b>{" "}
+                        {result.profile.spare.map((p) => `${p.name} (${p.pos})`).join(", ")} — bench players who&apos;d
+                        start for the typical team.
+                      </>
+                    ) : null}
+                  </p>
+                ) : null}
+                {picked.kind === "team" && result.shape_counts && Object.keys(result.shape_counts).length > 1 ? (
+                  <div className="mt-3 flex flex-wrap gap-1.5 text-xs">
+                    {[null, ...["1-for-1", "2-for-1", "1-for-2", "2-for-2", "3-for-1"].filter((x) => result.shape_counts?.[x])].map((sh) => (
+                      <button
+                        key={sh ?? "all"}
+                        onClick={() => run(picked, order, twoPlayer, size, sh)}
+                        className={`rounded-full border px-2.5 py-1 transition-colors ${
+                          shape === sh ? "border-navy bg-navy text-white" : "border-line bg-card text-muted hover:text-ink"
+                        }`}
+                      >
+                        {sh ?? "All shapes"}
+                        {sh ? ` · ${result.shape_counts?.[sh]}` : ""}
+                      </button>
+                    ))}
+                  </div>
                 ) : null}
                 {picked.kind === "team" && result.targets?.length ? (
                   <div className="mt-3">

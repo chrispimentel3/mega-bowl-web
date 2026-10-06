@@ -57,6 +57,11 @@ export type TradeSearchResult = {
    *  your lineup (best offer's gain in points per week) */
   team?: string;
   targets?: { name: string; pos: string | null; best_d_me: number; offers: number }[];
+  /** team search only: where the team is thin (points a week below the league's average
+   *  starters there) and bench players who'd start for the typical team */
+  profile?: { needs: { pos: string; gap: number }[]; spare: { name: string; pos: string; ppg: number }[] };
+  /** team search only: how many offers of each shape were found, before the 60-per-view cap */
+  shape_counts?: Record<string, number>;
 };
 
 /** Only the best this-many offers get priced in playoff/title odds (SIM_TOP in the service). */
@@ -115,7 +120,7 @@ export async function searchTrades(
 /** Every offer to one team, plus their players ranked as targets (service /trade-team). */
 export async function searchTeam(
   team: string,
-  opts: { flags?: string[]; twoPlayer?: boolean; order?: "accept" | "gain"; odds?: boolean } = {},
+  opts: { flags?: string[]; size?: 1 | 2 | 3; shape?: string | null; order?: "accept" | "gain"; odds?: boolean } = {},
 ): Promise<TradeSearchResult> {
   const res = await fetchWaking(`${API_URL}/trade-team`, {
     method: "POST",
@@ -123,7 +128,8 @@ export async function searchTeam(
     body: JSON.stringify({
       team,
       flags: opts.flags ?? ["LIKELY", "EXPLOIT", "NEEDS_PITCH"],
-      two_player: opts.twoPlayer ?? true,
+      size: opts.size ?? 3,
+      shape: opts.shape ?? null,
       order: opts.order ?? "accept",
       odds: opts.odds ?? true,
     }),
