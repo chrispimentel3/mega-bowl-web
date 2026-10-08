@@ -5,6 +5,7 @@ import { Masthead } from "@/components/Masthead";
 import { SectionHeading } from "@/components/SectionHeading";
 import { TradeOfferCard } from "@/components/TradeOfferCard";
 import { TradeSearchExplorer } from "@/components/TradeSearchExplorer";
+import { TradeEvaluator } from "@/components/TradeEvaluator";
 import { TradeThesisList } from "@/components/TradeThesisList";
 import { PostureChip } from "@/components/PostureChip";
 import { TrendChart } from "@/components/TrendChart";
@@ -19,6 +20,9 @@ export default async function TradesPage() {
     <>
       <Masthead season={ab.season} week={ab.week} nextWeek={ab.next_week} rosterSrc={ab.roster_src} />
       <main className="mx-auto w-full max-w-2xl flex-1 px-4 pb-16 pt-4 sm:max-w-3xl">
+        <SectionHeading title="Evaluate a trade" />
+        <TradeEvaluator />
+
         <SectionHeading title="Trade around one player" />
         <TradeSearchExplorer />
 

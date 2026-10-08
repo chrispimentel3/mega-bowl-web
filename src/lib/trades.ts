@@ -77,6 +77,8 @@ export type TradeThesis = {
   p_accept: number;
   flag: "LIKELY" | "EXPLOIT" | "NEEDS_PITCH" | "LONGSHOT";
   fairness: number;
+  /** what you send that would sit on their bench, worded by the service */
+  sits_for_them?: string[];
   ranks: { give: ThesisRank[]; get: ThesisRank[] };
 };
 

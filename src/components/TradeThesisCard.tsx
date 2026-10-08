@@ -2,6 +2,7 @@ import { PartnerNeeds } from "@/components/PartnerNeeds";
 import { PosBadge } from "./PosBadge";
 import type { ThesisSide, TradeThesis } from "@/lib/trades";
 import { PlayerName } from "@/components/PlayerCardProvider";
+import { SitsNote } from "@/components/SitsNote";
 import { ScheduleTag } from "@/components/ScheduleTag";
 
 const pts = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(1)}`;
@@ -111,6 +112,7 @@ export function TradeThesisCard({ card }: { card: TradeThesis }) {
         <span className="font-semibold text-ink">Pitch · </span>
         {card.pitch}
       </p>
+      <SitsNote lines={card.sits_for_them} className="mt-1" />
 
       <p className="mt-2 border-t border-line pt-2 text-[11px] text-muted">
         {[...card.ranks.give, ...card.ranks.get]

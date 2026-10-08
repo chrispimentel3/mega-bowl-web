@@ -47,6 +47,8 @@ export type TradeSearchRow = {
   p_accept?: number | null;
   /** what you send plays a position their roster is short at */
   need_fit?: boolean;
+  /** what you send that would sit on their bench (counted at a discount to them), worded by the service */
+  sits_for_them?: string[];
   odds: number | null;
   their_odds: number | null;
   /** change in title probability (0.01 = +1pt), from the v1.3 player-level sim; absent on
@@ -82,6 +84,8 @@ export type TradeSearchResult = {
   profile?: TeamProfile;
   /** team search only: how many offers of each shape were found, before the 60-per-view cap */
   shape_counts?: Record<string, number>;
+  /** evaluator only: one line on what the trade does for you and the chance they accept */
+  verdict?: string;
 };
 
 /** Only the best this-many offers get priced in playoff/title odds (SIM_TOP in the service). */
@@ -159,5 +163,20 @@ export async function searchTeam(
     throw new Error(body.detail || "Search failed.");
   }
   if (!res.ok) throw new Error(`Trade API /trade-team failed: ${res.status}`);
+  return res.json();
+}
+
+/** One trade exactly as entered: your players for one other team's (service /trade-evaluate). */
+export async function evaluateTrade(give: string[], get: string[], odds = true): Promise<TradeSearchResult> {
+  const res = await fetchWaking(`${API_URL}/trade-evaluate`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ give, get, odds }),
+  });
+  if (res.status === 400 || res.status === 503) {
+    const body = await res.json().catch(() => ({ detail: "Couldn't evaluate that trade." }));
+    throw new Error(body.detail || "Couldn't evaluate that trade.");
+  }
+  if (!res.ok) throw new Error(`Trade API /trade-evaluate failed: ${res.status}`);
   return res.json();
 }

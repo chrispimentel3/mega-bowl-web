@@ -1,5 +1,6 @@
 import type { TradeRow } from "@/lib/action-board";
 import { PlayerList } from "@/components/PlayerCardProvider";
+import { SitsNote } from "@/components/SitsNote";
 
 export function TradeCard({ row }: { row: TradeRow }) {
   const fairnessPct = Math.round(row.fairness * 100);
@@ -30,6 +31,7 @@ export function TradeCard({ row }: { row: TradeRow }) {
         ) : null}
         they get {fairnessPct}% of the market value they give up · addresses {row.addresses}
       </p>
+      <SitsNote lines={row.sits_for_them} className="mt-1" />
     </div>
   );
 }

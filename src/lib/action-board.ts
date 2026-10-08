@@ -38,6 +38,8 @@ export type TradeRow = {
   /** estimated chance they accept */
   p_accept?: number | null;
   flag?: string | null;
+  /** what you send that would sit on their bench, worded by the service */
+  sits_for_them?: string[];
 };
 
 export type ActionBoard = {

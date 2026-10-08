@@ -1,6 +1,7 @@
 import type { TradeSearchRow } from "@/lib/tradeSearch";
 import { PlayerList } from "@/components/PlayerCardProvider";
 import { PartnerNeeds } from "@/components/PartnerNeeds";
+import { SitsNote } from "@/components/SitsNote";
 
 const FLAG_STYLE: Record<string, string> = {
   LIKELY: "bg-pos-rb/10 text-pos-rb-text",
@@ -90,6 +91,7 @@ export function TradeSearchResultCard({
                       benches={row.i_would_bench} excluding={row.give} />
         <LineupVerdict label="Their lineup:" delta={row.d_them} starts={row.they_would_start}
                       benches={row.they_would_bench} excluding={row.get} />
+        <SitsNote lines={row.sits_for_them} />
         {row.on_ir?.map((p) => (
           <p key={p.name} className="text-[11px] text-muted">
             {p.name} is on IR — counted for the {p.avail != null ? `${Math.round(p.avail * 100)}%` : "share"} of
