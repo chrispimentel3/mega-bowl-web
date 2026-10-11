@@ -103,7 +103,7 @@ function MetricSelect({ label, value, metrics, onChange }: {
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-lg border border-line bg-card px-2 py-1.5 text-sm font-normal normal-case tracking-normal text-ink"
+        className="h-10 w-full rounded-lg border border-line bg-card px-2 text-sm font-normal normal-case tracking-normal text-ink"
       >
         {metrics.map((m) => <option key={m.key} value={m.key}>{m.label}</option>)}
       </select>
@@ -250,12 +250,13 @@ export function ChartBuilder({ table }: { table: StatsTable }) {
       }}
     >
       {/* starting points */}
-      <div className="mb-3 flex flex-wrap items-center gap-1.5 text-xs">
-        <span className="mr-1 text-muted">Start from</span>
+      {/* one row that scrolls sideways on a phone, so the chart isn't pushed off the screen */}
+      <div className="scroll-fade -mx-4 mb-3 flex items-center gap-2 overflow-x-auto px-4 text-sm sm:mx-0 sm:flex-wrap sm:px-0 sm:[mask-image:none]">
+        <span className="mr-1 shrink-0 text-xs text-muted">Start from</span>
         {presets.map((pr) => (
           <button key={pr.label} type="button" onClick={() => applyPreset(pr)} title={pr.note}
                   aria-pressed={isPreset(pr)}
-                  className={`rounded-full px-2.5 py-1 font-semibold ${isPreset(pr) ? "bg-navy text-white" : "bg-ink/5 text-muted hover:bg-navy/10"}`}>
+                  className={`min-h-10 shrink-0 whitespace-nowrap rounded-full px-3.5 font-semibold ${isPreset(pr) ? "bg-navy text-white" : "bg-ink/5 text-muted hover:bg-navy/10"}`}>
             {pr.label}
           </button>
         ))}
@@ -267,22 +268,22 @@ export function ChartBuilder({ table }: { table: StatsTable }) {
         <button
           type="button"
           onClick={() => { setX(yKey); setY(xKey); }}
-          className="order-last col-span-2 self-end rounded-lg border border-line px-2 py-1.5 text-xs text-muted hover:text-navy sm:order-none sm:col-span-1"
+          className="order-last col-span-2 self-end min-h-10 rounded-lg border border-line px-3 text-sm text-muted hover:text-navy sm:order-none sm:col-span-1"
           aria-label="Swap axes"
         >
           ⇄ swap
         </button>
         <MetricSelect label="Y axis (up)" value={valid ? yKey : usable[1]?.key ?? ""} metrics={usable} onChange={setY} />
       </div>
-      <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs">
-        <div className="flex gap-1">
+      <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+        <div className="flex gap-1.5">
           {POSITIONS.map((p) => (
             <button
               key={p}
               type="button"
               onClick={() => togglePos(p)}
               aria-pressed={positions.includes(p)}
-              className={`rounded-full px-2.5 py-1 font-semibold ${positions.includes(p) ? "bg-navy text-white" : "bg-ink/5 text-muted hover:bg-navy/10"}`}
+              className={`min-h-10 min-w-10 rounded-full px-3 font-semibold ${positions.includes(p) ? "bg-navy text-white" : "bg-ink/5 text-muted hover:bg-navy/10"}`}
             >
               {p}
             </button>
@@ -290,43 +291,43 @@ export function ChartBuilder({ table }: { table: StatsTable }) {
         </div>
         {seasons.length > 1 ? (
           <select value={season} onChange={(e) => { setSeason(Number(e.target.value)); setMinGames(null); }}
-                  className="rounded-md border border-line bg-card px-1.5 py-1 text-muted">
+                  className="h-10 rounded-lg border border-line bg-card px-2 text-ink">
             {seasons.map((s) => <option key={s} value={s}>{s}</option>)}
           </select>
         ) : null}
-        <label className="flex items-center gap-1 text-muted">
+        <label className="flex items-center gap-1.5 text-muted">
           min games
           <input type="number" min={1} max={maxGames} value={minGames}
                  onChange={(e) => setMinGames(Math.max(1, Math.min(maxGames, Number(e.target.value) || 1)))}
-                 className="w-12 rounded-md border border-line bg-card px-1.5 py-0.5 text-ink" />
+                 className="h-10 w-14 rounded-lg border border-line bg-card px-2 text-ink" />
         </label>
         <span className="ml-auto flex items-center gap-3">
-          <button type="button" onClick={copyLink} className="font-semibold text-navy hover:underline dark:text-muted">
+          <button type="button" onClick={copyLink} className="min-h-10 font-semibold text-navy hover:underline dark:text-muted">
             {copied ? "Link copied" : "Copy link"}
           </button>
-          <button type="button" onClick={() => setAsTable(!asTable)} className="font-semibold text-navy hover:underline dark:text-muted">
+          <button type="button" onClick={() => setAsTable(!asTable)} className="min-h-10 font-semibold text-navy hover:underline dark:text-muted">
             {asTable ? "Show chart" : "Show as table"}
           </button>
         </span>
       </div>
 
       {/* who gets a name on the chart */}
-      <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
-        <label className="flex items-center gap-1.5 text-muted">
-          <input type="checkbox" checked={labelMine} onChange={(e) => setLabelMine(e.target.checked)} />
+      <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
+        <label className="flex min-h-10 items-center gap-2 text-muted">
+          <input className="h-5 w-5" type="checkbox" checked={labelMine} onChange={(e) => setLabelMine(e.target.checked)} />
           Name my players
         </label>
         {labeled.map((g) => (
           <button key={g} type="button" onClick={() => setLabeled(labeled.filter((x) => x !== g))}
                   aria-label={`Stop naming ${nameOf(g)}`}
-                  className="rounded-full bg-navy px-2.5 py-1 font-medium text-white">
+                  className="min-h-10 rounded-full bg-navy px-3.5 font-medium text-white">
             {nameOf(g)} ×
           </button>
         ))}
         <input
           list="chart-find" value={find} placeholder="Name a player…" aria-label="Name a player on the chart"
           onChange={(e) => { setFind(e.target.value); if (points.some((p) => p.name === e.target.value)) addLabel(e.target.value); }}
-          className="w-40 rounded-full border border-line bg-card px-3 py-1 text-ink placeholder:text-muted"
+          className="h-10 w-44 rounded-full border border-line bg-card px-4 text-ink placeholder:text-muted"
         />
         <datalist id="chart-find">
           {points.filter((p) => !labeled.includes(p.gsis_id)).map((p) => <option key={p.gsis_id} value={p.name} label={`${p.pos} · ${p.team}`} />)}
@@ -334,11 +335,11 @@ export function ChartBuilder({ table }: { table: StatsTable }) {
       </div>
 
       {/* legend: toggles too; identity is color + label, position is shape */}
-      <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted">
+      <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted">
         {GROUPS.slice().reverse().map((g) => (
           <button key={g.key} type="button" onClick={() => setShown({ ...shown, [g.key]: !shown[g.key] })}
                   aria-pressed={shown[g.key]}
-                  className={`flex items-center gap-1.5 ${shown[g.key] ? "text-ink" : "line-through opacity-50"}`}>
+                  className={`flex min-h-10 items-center gap-1.5 ${shown[g.key] ? "text-ink" : "line-through opacity-50"}`}>
             <span className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: `var(${g.varName})` }} />
             {g.label} ({points.filter((p) => p.group === g.key).length})
           </button>

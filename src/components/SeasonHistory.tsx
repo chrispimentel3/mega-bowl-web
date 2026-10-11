@@ -22,7 +22,7 @@ export function SeasonHistory({ seasons, myTeam }: { seasons: HistorySeason[]; m
             role="tab"
             aria-selected={x.year === s.year}
             onClick={() => { setYear(x.year); setOpen(null); }}
-            className={`rounded-full px-3 py-1 text-sm font-semibold ${
+            className={`min-h-10 rounded-full px-4 text-sm font-semibold ${
               x.year === s.year ? "bg-navy text-white" : "bg-ink/5 text-muted hover:bg-navy/10"
             }`}
           >
