@@ -298,11 +298,16 @@ export function PlayerCardProvider({ children }: { children: React.ReactNode }) 
     window.addEventListener("keydown", onKey);
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    // focus moves into the sheet so keyboard and VoiceOver land on it, and goes back to the
+    // name that opened it when it closes
+    const opener = document.activeElement as HTMLElement | null;
+    surface.current?.focus({ preventScroll: true });
     return () => {
       window.removeEventListener("keydown", onKey);
       document.body.style.overflow = prev;
+      opener?.focus({ preventScroll: true });
     };
-  }, [want, close]);
+  }, [want, close, surface]);
 
   return (
     <Ctx.Provider value={open}>
@@ -315,9 +320,10 @@ export function PlayerCardProvider({ children }: { children: React.ReactNode }) 
             role="dialog"
             aria-modal="true"
             aria-label={`${want.name} player card`}
+            tabIndex={-1}
             data-state={shown ? "open" : "closed"}
             onClick={(e) => e.stopPropagation()}
-            className="sheet-surface relative max-h-[90vh] w-full overflow-y-auto overscroll-contain rounded-t-2xl bg-card px-4 pb-4 shadow-xl sm:max-w-lg sm:rounded-2xl sm:pt-4"
+            className="sheet-surface relative max-h-[90vh] outline-none w-full overflow-y-auto overscroll-contain rounded-t-2xl bg-card px-4 pb-4 shadow-xl sm:max-w-lg sm:rounded-2xl sm:pt-4"
           >
             {/* grab handle (phones): drag down to dismiss */}
             <div {...drag} className="-mx-4 flex h-6 cursor-grab touch-none items-center justify-center sm:hidden" aria-hidden>
@@ -352,7 +358,7 @@ export function PlayerName({
         e.stopPropagation();
         open({ name, gsis, pos: pos ?? undefined, team: team ?? undefined });
       }}
-      className={`cursor-pointer text-left underline decoration-muted/50 decoration-dotted underline-offset-[3px] hover:text-navy hover:decoration-navy ${className}`}
+      className={`hit cursor-pointer text-left underline decoration-muted/50 decoration-dotted underline-offset-[3px] hover:text-navy hover:decoration-navy ${className}`}
     >
       {name}
     </button>

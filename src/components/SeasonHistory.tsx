@@ -43,8 +43,8 @@ export function SeasonHistory({ seasons, myTeam }: { seasons: HistorySeason[]; m
               <th className="px-3 py-2 font-medium">Team</th>
               <th className="px-3 py-2 text-right font-medium">Record</th>
               <th className="px-3 py-2 text-right font-medium">PF</th>
-              <th className="px-3 py-2 text-right font-medium">PA</th>
-              <th className="px-3 py-2 font-medium" />
+              <th className="hidden px-3 py-2 text-right font-medium sm:table-cell">PA</th>
+              <th className="hidden px-3 py-2 font-medium sm:table-cell" />
             </tr>
           </thead>
           <tbody>
@@ -55,7 +55,17 @@ export function SeasonHistory({ seasons, myTeam }: { seasons: HistorySeason[]; m
                 <tr key={r.team} className={`border-b border-line last:border-0 align-top ${mine ? "bg-navy/5" : ""}`}>
                   <td className="px-3 py-2 text-muted">{r.rank}</td>
                   <td className={`px-3 py-2 ${mine ? "font-semibold text-navy dark:text-ink" : "text-ink"}`}>
-                    {r.team}
+                    {/* the name opens the roster too — on a phone it's the only way, the
+                        button column doesn't fit */}
+                    {roster ? (
+                      <button
+                        onClick={() => setOpen(open === r.team ? null : r.team)}
+                        aria-expanded={open === r.team}
+                        className="hit text-left underline decoration-muted/50 decoration-dotted underline-offset-[3px]"
+                      >
+                        {r.team}
+                      </button>
+                    ) : r.team}
                     {r.rank === 1 ? <span title="Champion" aria-label="champion"> 🏆</span> : null}
                     {r.made_playoffs && r.rank !== 1 ? <span className="ml-1.5 text-xs text-muted">playoffs</span> : null}
                     {open === r.team && roster ? (
@@ -74,8 +84,8 @@ export function SeasonHistory({ seasons, myTeam }: { seasons: HistorySeason[]; m
                   </td>
                   <td className="px-3 py-2 text-right font-medium text-ink">{r.record}</td>
                   <td className="px-3 py-2 text-right text-ink">{r.pf.toLocaleString(undefined, { maximumFractionDigits: 1 })}</td>
-                  <td className="px-3 py-2 text-right text-muted">{r.pa.toLocaleString(undefined, { maximumFractionDigits: 1 })}</td>
-                  <td className="px-3 py-2 text-right">
+                  <td className="hidden px-3 py-2 text-right text-muted sm:table-cell">{r.pa.toLocaleString(undefined, { maximumFractionDigits: 1 })}</td>
+                  <td className="hidden px-3 py-2 text-right sm:table-cell">
                     {roster ? (
                       <button
                         onClick={() => setOpen(open === r.team ? null : r.team)}

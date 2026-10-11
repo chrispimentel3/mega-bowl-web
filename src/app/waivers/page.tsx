@@ -53,12 +53,15 @@ export default async function WaiversPage() {
               />
             </div>
 
-            <p className="mt-4 text-sm text-muted">
-              Every free agent is valued against your roster for the rest of the season — byes,
-              injuries and IR returns included — and split by why he helps: he <b>starts</b>, he{" "}
-              <b>covers</b> a bye or injury, or he <b>insures</b> a starter who might miss time. A
-              player with none of the three sits in no lane, however many managers are adding him.
-            </p>
+            <details className="mt-4 text-sm text-muted">
+              <summary className="cursor-pointer font-medium text-ink">How players are valued</summary>
+              <p className="mt-2">
+                Every free agent is valued against your roster for the rest of the season — byes,
+                injuries and IR returns included — and split by why he helps: he <b>starts</b>, he{" "}
+                <b>covers</b> a bye or injury, or he <b>insures</b> a starter who might miss time. A
+                player with none of the three sits in no lane, however many managers are adding him.
+              </p>
+            </details>
 
             {wv.roster_notes.length ? (
               <ul className="mt-3 space-y-1 rounded-xl border border-line bg-card px-4 py-3 text-sm text-ink">

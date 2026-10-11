@@ -14,10 +14,11 @@ export function PlayerCard({ row, tone }: { row: ShopHoldRow; tone: "sell" | "bu
             <PosBadge pos={row.pos} />
             <PlayerName name={row.player} pos={row.pos} className="truncate font-semibold text-ink" />
           </div>
+          {/* the chip below already says "+4.3/g vs opportunity"; this line is the why, in words */}
           <p className="mt-0.5 text-xs text-muted">
-            {row.slot}
-            {row.tgt_pct != null ? ` · ${(row.tgt_pct * 100).toFixed(0)}% tgt` : ""}
-            {row.tm_rank != null ? ` · TM#${Math.round(row.tm_rank)}` : ""}
+            {row.slot === "BN" ? "Bench" : "Starter"}
+            {row.tgt_pct != null ? ` · ${(row.tgt_pct * 100).toFixed(0)}% of targets` : ""}
+            {row.tm_rank != null ? ` · #${Math.round(row.tm_rank)} on his team` : ""}
           </p>
         </div>
         <div className="shrink-0 text-right">
@@ -34,7 +35,6 @@ export function PlayerCard({ row, tone }: { row: ShopHoldRow; tone: "sell" | "bu
           {row.per_g.toFixed(1)}/g vs opportunity
         </span>
       </div>
-      <p className="mt-2 text-sm text-muted">{row.why}</p>
     </div>
   );
 }

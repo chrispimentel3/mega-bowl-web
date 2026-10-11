@@ -205,9 +205,10 @@ body {
   .sheet-surface[data-state="closed"] { opacity: 0; }
 }
 
-/* A small control whose tap area reaches ~44px tall without changing how it looks. */
+/* A small control whose tap area grows without changing how it looks: a 20px player name or
+   tag becomes ~32px, still short of stealing taps from its neighbours in a tight list. */
 .hit { position: relative; }
-.hit::after { content: ""; position: absolute; inset: -4px 0; }
+.hit::after { content: ""; position: absolute; inset: -6px 0; }
 
 /* ---------------------------------------------------------------- phone tab bar */
 @media (max-width: 639px) {
@@ -256,3 +257,4 @@ body {
 /* viewport-fit=cover: keep content clear of the notch in landscape */
 .masthead { padding-top: env(safe-area-inset-top); }
 body { padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); }
+

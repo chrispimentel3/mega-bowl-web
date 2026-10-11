@@ -147,11 +147,8 @@ export function TradeSearchExplorer() {
       {mode === "player" ? (
       <>
       <p className="mb-3 text-sm text-muted">
-        Pick anyone in the league. If he&apos;s <b>yours</b>, this is what could come back for
-        him. If he&apos;s <b>someone else&apos;s</b>, it&apos;s what it would take to get him —
-        both rosters rebuilt and re-optimized for every candidate, priced in playoff odds for
-        the best few. This runs a live search rather than reading a precomputed file, so the
-        first search after a quiet spell can take a little while.
+        Pick anyone. If he&apos;s <b>yours</b>, see what could come back for him; if he&apos;s{" "}
+        <b>someone else&apos;s</b>, see what it would take to get him.
       </p>
 
       <input

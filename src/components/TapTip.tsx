@@ -49,7 +49,7 @@ export function TapTip({
           setShift(left - r.left);
           setOpen((o) => !o);
         }}
-        className={`cursor-help text-left ${className}`}
+        className={`hit cursor-help text-left ${className}`}
       >
         {children}
       </button>

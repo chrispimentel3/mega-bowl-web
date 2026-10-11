@@ -14,10 +14,8 @@ export default async function ChartPage() {
       <main className="mx-auto w-full max-w-2xl flex-1 px-4 pb-16 pt-4 sm:max-w-3xl">
         <h1 className="font-display text-xl font-bold text-ink">Chart builder</h1>
         <p className="mb-4 mt-1 text-sm text-muted">
-          Put any two stats against each other for every player at the positions you pick —
-          the same season numbers the player cards rank on. Start from a preset or pick your own,
-          name the players you care about, and copy the link to send the exact chart. Hover a dot
-          for the player, click it for his card.
+          Any two stats, every player at the positions you pick. Tap a dot for his card; copy
+          the link to share the exact chart.
         </p>
         {/* the builder reads its starting chart from the address, which needs a Suspense boundary */}
         <Suspense fallback={null}>

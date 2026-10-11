@@ -32,7 +32,9 @@ export default async function TradesPage() {
             <div className="mb-3">
               <PostureChip posture={tr.meta?.posture} pPlayoffs={tr.meta?.p_playoffs} pTitle={tr.meta?.p_title} />
             </div>
-            <p className="text-sm text-muted">
+            <details className="text-sm text-muted">
+              <summary className="cursor-pointer font-medium text-ink">How offers are built</summary>
+              <p className="mt-2">
               Every 1-for-1 and 2-for-1 the engine can build ({tr.meta?.evaluated?.toLocaleString() ?? "—"} this
               week), priced at what the other manager would accept on FantasyCalc, then the best{" "}
               {tr.meta?.simulated ?? 25} played through {tr.meta?.seasons?.toLocaleString() ?? "6,000"} simulated
@@ -45,6 +47,7 @@ export default async function TradesPage() {
               </Link>
               .
             </p>
+            </details>
             {tr.cards.length === 0 ? (
               <div className="mt-4 rounded-xl border border-dashed border-line bg-card/50 px-4 py-3 text-sm text-muted">
                 No offer the league would plausibly take raises your title odds right now. That&apos;s a real

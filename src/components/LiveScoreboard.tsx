@@ -71,10 +71,15 @@ function Matchup({ a, b, myTeam, open }: { a: LiveTeam; b: LiveTeam; myTeam: str
         </div>
         <p className="mt-2 text-center text-xs text-muted group-open:hidden">show lineups</p>
       </summary>
-      <div className="grid gap-4 border-t border-line px-4 pb-4 pt-2 sm:grid-cols-2">
+      {/* grid-cols-1 = minmax(0, 1fr): without it a long name sizes the column past the card */}
+      <div className="grid grid-cols-1 gap-4 border-t border-line px-4 pb-4 pt-2 sm:grid-cols-2">
         {[a, b].map((t) => (
-          <div key={t.team} className="divide-y divide-line/60">
-            {t.starters.map((s, i) => <StarterRow key={`${s.slot}-${i}`} s={s} />)}
+          <div key={t.team} className="min-w-0">
+            {/* stacked on a phone, so say whose lineup this is */}
+            <p className="pt-2 text-xs font-semibold uppercase tracking-wide text-muted sm:hidden">{t.team}</p>
+            <div className="divide-y divide-line/60">
+              {t.starters.map((s, i) => <StarterRow key={`${s.slot}-${i}`} s={s} />)}
+            </div>
           </div>
         ))}
       </div>
