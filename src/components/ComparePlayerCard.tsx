@@ -11,7 +11,9 @@ export function ComparePlayerCard({ player, nextWeek }: { player: PlayerDetail; 
   const s = seasons.length > 0 ? player.seasons[seasons[0]] : null;
 
   return (
-    <div className="rounded-2xl border border-line bg-card p-3 shadow-sm">
+    // Five fixed rows (header, numbers, matchup, role, detail) on the page's grid via subgrid:
+    // each row is as tall as the tallest card's, so the same section lines up across cards.
+    <div className="row-span-5 grid grid-rows-subgrid gap-y-3 rounded-2xl border border-line bg-card p-3 shadow-sm">
       <div className="flex items-center gap-2">
         <PlayerAvatar player={player.name} size={36} />
         <div className="min-w-0">
@@ -27,32 +29,19 @@ export function ComparePlayerCard({ player, nextWeek }: { player: PlayerDetail; 
       </div>
 
       {!s ? (
-        <p className="mt-3 text-sm text-muted">No {seasons[0] ?? "current"} regular-season games.</p>
+        <p className="row-span-4 text-sm text-muted">No {seasons[0] ?? "current"} regular-season games.</p>
       ) : (
         <>
-          <div className="mt-3 grid grid-cols-3 gap-1.5">
+          <div className="grid grid-cols-3 gap-1.5">
             <Stat label="Games" value={String(s.games)} />
             <Stat label="Pts/g" value={s.pts_pg != null ? s.pts_pg.toFixed(1) : "—"} />
             <Stat label={s.usage_label} value={s.usage_fmt || "—"} />
           </div>
 
-          {s.this_week ? (
-            <div className="mt-3">
-              <MatchupScore tw={s.this_week} pos={player.pos} week={nextWeek} />
-            </div>
-          ) : null}
-
-          {s.role ? (
-            <div className="mt-3">
-              <RoleCard role={s.role} />
-            </div>
-          ) : null}
-
-          {s.card.length > 0 ? (
-            <div className="mt-3">
-              <SeasonDetailCard rows={s.card} />
-            </div>
-          ) : null}
+          {/* always one child per row, even when empty, so the rows stay in step */}
+          <div>{s.this_week ? <MatchupScore tw={s.this_week} pos={player.pos} week={nextWeek} /> : null}</div>
+          <div>{s.role ? <RoleCard role={s.role} compact /> : null}</div>
+          <div>{s.card.length > 0 ? <SeasonDetailCard rows={s.card} /> : null}</div>
         </>
       )}
     </div>

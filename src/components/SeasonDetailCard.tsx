@@ -12,7 +12,7 @@ export function SeasonDetailCard({ rows }: { rows: CardRow[] }) {
                 {r.stat}
               </td>
               <td className="px-3 py-2 text-right font-semibold text-ink">{r.value_fmt}</td>
-              <td className="px-3 py-2 text-right text-xs text-muted">{r.pos_rank}</td>
+              <td className="whitespace-nowrap px-3 py-2 text-right text-xs text-muted">{r.pos_rank}</td>
             </tr>
           ))}
         </tbody>

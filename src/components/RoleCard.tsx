@@ -13,7 +13,33 @@ function delta(idx: number | null): string {
   return ` (${pct >= 0 ? "+" : ""}${pct}%)`;
 }
 
-export function RoleCard({ role }: { role: RoleSection }) {
+const tone = (vs: number | null) =>
+  vs != null && vs >= 120 ? "text-crimson" : vs != null && vs <= 80 ? "text-pos-rb-text" : "text-muted";
+
+/** `compact` is the narrow-column version (compare): one line per stat — his number and how
+ *  far he sits from his role's average — inside the card that already frames it. */
+export function RoleCard({ role, compact = false }: { role: RoleSection; compact?: boolean }) {
+  if (compact) {
+    return (
+      <div>
+        <p className="font-display text-base font-bold text-ink">{role.headline}</p>
+        <p className="text-xs text-muted">
+          {role.from_usage ? `Last ${role.games} games` : "Depth-chart spot"} · % is vs his role&apos;s average
+        </p>
+        <dl className="mt-2 divide-y divide-line">
+          {role.rows.map((r) => (
+            <div key={r.metric} className="flex items-baseline justify-between gap-2 py-1.5 text-sm">
+              <dt className="min-w-0 truncate text-xs capitalize text-muted">{r.metric}</dt>
+              <dd className="shrink-0 font-bold text-ink">
+                {fmt(r.him, r.fmt)}
+                <span className={`ml-1.5 text-xs font-normal ${tone(r.vs_role)}`}>{delta(r.vs_role).trim()}</span>
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    );
+  }
   return (
     <div className="rounded-xl border border-line bg-card p-4 shadow-sm">
       <p className="font-display text-lg font-bold text-ink">{role.headline}</p>

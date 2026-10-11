@@ -51,12 +51,15 @@ export default async function ComparePage({
         {found.length === 0 ? (
           <p className="mt-8 text-center text-sm text-muted">Search above to add players.</p>
         ) : (
-          <div className="mt-4 flex gap-3 overflow-x-auto pb-2">
-            {found.map((p) => (
-              <div key={p.gsis_id} className="w-[270px] shrink-0">
-                <ComparePlayerCard player={p} nextWeek={ab.next_week} />
-              </div>
-            ))}
+          <div className="mt-4 overflow-x-auto pb-2">
+            <div
+              className="grid w-max gap-x-3"
+              style={{ gridTemplateColumns: `repeat(${found.length}, 270px)`, gridTemplateRows: "repeat(5, auto)" }}
+            >
+              {found.map((p) => (
+                <ComparePlayerCard key={p.gsis_id} player={p} nextWeek={ab.next_week} />
+              ))}
+            </div>
           </div>
         )}
       </main>

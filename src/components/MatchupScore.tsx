@@ -34,7 +34,7 @@ export function MatchupScore({ tw, pos, week }: { tw: ThisWeek; pos: string; wee
 
   return (
     <div className="rounded-xl border border-line p-3">
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-0.5">
         <p className={`text-base font-bold ${s.tone}`}>
           <TapTip tip={ptsSentence(tw.delta_pts)}>
             {s.label} matchup{pts ? <span className="ml-1.5 text-sm font-semibold">{pts}</span> : null}
