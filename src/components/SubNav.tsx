@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useActiveIntoView, Pending } from "./navHelpers";
 
 const GROUPS = [
   {
@@ -58,21 +59,24 @@ export function SubNav() {
   // "/" is a prefix of every path, so it only ever matches itself
   const on = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
   const group = GROUPS.find((g) => g.links.some((l) => on(l.href)));
+  const ref = useActiveIntoView(pathname);
   if (!group) return null;
 
   return (
-    <nav className="mx-auto flex max-w-2xl gap-4 overflow-x-auto border-t border-line px-4 pt-2 sm:max-w-3xl">
+    <nav ref={ref} className="scroll-fade relative mx-auto flex max-w-2xl gap-4 overflow-x-auto border-t border-line px-4 pt-2 sm:max-w-3xl">
       {group.links.map((link) => {
         const active = on(link.href);
         return (
           <Link
             key={link.href}
             href={link.href}
-            className={`whitespace-nowrap border-b-2 pb-2 text-sm font-medium transition-colors ${
+            aria-current={active ? "page" : undefined}
+            className={`whitespace-nowrap border-b-2 pb-2.5 pt-1 text-sm font-medium transition-colors ${
               active ? "border-navy text-navy" : "border-transparent text-muted hover:text-navy"
             }`}
           >
             {link.label}
+            <Pending />
           </Link>
         );
       })}

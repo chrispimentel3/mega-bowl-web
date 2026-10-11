@@ -63,7 +63,7 @@ function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-lg bg-ink/[0.03] p-2 text-center">
       <p className="font-display text-sm font-bold leading-none text-ink">{value}</p>
-      <p className="mt-1 text-[10px] font-medium text-muted">{label}</p>
+      <p className="mt-1 text-xs font-medium text-muted">{label}</p>
     </div>
   );
 }

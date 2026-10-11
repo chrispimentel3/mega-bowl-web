@@ -25,12 +25,12 @@ export function ArchMineCard({ row }: { row: ArchMineRow }) {
           <p className="font-display text-xl font-bold leading-none text-ink">
             {row.arch_fit.toFixed(0)}
           </p>
-          <p className="text-[11px] text-muted">fit</p>
+          <p className="text-xs text-muted">fit</p>
         </div>
       </div>
       <div className="mt-2 min-h-[22px]">
         {row.tags ? (
-          <span className="inline-block rounded-md bg-navy/10 px-1.5 py-0.5 text-[11px] font-bold text-navy">
+          <span className="inline-block rounded-md bg-navy/10 px-1.5 py-0.5 text-xs font-bold text-navy">
             {row.tags}
           </span>
         ) : null}

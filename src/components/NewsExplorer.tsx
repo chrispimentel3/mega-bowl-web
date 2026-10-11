@@ -71,7 +71,7 @@ export function NewsExplorer({ items }: { items: NewsItem[] }) {
             >
               <div className="flex items-baseline justify-between gap-2">
                 <span className="text-xs font-medium text-muted">{item.source}</span>
-                <span className="text-[11px] text-muted">{formatDate(item.published)}</span>
+                <span className="text-xs text-muted">{formatDate(item.published)}</span>
               </div>
               <p className="mt-1 text-sm font-semibold text-ink">{item.title}</p>
               {item.summary ? <p className="mt-1 text-xs text-muted">{item.summary}</p> : null}

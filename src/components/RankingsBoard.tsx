@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useOpenPlayer } from "./PlayerCardProvider";
+import { useOpenPlayer, hasCard } from "./PlayerCardProvider";
 import { PosBadge } from "./PosBadge";
 import { PlayerAvatar } from "./PlayerAvatar";
 import { TeamLogo } from "./TeamLogo";
@@ -39,14 +39,14 @@ export function RankingsBoard({ rows }: { rows: RankingRow[] }) {
           <button
             key={p}
             onClick={() => setPos(p)}
-            className={`rounded-full px-3 py-1.5 text-sm font-medium transition-colors ${
+            className={`hit rounded-full px-3.5 py-2 text-sm font-medium transition-colors ${
               pos === p ? "bg-navy text-white" : "bg-ink/5 text-muted hover:bg-navy/10 hover:text-navy"
             }`}
           >
             {p}
           </button>
         ))}
-        <label className="ml-auto flex items-center gap-1.5 text-sm text-muted">
+        <label className="ml-auto flex min-h-11 items-center gap-1.5 text-sm text-muted">
           <input type="checkbox" checked={mineOnly} onChange={(e) => setMineOnly(e.target.checked)} />
           My roster only
         </label>
@@ -67,7 +67,7 @@ export function RankingsBoard({ rows }: { rows: RankingRow[] }) {
               <p className="truncate text-sm font-semibold text-ink">
                 {row.player}
                 {row.mine ? (
-                  <span className="ml-1.5 rounded-md bg-navy/10 px-1.5 py-0.5 text-[10px] font-bold text-navy">
+                  <span className="ml-1.5 rounded-md bg-navy/10 px-1.5 py-0.5 text-xs font-bold text-navy">
                     mine
                   </span>
                 ) : null}
@@ -81,14 +81,15 @@ export function RankingsBoard({ rows }: { rows: RankingRow[] }) {
             <div className="shrink-0 text-right">
               <p className="font-display text-base font-bold leading-none text-ink">{row.proj.toFixed(1)}</p>
               {row.matchup_pct != null ? (
-                <p className={`mt-1 text-[11px] font-semibold ${pctColor(row.matchup_pct)}`}>
+                <p className={`mt-1 text-xs font-semibold ${pctColor(row.matchup_pct)}`}>
                   {row.matchup_pct >= 0 ? "+" : ""}
                   {row.matchup_pct.toFixed(0)}%
                 </p>
               ) : (
-                <p className="mt-1 text-[11px] text-muted">—</p>
+                <p className="mt-1 text-xs text-muted">—</p>
               )}
             </div>
+            {hasCard(row.pos) ? <span aria-hidden className="-ml-1 shrink-0 text-lg leading-none text-muted/60">›</span> : null}
           </button>
         ))}
         {filtered.length === 0 ? (

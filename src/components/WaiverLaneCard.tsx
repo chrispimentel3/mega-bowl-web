@@ -36,7 +36,7 @@ export function WaiverLaneCard({ row }: { row: WaiverLaneRow }) {
               <PosBadge pos={row.pos} />
               <PlayerName name={row.player} pos={row.pos} className="truncate font-semibold text-ink" />
             </div>
-            <p className="mt-0.5 flex items-center gap-1 text-xs text-muted">
+            <p className="mt-0.5 flex flex-wrap items-center gap-x-1 gap-y-0.5 text-xs text-muted">
               <TeamLogo team={row.nfl_team} size={14} />
               {row.nfl_team} · {row.ppg?.toFixed(1) ?? "—"} pts/g
               {row.pct_ros != null ? ` · ${Math.round(row.pct_ros)}% rostered` : ""}
@@ -44,9 +44,9 @@ export function WaiverLaneCard({ row }: { row: WaiverLaneRow }) {
             </p>
           </div>
         </div>
-        <div className="shrink-0 text-right">
+        <div className="max-w-24 shrink-0 text-right">
           <p className="font-display text-xl font-bold leading-none text-pos-rb-text">{lead.value}</p>
-          <p className="text-[11px] text-muted">{lead.label}</p>
+          <p className="text-xs text-muted">{lead.label}</p>
         </div>
       </div>
 

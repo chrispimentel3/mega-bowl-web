@@ -24,7 +24,7 @@ export function PlayerCard({ row, tone }: { row: ShopHoldRow; tone: "sell" | "bu
           <p className="font-display text-xl font-bold leading-none text-ink">
             {row.half_ppr_pg.toFixed(1)}
           </p>
-          <p className="text-[11px] text-muted">pts/g</p>
+          <p className="text-xs text-muted">pts/g</p>
         </div>
       </div>
 

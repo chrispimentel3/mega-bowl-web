@@ -77,11 +77,11 @@ export function TradeSearchResultCard({
 
       <div className="mt-3 space-y-1.5 text-sm">
         <div>
-          <span className="text-[11px] uppercase tracking-wide text-muted">You give</span>
+          <span className="text-xs uppercase tracking-wide text-muted">You give</span>
           <p className="font-medium text-ink"><PlayerList names={row.give} schedule /></p>
         </div>
         <div>
-          <span className="text-[11px] uppercase tracking-wide text-muted">You get</span>
+          <span className="text-xs uppercase tracking-wide text-muted">You get</span>
           <p className="font-medium text-ink"><PlayerList names={row.get} schedule /></p>
         </div>
       </div>
@@ -93,19 +93,19 @@ export function TradeSearchResultCard({
                       benches={row.they_would_bench} excluding={row.get} />
         <SitsNote lines={row.sits_for_them} />
         {row.on_ir?.map((p) => (
-          <p key={p.name} className="text-[11px] text-muted">
+          <p key={p.name} className="text-xs text-muted">
             {p.name} is on IR — counted for the {p.avail != null ? `${Math.round(p.avail * 100)}%` : "share"} of
             the remaining games he&apos;s projected to play, and for whoever gets cut when he&apos;s back.
           </p>
         ))}
         {row.out_now?.map((p) => (
-          <p key={p.name} className="text-[11px] font-semibold text-crimson">
+          <p key={p.name} className="text-xs font-semibold text-crimson">
             {p.name} is out{p.back != null ? ` until week ${p.back}` : " for the season"} — his value is cut by
             the {Math.round(p.share * 100)}% of his remaining games he misses.
           </p>
         ))}
         {row.netted && row.fa_add?.length ? (
-          <p className="text-[11px] text-muted">
+          <p className="text-xs text-muted">
             Already net of picking up {row.fa_add.join(" & ")}, which you could do without trading.
           </p>
         ) : null}
@@ -149,7 +149,7 @@ export function TradeSearchResultCard({
         </p>
       ) : null}
 
-      <p className="mt-2 text-[11px] text-muted">market ratio {row.mkt_ratio.toFixed(2)}</p>
+      <p className="mt-2 text-xs text-muted">market ratio {row.mkt_ratio.toFixed(2)}</p>
 
       {row.n_variants ? (
         <details className="mt-2 border-t border-line pt-2 text-xs">

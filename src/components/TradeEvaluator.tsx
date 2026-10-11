@@ -24,7 +24,7 @@ function Side({
 
   return (
     <div className="min-w-0 flex-1">
-      <span className="text-[11px] uppercase tracking-wide text-muted">{label}</span>
+      <span className="text-xs uppercase tracking-wide text-muted">{label}</span>
       <div className="mt-1 flex flex-wrap gap-1.5">
         {picked.map((p) => (
           <button

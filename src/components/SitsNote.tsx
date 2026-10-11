@@ -4,7 +4,7 @@ export function SitsNote({ lines, className = "" }: { lines?: string[] | null; c
   return (
     <>
       {lines.map((l) => (
-        <p key={l} className={`text-[11px] text-muted ${className}`}>
+        <p key={l} className={`text-xs text-muted ${className}`}>
           {l}.
         </p>
       ))}

@@ -6,7 +6,7 @@ export function PartnerNeeds({ profile, givePos = [] }: { profile?: TeamProfile 
   if (!profile || (!profile.needs.length && !profile.spare.length)) return null;
   const fills = profile.needs.filter((n) => givePos.includes(n.pos)).map((n) => n.pos);
   return (
-    <p className="mt-1 text-[11px] leading-snug text-muted">
+    <p className="mt-1 text-xs leading-snug text-muted">
       {profile.needs.length ? (
         <>
           <span className="font-semibold text-ink">Needs</span>{" "}

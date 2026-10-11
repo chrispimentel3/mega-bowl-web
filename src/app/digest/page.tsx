@@ -28,7 +28,7 @@ function Side({ name, record, ppg, power, odds, mine }: {
 function GameCard({ g, myTeam, label }: { g: DigestSlateGame; myTeam: string; label?: string }) {
   return (
     <div className="rounded-xl border border-line bg-card p-4 shadow-sm">
-      {label ? <p className="mb-2 text-[11px] uppercase tracking-wide text-muted">{label}</p> : null}
+      {label ? <p className="mb-2 text-xs uppercase tracking-wide text-muted">{label}</p> : null}
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <Side name={g.a} record={g.a_record} ppg={g.a_ppg} power={g.a_power} odds={g.a_playoffs} mine={g.a === myTeam} />
         <span className="text-xs font-semibold text-muted">vs</span>
@@ -147,7 +147,7 @@ export default async function DigestPage() {
             </div>
             {d.slate.length > 0 ? (
               <div className="mt-3 rounded-xl border border-line bg-card px-4 py-3 text-sm shadow-sm">
-                <p className="mb-1 text-[11px] uppercase tracking-wide text-muted">The full slate</p>
+                <p className="mb-1 text-xs uppercase tracking-wide text-muted">The full slate</p>
                 {d.slate.map((g) => (
                   <p key={g.a} className={g.mine ? "font-semibold text-navy" : "text-ink"}>
                     {g.a} <span className="text-muted">({g.a_record})</span> vs {g.b}{" "}

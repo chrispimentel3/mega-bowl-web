@@ -58,7 +58,7 @@ export function StreamerBoard({ streamers }: { streamers?: Streamers | null }) {
                         <p className="font-display text-lg font-bold leading-none text-pos-rb-text">
                           +{r.gain_avg.toFixed(1)}
                         </p>
-                        <p className="text-[11px] text-muted">pts/wk over yours</p>
+                        <p className="text-xs text-muted">pts/wk over yours</p>
                       </div>
                     </div>
                     <p className={`mt-1.5 text-xs ${r.bid ? "text-muted" : "font-semibold text-crimson"}`}>

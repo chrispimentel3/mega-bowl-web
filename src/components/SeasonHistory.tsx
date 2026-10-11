@@ -57,7 +57,7 @@ export function SeasonHistory({ seasons, myTeam }: { seasons: HistorySeason[]; m
                   <td className={`px-3 py-2 ${mine ? "font-semibold text-navy dark:text-ink" : "text-ink"}`}>
                     {r.team}
                     {r.rank === 1 ? <span title="Champion" aria-label="champion"> 🏆</span> : null}
-                    {r.made_playoffs && r.rank !== 1 ? <span className="ml-1.5 text-[11px] text-muted">playoffs</span> : null}
+                    {r.made_playoffs && r.rank !== 1 ? <span className="ml-1.5 text-xs text-muted">playoffs</span> : null}
                     {open === r.team && roster ? (
                       <ul className="mt-2 grid grid-cols-1 gap-x-4 gap-y-0.5 text-xs sm:grid-cols-2">
                         {[...roster]

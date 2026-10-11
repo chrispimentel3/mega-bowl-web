@@ -23,7 +23,7 @@ export function WaiverCard({ row }: { row: WaiverRow }) {
               <p className="font-display text-xl font-bold leading-none text-pos-rb-text">
                 ${Math.round(row.bid ?? 0)}
               </p>
-              <p className="text-[11px] text-muted">
+              <p className="text-xs text-muted">
                 max ${Math.round(row.max_bid ?? 0)}
               </p>
             </>
@@ -32,7 +32,7 @@ export function WaiverCard({ row }: { row: WaiverRow }) {
               <p className="font-display text-xl font-bold leading-none text-ink">
                 {(row.pg_recent ?? 0).toFixed(1)}
               </p>
-              <p className="text-[11px] text-muted">pts/g</p>
+              <p className="text-xs text-muted">pts/g</p>
             </>
           )}
         </div>

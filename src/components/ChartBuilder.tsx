@@ -98,7 +98,7 @@ function MetricSelect({ label, value, metrics, onChange }: {
   label: string; value: string; metrics: Metric[]; onChange: (k: string) => void;
 }) {
   return (
-    <label className="flex min-w-0 flex-col gap-1 text-[11px] font-semibold uppercase tracking-wide text-muted">
+    <label className="flex min-w-0 flex-col gap-1 text-xs font-semibold uppercase tracking-wide text-muted">
       {label}
       <select
         value={value}
@@ -352,7 +352,7 @@ export function ChartBuilder({ table }: { table: StatsTable }) {
         <div className="mt-3 max-h-[480px] overflow-auto rounded-xl border border-line">
           <table className="w-full text-sm">
             <thead className="sticky top-0 bg-card">
-              <tr className="border-b border-line text-left text-[11px] uppercase tracking-wide text-muted">
+              <tr className="border-b border-line text-left text-xs uppercase tracking-wide text-muted">
                 <th className="px-3 py-2 font-medium">Player</th>
                 <th className="px-3 py-2 font-medium">Team</th>
                 <th className="px-3 py-2 text-right font-medium">{x?.label}</th>
@@ -403,7 +403,7 @@ export function ChartBuilder({ table }: { table: StatsTable }) {
                       <p className="text-muted">{x?.label}: <b className="text-ink">{fmtX(p.x)}</b></p>
                       <p className="text-muted">{y?.label}: <b className="text-ink">{fmtY(p.y)}</b></p>
                       <p className="text-muted">{p.games} games · {p.mine ? "yours" : p.owner ?? "unrostered"}</p>
-                      <p className="mt-0.5 text-[10px] text-muted">click for his card</p>
+                      <p className="mt-0.5 text-xs text-muted">click for his card</p>
                     </div>
                   );
                 }}

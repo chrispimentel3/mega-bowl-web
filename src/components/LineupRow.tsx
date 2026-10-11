@@ -11,20 +11,21 @@ export function LineupRow({ row }: { row: LineupRowType }) {
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="w-11 shrink-0 text-[11px] font-bold uppercase tracking-wide text-muted">
-              {row.lineup}
-            </span>
+            {/* the slot only when it says something the badge doesn't (FLEX, bench) */}
+            {row.lineup !== row.pos ? (
+              <span className="shrink-0 text-xs font-bold uppercase tracking-wide text-muted">{row.lineup}</span>
+            ) : null}
             <PlayerAvatar player={row.player} size={28} />
             <PosBadge pos={row.pos} />
             <PlayerName name={row.player} pos={row.pos} className="truncate font-semibold text-ink" />
-            <TeamLogo team={row.nfl_team} size={16} />
             {row.report_status ? (
-              <span className="rounded-md bg-crimson/10 px-1.5 py-0.5 text-[11px] font-bold text-crimson">
+              <span className="rounded-md bg-crimson/10 px-1.5 py-0.5 text-xs font-bold text-crimson">
                 {row.report_status}
               </span>
             ) : null}
           </div>
-          <p className="mt-0.5 text-xs text-muted">
+          <p className="mt-0.5 flex flex-wrap items-center gap-x-1 text-xs text-muted">
+            <TeamLogo team={row.nfl_team} size={14} />
             {row.nfl_team}
             {row.opp ? ` · ${row.opp}` : ""}
             {row.tgt_pct != null ? ` · ${(row.tgt_pct * 100).toFixed(0)}% tgt` : ""}
@@ -35,7 +36,7 @@ export function LineupRow({ row }: { row: LineupRowType }) {
           <p className="font-display text-xl font-bold leading-none text-ink">
             {row.proj_adj?.toFixed(1) ?? "—"}
           </p>
-          <p className="text-[11px] text-muted">proj</p>
+          <p className="text-xs text-muted">proj</p>
         </div>
       </div>
 

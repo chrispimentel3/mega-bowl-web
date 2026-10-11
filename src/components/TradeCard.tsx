@@ -15,9 +15,9 @@ export function TradeCard({ row }: { row: TradeRow }) {
         ) : null}
       </div>
       <div className="mt-3 space-y-2 text-sm">
-        <span className="text-[11px] uppercase tracking-wide text-muted">You give</span>
+        <span className="text-xs uppercase tracking-wide text-muted">You give</span>
         <p className="font-medium text-ink"><PlayerList text={row.give} /></p>
-        <span className="block pt-1 text-[11px] uppercase tracking-wide text-muted">You get</span>
+        <span className="block pt-1 text-xs uppercase tracking-wide text-muted">You get</span>
         <p className="font-medium text-ink"><PlayerList text={row.get} /></p>
       </div>
       <p className="mt-3 text-xs text-muted">

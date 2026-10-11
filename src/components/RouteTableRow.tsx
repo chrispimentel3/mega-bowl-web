@@ -24,18 +24,18 @@ export function RouteTableRow({ row }: { row: Row }) {
             <p className="text-sm font-bold text-ink">
               {row.tprr != null ? `${(row.tprr * 100).toFixed(0)}%` : "—"}
             </p>
-            <p className="text-[10px] text-muted">TPRR</p>
+            <p className="text-xs text-muted">TPRR</p>
           </div>
           <div>
             <p className="text-sm font-bold text-ink">
               {row.fd_rr != null ? `${(row.fd_rr * 100).toFixed(0)}%` : "—"}
             </p>
-            <p className="text-[10px] text-muted">1D/RR</p>
+            <p className="text-xs text-muted">1D/RR</p>
           </div>
         </div>
       </div>
       {row.route_flag ? (
-        <span className="mt-2 inline-block rounded-md bg-pos-rb/10 px-1.5 py-0.5 text-[11px] font-bold text-pos-rb-text">
+        <span className="mt-2 inline-block rounded-md bg-pos-rb/10 px-1.5 py-0.5 text-xs font-bold text-pos-rb-text">
           {row.route_flag}
         </span>
       ) : null}

@@ -13,16 +13,18 @@ export function Masthead({
   rosterSrc: string | null;
 }) {
   return (
-    <header className="sticky top-0 z-10 border-b border-line bg-background/90 backdrop-blur">
-      <div className="mx-auto flex max-w-2xl items-baseline justify-between px-4 pt-3 sm:max-w-3xl">
-        <h1 className="font-display text-2xl font-bold tracking-tight text-navy">
+    <header className="masthead sticky top-0 z-10 bg-background/80 backdrop-blur-xl backdrop-saturate-150">
+      <div className="mx-auto flex max-w-2xl items-baseline justify-between px-4 pt-2 sm:max-w-3xl sm:pt-3">
+        <h1 className="font-display text-xl font-bold text-navy sm:text-2xl">
           Mega Bowl
         </h1>
-        <p className="text-right text-xs text-muted">
-          {season} · through wk {week}
-          <br />
-          matchup wk {nextWeek}
-          {rosterSrc ? <> · {rosterSrc}</> : null}
+        {/* one line on a phone; the detail (scored weeks, roster source) from sm up */}
+        <p className="text-right text-xs text-muted" title={rosterSrc ?? undefined}>
+          {season} · wk {nextWeek}
+          <span className="hidden sm:inline">
+            {" "}· scored through wk {week}
+            {rosterSrc ? <> · {rosterSrc}</> : null}
+          </span>
         </p>
       </div>
       <NavTabs />

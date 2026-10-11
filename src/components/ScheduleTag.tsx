@@ -30,8 +30,8 @@ export function ScheduleTag({ name, className = "" }: { name: string; className?
     `${key.split("|")[0]}'s next ${row.g.length} games, how the opponents' defenses and betting lines treat ${pos}s vs a normal week: ` +
     `${row.g.map(([w, opp, p]) => `wk ${w} ${opp} ${signed(p)}`).join(", ")}. Average ${signed(row.pct)}.`;
   return (
-    <span className={`inline-block ${className}`}>
-      <TapTip tip={title} className={`rounded-md px-1.5 py-0.5 text-[11px] font-semibold ${x.chip}`}>
+    <span className={`inline-block whitespace-nowrap ${className}`}>
+      <TapTip tip={title} className={`rounded-md px-1.5 py-0.5 text-xs font-semibold ${x.chip}`}>
         Next {row.g.length}: {x.label}
       </TapTip>
     </span>

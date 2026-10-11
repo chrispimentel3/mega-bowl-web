@@ -108,3 +108,103 @@ body {
 .recharts-wrapper *:focus:not(:focus-visible) {
   outline: none;
 }
+
+/* ---------------------------------------------------------------- feel
+   Feedback lands on the press, not the release: anything tappable dips slightly the moment
+   it's pressed (inline text links can't transform, so they're unaffected). */
+:where(a, button, summary, [role="button"]):not(:disabled) {
+  transition-property: transform, color, background-color, border-color, opacity;
+  transition-duration: 100ms;
+  transition-timing-function: ease-out;
+  -webkit-tap-highlight-color: transparent;
+}
+:where(a, button, summary, [role="button"]):not(:disabled):active {
+  transform: scale(0.97);
+}
+
+/* Type: tracking tightens as display type grows; small text gets a hair more air. */
+.font-display { letter-spacing: -0.005em; }
+.font-display:is(.text-xl, .text-2xl) { letter-spacing: -0.015em; line-height: 1.2; }
+.font-display:is(.text-3xl, .text-4xl) { letter-spacing: -0.025em; line-height: 1.1; }
+.text-xs { letter-spacing: 0.005em; }
+
+/* A row of tabs that scrolls sideways fades at the edge it continues past. */
+.scroll-fade {
+  scrollbar-width: none;
+  mask-image: linear-gradient(to right, transparent, #000 20px, #000 calc(100% - 28px), transparent);
+}
+.scroll-fade::-webkit-scrollbar { display: none; }
+
+/* Navigation pending: a dot that only appears if the page takes longer than 120ms. */
+.link-pending {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin-left: 5px;
+  border-radius: 9999px;
+  background: currentColor;
+  vertical-align: middle;
+  opacity: 0;
+  animation: link-pending 900ms 120ms ease-in-out infinite;
+}
+@keyframes link-pending {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 1; }
+}
+
+/* The sticky header's lower edge: a soft fade where content slides under, not a rule. */
+.masthead::after {
+  content: "";
+  position: absolute;
+  inset: 100% 0 auto 0;
+  height: 10px;
+  pointer-events: none;
+  background: linear-gradient(to bottom, color-mix(in srgb, var(--color-ink) 7%, transparent), transparent);
+}
+
+/* The player sheet: scrim and surface arrive together; the surface slides on the iOS
+   sheet curve (critically damped feel, no overshoot). */
+.sheet-scrim { transition: opacity 320ms ease; }
+.sheet-surface { transition: transform 420ms cubic-bezier(0.32, 0.72, 0, 1), opacity 320ms ease; }
+@media (min-width: 640px) {
+  .sheet-surface { transition: transform 320ms cubic-bezier(0.32, 0.72, 0, 1), opacity 220ms ease; }
+}
+
+/* ---------------------------------------------------------------- accessibility */
+@media (prefers-reduced-motion: reduce) {
+  :where(a, button, summary, [role="button"]):active { transform: none; }
+  .animate-pulse, .link-pending { animation: none; opacity: 1; }
+  /* the sheet cross-fades instead of sliding */
+  .sheet-surface { transition: opacity 200ms ease; transform: none !important; }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .masthead { background: var(--background); backdrop-filter: none; }
+}
+@media (prefers-contrast: more) {
+  :root { --color-line: #98a2b3; --color-muted: #344054; }
+  .masthead { background: var(--background); backdrop-filter: none; border-bottom: 1px solid var(--color-ink); }
+  .masthead::after { display: none; }
+}
+@media (prefers-contrast: more) and (prefers-color-scheme: dark) {
+  :root { --color-line: #475467; --color-muted: #cbd5e1; }
+}
+
+/* Dark: the headline card is the brightest thing on the page; deepen it so it leads
+   without glaring. */
+@media (prefers-color-scheme: dark) {
+  .answer-card { background-color: #1b3a6b; }
+}
+
+.sheet-scrim[data-state="closed"] { opacity: 0; }
+.sheet-surface[data-state="closed"] { transform: translateY(100%); }
+@media (min-width: 640px) {
+  .sheet-surface[data-state="closed"] { transform: translateY(8px) scale(0.97); opacity: 0; }
+}
+.sheet-surface.dragging, .sheet-scrim.dragging { transition: none; }
+@media (prefers-reduced-motion: reduce) {
+  .sheet-surface[data-state="closed"] { opacity: 0; }
+}
+
+/* A small control whose tap area reaches ~44px tall without changing how it looks. */
+.hit { position: relative; }
+.hit::after { content: ""; position: absolute; inset: -4px 0; }

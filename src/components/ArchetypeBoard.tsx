@@ -66,7 +66,7 @@ export function ArchetypeBoard({ rows }: { rows: ArchBoardRow[] }) {
                 </div>
               </div>
               <div className="flex shrink-0 items-center gap-2">
-                <span className={`rounded-md px-1.5 py-0.5 text-[11px] font-bold ${STATUS_STYLE[row.status] ?? ""}`}>
+                <span className={`rounded-md px-1.5 py-0.5 text-xs font-bold ${STATUS_STYLE[row.status] ?? ""}`}>
                   {STATUS_LABEL[row.status] ?? row.status}
                 </span>
                 <div className="text-right">

@@ -58,7 +58,7 @@ export function TradeThesisCard({ card }: { card: TradeThesis }) {
         </div>
         <div className="shrink-0 text-right">
           <p className="font-display text-2xl font-bold leading-none text-pos-rb-text">{pp(card.us)}</p>
-          <p className="text-[11px] text-muted">your title odds</p>
+          <p className="text-xs text-muted">your title odds</p>
         </div>
       </header>
 
@@ -114,7 +114,7 @@ export function TradeThesisCard({ card }: { card: TradeThesis }) {
       </p>
       <SitsNote lines={card.sits_for_them} className="mt-1" />
 
-      <p className="mt-2 border-t border-line pt-2 text-[11px] text-muted">
+      <p className="mt-2 border-t border-line pt-2 text-xs text-muted">
         {[...card.ranks.give, ...card.ranks.get]
           .map(
             (r) =>

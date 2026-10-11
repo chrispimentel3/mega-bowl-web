@@ -132,7 +132,7 @@ export function TradeSearchExplorer() {
                   <button
                     key={t}
                     onClick={() => run({ kind: "team", team: t })}
-                    className={`rounded-full border px-3 py-1.5 text-sm transition-colors ${
+                    className={`hit rounded-full border px-3 py-1.5 text-sm transition-colors ${
                       on ? "border-navy bg-navy text-white" : "border-line bg-card text-ink hover:border-navy/40"
                     }`}
                   >
@@ -301,7 +301,7 @@ export function TradeSearchExplorer() {
                       <button
                         key={sh ?? "all"}
                         onClick={() => run(picked, order, twoPlayer, size, sh)}
-                        className={`rounded-full border px-2.5 py-1 transition-colors ${
+                        className={`hit rounded-full border px-2.5 py-1 transition-colors ${
                           shape === sh ? "border-navy bg-navy text-white" : "border-line bg-card text-muted hover:text-ink"
                         }`}
                       >

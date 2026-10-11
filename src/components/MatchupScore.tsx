@@ -48,11 +48,11 @@ export function MatchupScore({ tw, pos, week }: { tw: ThisWeek; pos: string; wee
 
       {/* where it sits on the five steps */}
       <div className="mt-2 flex items-center gap-1.5" role="img" aria-label={`${s.label} matchup`}>
-        <span className="text-[10px] text-muted">Tough</span>
+        <span className="text-xs text-muted">Tough</span>
         {STEPS.map((x, k) => (
           <span key={x.label} className={`h-2 flex-1 rounded-full ${k === i ? s.dot : "bg-ink/10"}`} />
         ))}
-        <span className="text-[10px] text-muted">Great</span>
+        <span className="text-xs text-muted">Great</span>
       </div>
 
       <MatchupTags

@@ -23,11 +23,11 @@ function StarterRow({ s }: { s: LiveStarter }) {
     <div className="flex items-start justify-between gap-2 py-1.5">
       <div className="min-w-0">
         <p className={`truncate text-sm ${s.player ? "text-ink" : "italic text-crimson"}`}>
-          <span className="mr-1.5 inline-block w-8 text-[11px] font-semibold text-muted">{s.slot}</span>
+          <span className="mr-1.5 inline-block w-10 text-xs font-semibold text-muted">{s.slot}</span>
           {s.player ? <PlayerName name={s.player} pos={s.slot === "K" || s.slot === "DEF" ? s.slot : undefined} team={s.nfl_team} /> : "nobody"}
           {s.nfl_team ? <span className="text-xs text-muted"> · {s.nfl_team}</span> : null}
         </p>
-        <p className="truncate pl-[2.4rem] text-[11px] text-muted">
+        <p className="truncate pl-[2.4rem] text-xs text-muted">
           {s.state === "in" ? <span className="mr-1 inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-crimson align-middle" /> : null}
           {status}
           {s.line ? ` · ${s.line}` : ""}
@@ -37,7 +37,7 @@ function StarterRow({ s }: { s: LiveStarter }) {
         <p className={`text-sm font-semibold tabular-nums ${s.state === "pre" ? "text-muted" : "text-ink"}`}>
           {s.state === "pre" ? "—" : f2(s.pts)}
         </p>
-        <p className="text-[11px] tabular-nums text-muted">
+        <p className="text-xs tabular-nums text-muted">
           proj {s.state === "post" ? f2(s.pts) : s.projFinal.toFixed(1)}
           {s.proj_avg && s.state === "pre" ? "*" : ""}
         </p>
@@ -69,7 +69,7 @@ function Matchup({ a, b, myTeam, open }: { a: LiveTeam; b: LiveTeam; myTeam: str
             <Side t={b} mine={b.team === myTeam} winning={!started || b.pts >= a.pts} />
           </div>
         </div>
-        <p className="mt-2 text-center text-[11px] text-muted group-open:hidden">show lineups</p>
+        <p className="mt-2 text-center text-xs text-muted group-open:hidden">show lineups</p>
       </summary>
       <div className="grid gap-4 border-t border-line px-4 pb-4 pt-2 sm:grid-cols-2">
         {[a, b].map((t) => (
@@ -149,7 +149,7 @@ export function LiveScoreboard() {
 
       {games.length > 0 ? (
         <div className="mt-6">
-          <p className="mb-2 text-[11px] uppercase tracking-wide text-muted">NFL games</p>
+          <p className="mb-2 text-xs uppercase tracking-wide text-muted">NFL games</p>
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
             {games.map((g) => (
               <div key={g.id} className="rounded-lg border border-line bg-card px-2.5 py-1.5 text-xs">

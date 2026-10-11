@@ -20,7 +20,7 @@ function Tags({ tags }: { tags: string }) {
       {tags.split(",").filter(Boolean).map((t) => (
         <span
           key={t}
-          className={`rounded-md px-1.5 py-0.5 text-[10px] font-bold ${TAG_STYLES[t] ?? "bg-ink/5 text-muted"}`}
+          className={`rounded-md px-1.5 py-0.5 text-xs font-bold ${TAG_STYLES[t] ?? "bg-ink/5 text-muted"}`}
         >
           {t}
         </span>
@@ -60,7 +60,7 @@ export function WoprTable({ rows, showOwner = false }: { rows: WoprRow[]; showOw
               <p className="font-display text-lg font-bold leading-none text-ink">
                 {row.wopr_anchored.toFixed(3)}
               </p>
-              <p className="text-[11px] text-muted">WOPR</p>
+              <p className="text-xs text-muted">WOPR</p>
             </div>
           </div>
           <Tags tags={row.tags} />

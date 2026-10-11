@@ -16,7 +16,7 @@ export function PosBadge({ pos }: { pos: string }) {
   const color = POS_COLOR[pos] ?? "var(--color-muted)";
   return (
     <span
-      className="inline-flex items-center justify-center rounded-md px-1.5 py-0.5 text-[11px] font-bold tracking-wide"
+      className="inline-flex items-center justify-center rounded-md px-1.5 py-0.5 text-xs font-bold tracking-wide"
       style={{ backgroundColor: color, color: DARK_TEXT.has(pos) ? "#101828" : "#ffffff" }}
     >
       {pos}

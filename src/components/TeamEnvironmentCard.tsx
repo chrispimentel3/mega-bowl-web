@@ -14,7 +14,7 @@ export function TeamEnvironmentCard({ row }: { row: TeamEnvRow }) {
           <p className="font-display text-xl font-bold leading-none text-ink">
             {row.implied_pts != null ? row.implied_pts.toFixed(1) : "—"}
           </p>
-          <p className="text-[11px] text-muted">implied</p>
+          <p className="text-xs text-muted">implied</p>
         </div>
       </div>
       {row.total != null ? (
