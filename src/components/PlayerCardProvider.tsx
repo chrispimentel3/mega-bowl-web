@@ -177,6 +177,8 @@ function Card({ p, onClose }: { p: PlayerDetail; onClose: () => void }) {
 }
 
 const SHEET_MS = 420;   // .sheet-surface transition in globals.css
+const CURVE_START = 0.72 / 0.32;   // initial slope of that cubic-bezier(0.32, 0.72, 0, 1)
+const HANDOFF_MS = [160, 650];     // a thrown sheet's duration range (slow drags take the cap)
 
 /** iOS-style rubber band: the further past the edge, the less it follows. */
 const rubberband = (over: number, dim: number, c = 0.55) => (over * dim * c) / (dim + c * Math.abs(over));
@@ -185,7 +187,7 @@ const project = (v: number, d = 0.998) => ((v / 1000) * d) / (1 - d);
 
 /** Drag the sheet by its handle: 1:1 down, rubber-banded up; on release it dismisses if the
  *  flick would carry it past a third of its height, else springs back. */
-function useSheetDrag(onDismiss: () => void) {
+function useSheetDrag(onDismiss: (ms?: number) => void) {
   const surface = useRef<HTMLDivElement>(null);
   const scrim = useRef<HTMLDivElement>(null);
   const st = useRef<{ y0: number; h: number; trail: { y: number; t: number }[] } | null>(null);
@@ -218,8 +220,33 @@ function useSheetDrag(onDismiss: () => void) {
       const a = recent[0], b = recent[recent.length - 1];
       const v = b.t > a.t ? ((b.y - a.y) / (b.t - a.t)) * 1000 : 0;   // px/s
       const dy = e.clientY - s.y0;
-      set(null);                       // hand back to the CSS transition, from where it is now
-      if (dy + project(v) > s.h / 3) onDismiss();
+      const at = dy >= 0 ? dy : rubberband(dy, s.h);   // where the sheet is on screen now
+      const dismiss = dy + project(v) > s.h / 3;
+      const el = surface.current;
+      // Velocity handoff: the sheet curve starts at CURVE_START x its average speed, so the
+      // duration that makes its first frames match the finger is CURVE_START * distance / v.
+      const dist = dismiss ? s.h - at : Math.abs(at);
+      const speed = dismiss ? v : at > 0 ? -v : v;     // px/s in the direction it's about to go
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      let ms: number | undefined;
+      if (el && !reduce && speed > 0 && dist > 0) {
+        ms = Math.round(Math.min(HANDOFF_MS[1], Math.max(HANDOFF_MS[0], (CURVE_START * dist * 1000) / speed)));
+        el.style.transition = `transform ${ms}ms cubic-bezier(0.32, 0.72, 0, 1)`;
+        setTimeout(() => { el.style.transition = ""; }, ms);
+      }
+      if (dismiss) {
+        set(at);                                       // keep its place, then send it home
+        el?.classList.remove("dragging");
+        scrim.current?.classList.remove("dragging");
+        if (scrim.current) scrim.current.style.opacity = "";
+        if (el) {
+          el.style.transform = "translateY(100%)";
+          setTimeout(() => { el.style.transform = ""; }, ms ?? SHEET_MS);
+        }
+        onDismiss(ms);
+      } else {
+        set(null);                     // back to the open state, from where it is now
+      }
     },
     onPointerCancel: () => {
       st.current = null;
@@ -253,9 +280,9 @@ export function PlayerCardProvider({ children }: { children: React.ReactNode }) 
   // `shown` drives the enter/exit motion; `want` keeps the sheet mounted until it has left
   const [shown, setShown] = useState(false);
   const leaving = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const close = useCallback(() => {
+  const close = useCallback((ms: number = SHEET_MS) => {
     setShown(false);
-    leaving.current = setTimeout(() => setWant(null), SHEET_MS);
+    leaving.current = setTimeout(() => setWant(null), ms);
   }, []);
   useEffect(() => {
     if (!want) return;
@@ -281,7 +308,7 @@ export function PlayerCardProvider({ children }: { children: React.ReactNode }) 
     <Ctx.Provider value={open}>
       {children}
       {want ? (
-        <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-4" onClick={close}>
+        <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-4" onClick={() => close()}>
           <div ref={scrim} data-state={shown ? "open" : "closed"} className="sheet-scrim absolute inset-0 bg-black/50" aria-hidden />
           <div
             ref={surface}
@@ -297,11 +324,11 @@ export function PlayerCardProvider({ children }: { children: React.ReactNode }) 
               <span className="h-1.5 w-10 rounded-full bg-ink/20" />
             </div>
             {player ? (
-              <Card key={player.gsis_id} p={player} onClose={close} />
+              <Card key={player.gsis_id} p={player} onClose={() => close()} />
             ) : (
               <div className="flex items-start justify-between gap-3">
                 <p className="text-sm text-muted">{error ?? `Loading ${want.name}…`}</p>
-                <button onClick={close} aria-label="Close" className="-mr-2 -mt-2 flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-2xl leading-none text-muted hover:bg-ink/5 hover:text-ink">×</button>
+                <button onClick={() => close()} aria-label="Close" className="-mr-2 -mt-2 flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-2xl leading-none text-muted hover:bg-ink/5 hover:text-ink">×</button>
               </div>
             )}
           </div>

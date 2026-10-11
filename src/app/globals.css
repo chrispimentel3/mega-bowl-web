@@ -208,3 +208,51 @@ body {
 /* A small control whose tap area reaches ~44px tall without changing how it looks. */
 .hit { position: relative; }
 .hit::after { content: ""; position: absolute; inset: -4px 0; }
+
+/* ---------------------------------------------------------------- phone tab bar */
+@media (max-width: 639px) {
+  body { padding-bottom: calc(3.5rem + env(safe-area-inset-bottom)); }
+}
+/* its top edge: the same soft fade as the masthead's, pointing up */
+.tabbar::before {
+  content: "";
+  position: absolute;
+  inset: auto 0 100% 0;
+  height: 10px;
+  pointer-events: none;
+  background: linear-gradient(to top, color-mix(in srgb, var(--color-ink) 7%, transparent), transparent);
+}
+/* More grows out of its button (bottom right) and returns there */
+.more-panel {
+  bottom: calc(3.5rem + env(safe-area-inset-bottom) + 0.5rem);
+  transform-origin: bottom right;
+  transition: transform 260ms cubic-bezier(0.32, 0.72, 0, 1), opacity 180ms ease;
+}
+.more-panel[data-state="closed"] { transform: scale(0.9) translateY(6px); opacity: 0; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) {
+  .more-panel { transition: opacity 150ms ease; }
+  .more-panel[data-state="closed"] { transform: none; }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .tabbar, .more-panel { background: var(--background); backdrop-filter: none; }
+}
+@media (prefers-contrast: more) {
+  .tabbar { background: var(--background); backdrop-filter: none; border-top: 1px solid var(--color-ink); }
+  .tabbar::before { display: none; }
+}
+
+/* ---------------------------------------------------------------- masthead collapse
+   Scrolled down, the title steps back (smaller, tighter) so the page gets the room; it
+   returns near the top. Transform and opacity only, except a few px of padding. */
+.mh-title { transform-origin: left center; transition: transform 280ms cubic-bezier(0.32, 0.72, 0, 1); }
+.mh-row { transition: padding 280ms cubic-bezier(0.32, 0.72, 0, 1); }
+.mh-status { transition: opacity 200ms ease; }
+.masthead[data-compact] .mh-title { transform: scale(0.82); }
+.masthead[data-compact] .mh-row { padding-top: 0.25rem; }
+.masthead[data-compact] .mh-status { opacity: 0.7; }
+@media (prefers-reduced-motion: reduce) {
+  .mh-title, .mh-row { transition: none; }
+}
+/* viewport-fit=cover: keep content clear of the notch in landscape */
+.masthead { padding-top: env(safe-area-inset-top); }
+body { padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); }

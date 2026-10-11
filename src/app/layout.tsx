@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Archivo_Narrow } from "next/font/google";
 import { getHeadshots } from "@/lib/headshots";
 import { getSchedule } from "@/lib/schedule";
@@ -22,6 +22,9 @@ export const metadata: Metadata = {
   title: "Mega Bowl",
   description: "Mega Bowl command center — what to do this week, ranked by what it adds to your starting nine.",
 };
+
+// cover: the phone tab bar pads itself by the home-indicator inset (env(safe-area-inset-bottom))
+export const viewport: Viewport = { viewportFit: "cover" };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const [headshots, schedule] = await Promise.all([getHeadshots(), getSchedule()]);
