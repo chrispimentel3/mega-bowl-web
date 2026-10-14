@@ -22,6 +22,8 @@ export type ScoreWeek = {
     ours: number;
     best: number;
     left: number;
+    /** what each projection's lineup would have scored: ours, and the consensus's */
+    shadow?: { ours: number; consensus: number };
     should_have_started: string[];
     calls: Call[];
     bye_calls: string[];
@@ -42,6 +44,7 @@ export type Scorecard = {
     lineup_weeks: number;
     points_left: number;
     perfect_weeks: number;
+    shadow?: { ours: number; consensus: number };
     calls: number;
     calls_right: number;
     projections: ProjSummary;

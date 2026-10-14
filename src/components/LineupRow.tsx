@@ -37,6 +37,9 @@ export function LineupRow({ row }: { row: LineupRowType }) {
             {row.proj_adj?.toFixed(1) ?? "—"}
           </p>
           <p className="text-xs text-muted">proj</p>
+          {row.consensus != null && row.proj_adj != null && Math.abs(row.consensus - row.proj_adj) >= 0.5 ? (
+            <p className="mt-0.5 whitespace-nowrap text-xs text-muted">consensus {row.consensus.toFixed(1)}</p>
+          ) : null}
         </div>
       </div>
 

@@ -11,6 +11,8 @@ export type LineupRow = {
   proj: number | null;
   proj_adj: number | null;
   proj_source: string | null;
+  /** the consensus projection beside ours ("ours" in proj_source) — absent on an older export */
+  consensus?: number | null;
   vegas: number | null;
   vegas_edge: number | null;
   tgt_pct: number | null;
@@ -33,7 +35,8 @@ export type StartSit = {
   kpis: {
     proj_total: number;
     close_calls: number;
-    fp_backed: number;
+    /** our starters the consensus projection would bench — absent on an older export */
+    differs?: string[];
     starters_n: number;
   } | null;
   starters: LineupRow[];

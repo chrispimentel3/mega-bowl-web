@@ -1,4 +1,4 @@
-import { getTrades } from "@/lib/trades";
+import { getTrades, type TradeWindow } from "@/lib/trades";
 import { getTradeValueTrend } from "@/lib/trends";
 import { getActionBoard } from "@/lib/action-board";
 import { Masthead } from "@/components/Masthead";
@@ -20,6 +20,8 @@ export default async function TradesPage() {
     <>
       <Masthead season={ab.season} week={ab.week} nextWeek={ab.next_week} rosterSrc={ab.roster_src} />
       <main className="mx-auto w-full max-w-2xl flex-1 px-4 pb-16 pt-4 sm:max-w-3xl">
+        {tr.windows ? <TradeWindows windows={tr.windows} /> : null}
+
         <SectionHeading title="Evaluate a trade" />
         <TradeEvaluator />
 
@@ -94,6 +96,57 @@ export default async function TradesPage() {
           <p className="mt-6 text-xs text-muted">Rosters: {tr.roster_src}.</p>
         ) : null}
       </main>
+    </>
+  );
+}
+
+function lostText(l: TradeWindow["lost"][number]) {
+  return `${l.name} (${l.ir ? "IR" : l.back && l.back < 19 ? `out until wk ${l.back}` : "out for the season"})`;
+}
+
+function TradeWindows({ windows }: { windows: TradeWindow[] }) {
+  return (
+    <>
+      <SectionHeading title="Trade windows" />
+      {windows.length === 0 ? (
+        <p className="rounded-xl border border-dashed border-line bg-card/50 px-4 py-3 text-sm text-muted">
+          No rival has lost a starter at a position they&apos;re already thin at. When one does, the offers that
+          fill the hole show up here first.
+        </p>
+      ) : (
+        <div className="grid gap-3">
+          {windows.map((w) => (
+            <section key={`${w.team}-${w.pos}`} className="rounded-xl border border-line bg-card px-4 py-3 shadow-sm">
+              <h3 className="font-display text-base font-bold text-ink">
+                {w.team} needs a {w.pos}
+              </h3>
+              <p className="mt-0.5 text-sm text-muted">
+                Lost {w.lost.map(lostText).join(" and ")} — {w.drop.toFixed(1)} pts/wk out of their {w.pos}s, now{" "}
+                {w.gap.toFixed(1)} below the league&apos;s average there.
+              </p>
+              {w.offers.length ? (
+                <ul className="mt-2 divide-y divide-line">
+                  {w.offers.map((o) => (
+                    <li key={o.give.join("+")} className="flex items-baseline justify-between gap-3 py-1.5 text-sm">
+                      <span className="min-w-0 text-ink">
+                        Send <b>{o.give.join(" + ")}</b> for <b>{o.get.join(" + ")}</b>
+                        <span className="text-muted">
+                          {" "}· +{o.d_me.toFixed(1)} pts/wk for you{o.fa_add?.length ? ` (with ${o.fa_add.join(", ")} added)` : ""}
+                        </span>
+                      </span>
+                      <span className="shrink-0 whitespace-nowrap font-semibold text-ink">
+                        {Math.round(o.p_accept * 100)}% <span className="font-normal text-muted">yes</span>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="mt-2 text-sm text-muted">Nothing on your roster fills it and helps you too.</p>
+              )}
+            </section>
+          ))}
+        </div>
+      )}
     </>
   );
 }

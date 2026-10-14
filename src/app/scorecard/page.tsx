@@ -65,6 +65,20 @@ export default async function ScorecardPage() {
               ]}
             />
 
+            {t.shadow ? (
+              <>
+                <SectionHeading title="Our lineups vs the consensus's" />
+                <p className="text-sm text-ink">
+                  Set on our projections, the lineup scored <b>{pts(t.shadow.ours)}</b> over {t.lineup_weeks} weeks;
+                  set on the consensus, <b>{pts(t.shadow.consensus)}</b> —{" "}
+                  {t.shadow.ours >= t.shadow.consensus
+                    ? `${pts(t.shadow.ours - t.shadow.consensus)} more for ours.`
+                    : `${pts(t.shadow.consensus - t.shadow.ours)} more for the consensus.`}{" "}
+                  <span className="text-muted">Start/Sit runs on ours since week 6; this is how we&apos;ll know if it shouldn&apos;t.</span>
+                </p>
+              </>
+            ) : null}
+
             {p && p.n ? (
               <>
                 <SectionHeading title="Projections vs the consensus" />
@@ -102,11 +116,16 @@ export default async function ScorecardPage() {
                   {w.lineup ? (
                     <>
                       <p className="mt-1 text-sm text-ink">
-                        Our lineup scored <b>{pts(w.lineup.ours)}</b> of a possible {pts(w.lineup.best)}
+                        The published lineup scored <b>{pts(w.lineup.ours)}</b> of a possible {pts(w.lineup.best)}
                         {w.lineup.should_have_started.length
                           ? ` — ${w.lineup.should_have_started.join(", ")} should have started.`
                           : " — the best lineup that roster had."}
                       </p>
+                      {w.lineup.shadow ? (
+                        <p className="mt-0.5 text-xs text-muted">
+                          On our projections: {pts(w.lineup.shadow.ours)} · on the consensus: {pts(w.lineup.shadow.consensus)}
+                        </p>
+                      ) : null}
                       {w.lineup.calls.length ? (
                         <ul className="mt-1 divide-y divide-line">
                           {w.lineup.calls.map((c) => (

@@ -26,7 +26,11 @@ export default async function StartSitPage() {
                 items={[
                   { label: `Wk ${ss.next_week} proj total`, value: ss.kpis.proj_total.toFixed(1), sub: "optimal starting 9" },
                   { label: "Close calls", value: String(ss.kpis.close_calls), sub: "within 2 pts" },
-                  { label: "FantasyPros-backed", value: `${ss.kpis.fp_backed}/${ss.kpis.starters_n}`, sub: "real projections" },
+                  {
+                    label: "Vs consensus",
+                    value: ss.kpis.differs ? String(ss.kpis.differs.length) : "—",
+                    sub: ss.kpis.differs?.length ? "starters it would bench" : "same lineup",
+                  },
                 ]}
               />
             </div>
@@ -46,8 +50,9 @@ export default async function StartSitPage() {
             </div>
 
             <p className="mt-6 text-sm text-muted">
-              FantasyPros for the top ten at each position; everyone below that is modelled from
-              his own usage, then adjusted for the matchup. Two estimates within about two points
+              The lineup is set on our own weekly projection — usage, role and this week&apos;s
+              Vegas lines, blended with the consensus of six sites — with the consensus shown beside
+              it. The Scorecard grades both lineups every week. Two estimates within about two points
               of each other is a coin flip, not a recommendation — when it&apos;s that close,
               start the player with the bigger target share and the better team target rank,
               because volume holds up week to week and points do not.
