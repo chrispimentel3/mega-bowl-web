@@ -4,6 +4,7 @@ import type { ThesisSide, TradeThesis } from "@/lib/trades";
 import { PlayerName } from "@/components/PlayerCardProvider";
 import { SitsNote } from "@/components/SitsNote";
 import { ScheduleTag } from "@/components/ScheduleTag";
+import { LogOfferButton } from "@/components/OfferLog";
 
 const pts = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(1)}`;
 const pp = (s: ThesisSide) =>
@@ -124,6 +125,14 @@ export function TradeThesisCard({ card }: { card: TradeThesis }) {
         {" · "}FantasyCalc {Math.round(Math.min(card.fairness, 1 / card.fairness) * 100)}% even
         {card.netted_free_swap ? " · net of the free-agent pickup you could make anyway" : ""}
       </p>
+      <div className="mt-3">
+        <LogOfferButton
+          offer={{
+            partner: card.partner, give: card.give.map((p) => p.name), get: card.get.map((p) => p.name),
+            p_accept: card.p_accept, d_me: card.us.d_ros, d_them: card.them.d_ros, source: "card",
+          }}
+        />
+      </div>
     </article>
   );
 }

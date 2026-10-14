@@ -10,6 +10,7 @@ import { TradeThesisList } from "@/components/TradeThesisList";
 import { PostureChip } from "@/components/PostureChip";
 import { TrendChart } from "@/components/TrendChart";
 import Link from "next/link";
+import { LogOfferButton, YourOffers } from "@/components/OfferLog";
 
 export const revalidate = 3600;
 
@@ -32,6 +33,9 @@ export default async function TradesPage() {
           <>
         <DeadlineLine deadline={tr.deadline} />
         {tr.windows ? <TradeWindows windows={tr.windows} /> : null}
+
+        <SectionHeading title="Your offers" />
+        <YourOffers />
 
         <SectionHeading title="Evaluate a trade" />
         <TradeEvaluator />
@@ -140,7 +144,7 @@ function TradeWindows({ windows }: { windows: TradeWindow[] }) {
               {w.offers.length ? (
                 <ul className="mt-2 divide-y divide-line">
                   {w.offers.map((o) => (
-                    <li key={o.give.join("+")} className="flex items-baseline justify-between gap-3 py-1.5 text-sm">
+                    <li key={o.give.join("+")} className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 py-1.5 text-sm">
                       <span className="min-w-0 text-ink">
                         Send <b>{o.give.join(" + ")}</b> for <b>{o.get.join(" + ")}</b>
                         <span className="text-muted">
@@ -150,6 +154,12 @@ function TradeWindows({ windows }: { windows: TradeWindow[] }) {
                       <span className="shrink-0 whitespace-nowrap font-semibold text-ink">
                         {Math.round(o.p_accept * 100)}% <span className="font-normal text-muted">yes</span>
                       </span>
+                      <div className="w-full">
+                        <LogOfferButton
+                          offer={{ partner: w.team, give: o.give, get: o.get, p_accept: o.p_accept,
+                                   d_me: o.d_me, d_them: o.d_them, source: "window" }}
+                        />
+                      </div>
                     </li>
                   ))}
                 </ul>
