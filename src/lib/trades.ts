@@ -120,6 +120,10 @@ export type Trades = {
   cards?: TradeThesis[];
   /** absent on an older export */
   windows?: TradeWindow[];
+  /** Yahoo's trade end date, YYYY-MM-DD */
+  deadline?: string;
+  /** past the deadline: no offers, no search */
+  closed?: boolean;
   meta?: TradesMeta;
   groups: TradeGroup[];
   roster_src: string | null;

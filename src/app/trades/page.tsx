@@ -20,6 +20,17 @@ export default async function TradesPage() {
     <>
       <Masthead season={ab.season} week={ab.week} nextWeek={ab.next_week} rosterSrc={ab.roster_src} />
       <main className="mx-auto w-full max-w-2xl flex-1 px-4 pb-16 pt-4 sm:max-w-3xl">
+        {tr.closed ? (
+          <div className="rounded-xl border border-line bg-card px-4 py-3 shadow-sm">
+            <p className="font-display text-base font-bold text-ink">Trading is closed</p>
+            <p className="mt-1 text-sm text-muted">
+              The deadline was {fmtDeadline(tr.deadline)}. What&apos;s left is waivers and your{" "}
+              <Link href="/playoffs" className="text-navy hover:underline">playoff plan</Link>.
+            </p>
+          </div>
+        ) : (
+          <>
+        <DeadlineLine deadline={tr.deadline} />
         {tr.windows ? <TradeWindows windows={tr.windows} /> : null}
 
         <SectionHeading title="Evaluate a trade" />
@@ -95,6 +106,8 @@ export default async function TradesPage() {
         {tr.roster_src ? (
           <p className="mt-6 text-xs text-muted">Rosters: {tr.roster_src}.</p>
         ) : null}
+          </>
+        )}
       </main>
     </>
   );
@@ -148,5 +161,24 @@ function TradeWindows({ windows }: { windows: TradeWindow[] }) {
         </div>
       )}
     </>
+  );
+}
+
+function fmtDeadline(d?: string) {
+  if (!d) return "the league's trade end date";
+  return new Date(`${d}T12:00:00`).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+}
+
+function DeadlineLine({ deadline }: { deadline?: string }) {
+  if (!deadline) return null;
+  // Eastern calendar days, same clock as Yahoo's
+  const today = new Date(new Date().toLocaleString("en-US", { timeZone: "America/New_York" }));
+  const end = new Date(`${deadline}T23:59:59`);
+  const days = Math.max(0, Math.ceil((end.getTime() - today.getTime()) / 86_400_000) - 1);
+  return (
+    <p className={`mb-1 text-sm ${days <= 7 ? "font-semibold text-crimson" : "text-muted"}`}>
+      Trade deadline {fmtDeadline(deadline)} ·{" "}
+      {days === 0 ? "today is the last day" : `${days} day${days === 1 ? "" : "s"} left`}
+    </p>
   );
 }

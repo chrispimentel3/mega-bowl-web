@@ -16,6 +16,7 @@ const GROUPS = [
     links: [
       { href: "/start-sit", label: "Lineup" },
       { href: "/matchups", label: "Matchups" },
+      { href: "/playoffs", label: "Playoff plan" },
     ],
   },
   {
