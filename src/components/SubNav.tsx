@@ -33,6 +33,7 @@ const GROUPS = [
       { href: "/usage", label: "Usage trends" },
       { href: "/league", label: "The league" },
       { href: "/history", label: "History" },
+      { href: "/scorecard", label: "Scorecard" },
     ],
   },
   {

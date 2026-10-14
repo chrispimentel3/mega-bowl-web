@@ -15,7 +15,7 @@ export const SECTIONS = [
   {
     href: "/roster",
     label: "Season",
-    matches: ["/roster", "/axe", "/usage", "/league", "/history"],
+    matches: ["/roster", "/axe", "/usage", "/league", "/history", "/scorecard"],
   },
   {
     href: "/players",
