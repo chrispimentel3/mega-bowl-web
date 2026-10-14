@@ -1,4 +1,4 @@
-import { getHistory } from "@/lib/history";
+import { getHistory, type HabitRow } from "@/lib/history";
 import { getLeague } from "@/lib/league";
 import { getActionBoard } from "@/lib/action-board";
 import { Masthead } from "@/components/Masthead";
@@ -11,10 +11,7 @@ export const revalidate = 3600;
 export default async function HistoryPage() {
   const [h, lg, ab] = await Promise.all([getHistory(), getLeague(), getActionBoard()]);
   const champs = h.seasons.filter((s) => s.champion);
-  // a team seen in one season and never a champion says nothing across years
-  const longRunning = h.all_time.rows.filter((r) => r.seasons >= 2 || r.titles > 0);
-  const hidden = h.all_time.rows.length - longRunning.length;
-
+  const habits = h.habits ?? [];
   return (
     <>
       <Masthead season={ab.season} week={ab.week} nextWeek={ab.next_week} rosterSrc={ab.roster_src} />
@@ -68,12 +65,12 @@ export default async function HistoryPage() {
               </>
             ) : null}
 
-            {longRunning.length ? (
+            {h.all_time.rows.length ? (
               <>
                 <SectionHeading title="All-time" />
                 <SimpleTable
                   rowKey={(r) => `${r.seat ?? "n"}-${r.team}`}
-                  rows={longRunning}
+                  rows={h.all_time.rows}
                   myTeam={lg.my_team}
                   columns={[
                     { key: "team", label: "Team" },
@@ -85,9 +82,40 @@ export default async function HistoryPage() {
                   ]}
                 />
                 <p className="mt-2 text-xs text-muted">
-                  Old standings list team names, not managers, so a team is one row only while it kept its
-                  name — a renamed team starts a new row.
-                  {hidden ? ` ${hidden} teams that played one season under a name and never won are not listed.` : ""}
+                  One row per manager, across team renames. Managers who have left are listed under their last
+                  team name.
+                </p>
+              </>
+            ) : null}
+
+            {habits.length ? (
+              <>
+                <SectionHeading title="How each manager plays" />
+                <SimpleTable
+                  rowKey={(r) => r.team}
+                  rows={habits}
+                  myTeam={lg.my_team}
+                  columns={[
+                    { key: "team", label: "Team" },
+                    {
+                      key: "faab_aggression", label: "Waiver bids", align: "right",
+                      format: (v) => (v == null ? "—" : `${(v as number).toFixed(1)}×`),
+                    },
+                    {
+                      key: "trades_per_season", label: "Trades / yr", align: "right",
+                      format: (v) => (v == null ? "—" : (v as number).toFixed(1)),
+                    },
+                    {
+                      key: "lean", label: "Pays up for", format: (v) =>
+                        (v as HabitRow["lean"]).filter((l) => l.mult > 1).map((l) => l.pos).join(", ") || "—",
+                    },
+                  ]}
+                />
+                <p className="mt-2 text-xs text-muted">
+                  From every transaction since 2020. Waiver bids compare what a manager bid with what everyone else
+                  bid on the same player (1.0× is the league). The waiver board prices rival bids with it, and the trade
+                  odds lean toward managers who actually trade. &ldquo;Pays up for&rdquo; is where their waiver money
+                  goes against the league&apos;s.
                 </p>
               </>
             ) : null}

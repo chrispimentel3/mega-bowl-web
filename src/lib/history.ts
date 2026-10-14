@@ -40,11 +40,28 @@ export type AllTimeRow = {
   mine: boolean;
 };
 
+/** How each manager plays, fitted from six seasons of transactions — what the waiver and trade models assume */
+export type HabitRow = {
+  team: string;
+  manager: string | null;
+  seat: number | null;
+  mine: boolean;
+  seasons: number;
+  trades: number;
+  trades_per_season: number | null;
+  trade_offset: number;
+  /** null until they've made 5 contested bids */
+  faab_aggression: number | null;
+  contested_bids: number;
+  lean: { pos: string; mult: number }[];
+};
+
 export type History = {
   available: boolean;
   seasons: HistorySeason[];
   records: HistoryRecord[];
   all_time: { rows: AllTimeRow[]; named_only: number };
+  habits?: HabitRow[];
   /** seasons the league has played that haven't been pulled from Yahoo yet */
   missing: number[];
 };
