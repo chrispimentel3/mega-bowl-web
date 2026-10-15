@@ -35,16 +35,6 @@ export type XwinsRow = {
   cv: number;
 };
 
-export type RosterStrengthRow = {
-  power_rank: number;
-  team: string;
-  starters_pg: number;
-  bench_pg: number;
-  rank: number;
-  luck: number;
-  matched: number;
-};
-
 export type WeeklyResultRow = {
   team: string;
   opponent: string;
@@ -60,7 +50,6 @@ export type League = {
   playoff_odds: OddsRow[];
   standings: { available: boolean; source: string | null; rows: StandingsRow[] };
   power_xwins: { available: boolean; through_week: number | null; rows: XwinsRow[] };
-  power_roster_strength: RosterStrengthRow[];
   transactions: Record<string, unknown>[];
   weekly_results: { available: boolean; source: string | null; rows: WeeklyResultRow[] };
 };

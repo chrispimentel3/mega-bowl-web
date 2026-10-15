@@ -55,6 +55,4 @@ async function getTrend(remoteUrl: string | undefined, filename: string): Promis
   }
 }
 
-export const getWoprTrend = () => getTrend(process.env.WOPR_TREND_URL, "wopr_trend.json");
-export const getArchetypeTrend = () => getTrend(process.env.ARCHETYPE_TREND_URL, "archetype_trend.json");
 export const getTradeValueTrend = () => getTrend(process.env.TRADE_VALUE_TREND_URL, "trade_value_trend.json");

@@ -1,18 +1,15 @@
 import { getRoster } from "@/lib/roster";
-import { getRoutes } from "@/lib/routes";
 import { getActionBoard } from "@/lib/action-board";
 import { Masthead } from "@/components/Masthead";
 import { AnswerCard } from "@/components/AnswerCard";
 import { KpiRow } from "@/components/KpiRow";
 import { SectionHeading } from "@/components/SectionHeading";
 import { RosterPlayerRow } from "@/components/RosterPlayerRow";
-import { RouteTableRow } from "@/components/RouteTableRow";
-import { RouteScatterChart } from "@/components/RouteScatterChart";
 
 export const revalidate = 3600;
 
 export default async function RosterPage() {
-  const [roster, routes, ab] = await Promise.all([getRoster(), getRoutes(), getActionBoard()]);
+  const [roster, ab] = await Promise.all([getRoster(), getActionBoard()]);
 
   return (
     <>
@@ -44,29 +41,6 @@ export default async function RosterPage() {
             </div>
           </>
         )}
-
-        {routes.available ? (
-          <>
-            <SectionHeading title="Route usage" />
-            <p className="mb-3 text-sm text-muted">
-              Target share tells you how big his slice is. These tell you how good the slice is:
-              how often he&apos;s on the field, and how often it moves the chains. Dashed line is
-              the {Math.round(routes.threshold * 100)}% league-winner rate for a WR.
-            </p>
-            {routes.scatter.length > 0 ? (
-              <RouteScatterChart points={routes.scatter} threshold={routes.threshold} />
-            ) : null}
-            <div className="mt-4 grid gap-2 sm:grid-cols-2">
-              {routes.table.map((row) => (
-                <RouteTableRow key={row.player} row={row} />
-              ))}
-            </div>
-            <p className="mt-3 text-xs text-muted">
-              Routes are estimated from snap share × team dropbacks. Under {routes.min_routes} routes
-              in the window, treat the rates as noise.
-            </p>
-          </>
-        ) : null}
       </main>
     </>
   );

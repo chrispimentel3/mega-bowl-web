@@ -5,33 +5,13 @@ import { useEffect, useRef } from "react";
 
 /** The site's top-level sections: tabs on wide screens, the bottom bar on phones. */
 export const SECTIONS = [
-  { href: "/", label: "This Week", matches: ["/", "/digest", "/live"] },
+  { href: "/", label: "This Week", matches: ["/"] },
   { href: "/start-sit", label: "Lineup & Matchups", matches: ["/start-sit", "/matchups", "/playoffs"] },
-  {
-    href: "/waivers",
-    label: "Waivers & Trades",
-    matches: ["/waivers", "/trades", "/wopr", "/archetypes"],
-  },
-  {
-    href: "/roster",
-    label: "Season",
-    matches: ["/roster", "/axe", "/usage", "/league", "/history", "/scorecard"],
-  },
-  {
-    href: "/players",
-    label: "Player Lookup",
-    matches: ["/players", "/rankings", "/compare", "/chart", "/glossary", "/news"],
-  },
-  {
-    href: "/ask",
-    label: "Data Search",
-    matches: ["/ask", "/downloads"],
-  },
-  {
-    href: "/logic",
-    label: "Logic",
-    matches: ["/logic"],
-  },
+  { href: "/waivers", label: "Waivers & Trades", matches: ["/waivers", "/trades"] },
+  { href: "/roster", label: "Season", matches: ["/roster", "/league", "/history", "/scorecard"] },
+  { href: "/players", label: "Player Lookup", matches: ["/players", "/rankings", "/compare", "/chart", "/news"] },
+  { href: "/ask", label: "Data Search", matches: ["/ask", "/downloads"] },
+  { href: "/logic", label: "How it works", matches: ["/logic"] },
 ];
 
 export const isActive = (pathname: string, matches: string[]) =>

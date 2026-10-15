@@ -7,13 +7,6 @@ import { useActiveIntoView, Pending } from "./navHelpers";
 const GROUPS = [
   {
     links: [
-      { href: "/", label: "What to do" },
-      { href: "/digest", label: "Weekly digest" },
-      { href: "/live", label: "Live scores" },
-    ],
-  },
-  {
-    links: [
       { href: "/start-sit", label: "Lineup" },
       { href: "/matchups", label: "Matchups" },
       { href: "/playoffs", label: "Playoff plan" },
@@ -23,15 +16,11 @@ const GROUPS = [
     links: [
       { href: "/waivers", label: "Waivers" },
       { href: "/trades", label: "Trades" },
-      { href: "/wopr", label: "Receiving opportunity" },
-      { href: "/archetypes", label: "Blueprint fit" },
     ],
   },
   {
     links: [
       { href: "/roster", label: "My roster" },
-      { href: "/axe", label: "Points vs opportunity" },
-      { href: "/usage", label: "Usage trends" },
       { href: "/league", label: "The league" },
       { href: "/history", label: "History" },
       { href: "/scorecard", label: "Scorecard" },
@@ -43,7 +32,6 @@ const GROUPS = [
       { href: "/rankings", label: "Rankings" },
       { href: "/compare", label: "Compare" },
       { href: "/chart", label: "Chart builder" },
-      { href: "/glossary", label: "Glossary" },
       { href: "/news", label: "News" },
     ],
   },

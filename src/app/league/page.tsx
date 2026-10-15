@@ -1,4 +1,5 @@
 import { getLeague } from "@/lib/league";
+import { getDigest } from "@/lib/digest";
 import { getActionBoard } from "@/lib/action-board";
 import { Masthead } from "@/components/Masthead";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -15,7 +16,11 @@ const num1 = (v: unknown) => (v == null ? "—" : (v as number).toFixed(1));
 const signed = (v: unknown) => (v == null ? "—" : `${(v as number) >= 0 ? "+" : ""}${(v as number).toFixed(0)}`);
 
 export default async function LeaguePage() {
-  const [lg, ab] = await Promise.all([getLeague(), getActionBoard()]);
+  const [lg, ab, d] = await Promise.all([getLeague(), getActionBoard(), getDigest()]);
+  // the change since the last finished week, from the digest's saved runs
+  const moved = d.available && d.odds_movers?.available ? d.odds_movers : null;
+  const change = new Map((moved?.rows ?? []).map((r) => [r.team, r.delta]));
+  const odds = lg.playoff_odds.map((r) => ({ ...r, change: change.get(r.team) ?? null }));
   const myOdds = lg.playoff_odds.find((r) => r.team === lg.my_team);
   const myStanding = lg.standings.rows.find((r) => r.team === lg.my_team);
 
@@ -39,11 +44,17 @@ export default async function LeaguePage() {
             ) : null}
             <SimpleTable
               rowKey={(r) => r.team}
-              rows={lg.playoff_odds}
+              rows={odds}
               myTeam={lg.my_team}
               columns={[
                 { key: "team", label: "Team" },
                 { key: "p_playoffs", label: "Playoffs", align: "right", format: pct },
+                ...(moved
+                  ? [{
+                      key: "change" as const, label: `Since wk ${moved.from_week}`, align: "right" as const,
+                      format: (v: unknown) => (v == null ? "—" : `${(v as number) >= 0 ? "+" : "−"}${Math.abs((v as number) * 100).toFixed(0)}`),
+                    }]
+                  : []),
                 { key: "p_bye", label: "Bye", align: "right", format: pct },
                 { key: "p_title", label: "Title", align: "right", format: pct },
                 { key: "mean_seed", label: "Avg seed", align: "right", format: num1 },
@@ -115,29 +126,6 @@ export default async function LeaguePage() {
               ]}
             />
             <p className="mt-2 text-xs text-muted">Through week {lg.power_xwins.through_week}.</p>
-          </>
-        ) : null}
-
-        {lg.power_roster_strength.length > 0 ? (
-          <>
-            <SectionHeading title="Power rankings — roster strength" />
-            <p className="mb-3 text-sm text-muted">
-              Every roster scored by what its best legal lineup is worth per game, ignoring record
-              entirely. Luck is the gap between where a team sits and how good it is.
-            </p>
-            <SimpleTable
-              rowKey={(r) => r.team}
-              rows={lg.power_roster_strength}
-              myTeam={lg.my_team}
-              columns={[
-                { key: "power_rank", label: "#" },
-                { key: "team", label: "Team" },
-                { key: "starters_pg", label: "Lineup", align: "right", format: num1 },
-                { key: "bench_pg", label: "Bench", align: "right", format: num1 },
-                { key: "rank", label: "Record #", align: "right" },
-                { key: "luck", label: "Luck", align: "right", format: signed },
-              ]}
-            />
           </>
         ) : null}
 
