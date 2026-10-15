@@ -39,6 +39,27 @@ export type Playoffs = {
     se: number;
     rival_title_gain: number;
   }[];
+  /** this week's results, by how far each moves your playoff odds (title simulation) */
+  rooting?: {
+    week: number;
+    mine: {
+      opp: string;
+      p_win: number;
+      playoffs_if_win: number;
+      playoffs_if_lose: number;
+      title_if_win: number;
+      title_if_lose: number;
+    } | null;
+    games: {
+      root_for: string;
+      against: string;
+      d_playoffs: number;
+      se: number;
+      d_title: number;
+      p_root_wins: number;
+      noise: boolean;
+    }[];
+  } | null;
 };
 
 const EMPTY: Playoffs = { available: false };
