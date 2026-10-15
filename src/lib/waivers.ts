@@ -84,6 +84,19 @@ export type Waivers = {
   };
   blind_board: WaiverBlindRow[];
   streamers?: Streamers | null;
+  /** role changes the books priced this week (mega/prop_moves.py) — free agents and yours */
+  prop_movers?: PropMover[];
+};
+
+export type PropMover = {
+  gsis_id: string;
+  player: string;
+  pos: string;
+  team: string | null;
+  week: number;
+  kind: "UP" | "NEW";
+  why: string[];
+  owner: string;
 };
 
 const REMOTE_URL = process.env.WAIVERS_URL;

@@ -1,6 +1,9 @@
-import { getWaivers } from "@/lib/waivers";
+import { getWaivers, type PropMover } from "@/lib/waivers";
+import { PosBadge } from "@/components/PosBadge";
+import { PlayerName } from "@/components/PlayerCardProvider";
 import { getActionBoard } from "@/lib/action-board";
 import { Masthead } from "@/components/Masthead";
+import { SectionHeading } from "@/components/SectionHeading";
 import { AnswerCard } from "@/components/AnswerCard";
 import { KpiRow } from "@/components/KpiRow";
 import { WaiverLanes } from "@/components/WaiverLanes";
@@ -75,6 +78,8 @@ export default async function WaiversPage() {
 
             <StreamerBoard streamers={wv.streamers} />
 
+            {wv.prop_movers?.length ? <PropMovers movers={wv.prop_movers} /> : null}
+
             {wv.trade_chips.length ? (
               <p className="mt-6 text-sm text-muted">
                 <b>Trade chips</b> — no fit on your roster, but two or more teams would start them:{" "}
@@ -125,5 +130,38 @@ function EmptyNote({ text }: { text: string }) {
     <div className="mt-4 rounded-xl border border-dashed border-line bg-card/50 px-4 py-3 text-sm text-muted">
       {text}
     </div>
+  );
+}
+
+function PropMovers({ movers }: { movers: PropMover[] }) {
+  return (
+    <>
+      <SectionHeading title="The books moved these" />
+      <p className="mb-2 text-sm text-muted">
+        Sportsbooks re-price a player&apos;s workload when his role changes — usually days before the rankings do.
+        A bigger line, or his first one, on catches or yards.
+      </p>
+      <ul className="divide-y divide-line rounded-xl border border-line bg-card px-4 shadow-sm">
+        {movers.map((m) => (
+          <li key={m.gsis_id} className="py-2.5 text-sm">
+            <div className="flex items-baseline justify-between gap-3">
+              <span className="flex min-w-0 items-center gap-2 text-ink">
+                <PosBadge pos={m.pos} />
+                <PlayerName name={m.player} pos={m.pos} className="font-semibold text-ink" />
+                <span className="text-muted">{m.team}</span>
+              </span>
+              <span className={`shrink-0 whitespace-nowrap text-xs font-semibold ${m.owner === "FA" ? "text-pos-rb-text" : "text-muted"}`}>
+                {m.owner === "FA" ? "free agent" : "yours"}
+              </span>
+            </div>
+            <p className="mt-0.5 text-xs text-muted">{m.why.join(" · ")}</p>
+          </li>
+        ))}
+      </ul>
+      <p className="mt-2 text-xs text-muted">
+        There&apos;s no prop history from past seasons to test this on, so the Scorecard grades each week&apos;s
+        movers against what they score.
+      </p>
+    </>
   );
 }

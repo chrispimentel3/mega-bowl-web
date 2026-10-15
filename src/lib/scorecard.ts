@@ -52,6 +52,8 @@ export type Scorecard = {
     waivers_right: number;
   } | null;
   waivers: WaiverGrade[];
+  /** the week's prop movers (the books raised his role) and what they then scored */
+  movers?: { week: number; player: string; pos: string; kind: "UP" | "NEW"; pts: number; before: number | null }[];
 };
 
 const EMPTY: Scorecard = { available: false, through_week: 0, weeks: [], totals: null, waivers: [] };

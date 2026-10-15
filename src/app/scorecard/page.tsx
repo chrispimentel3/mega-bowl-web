@@ -168,6 +168,29 @@ export default async function ScorecardPage() {
               </>
             ) : null}
 
+            {sc.movers?.length ? (
+              <>
+                <SectionHeading title="When the books moved a role" />
+                <p className="mb-2 text-sm text-muted">
+                  {sc.movers.filter((m) => m.before != null && m.pts > m.before).length} of{" "}
+                  {sc.movers.filter((m) => m.before != null).length} players the books raised then beat their
+                  average from before.
+                </p>
+                <ul className="divide-y divide-line rounded-xl border border-line bg-card px-4 shadow-sm">
+                  {sc.movers.map((m) => (
+                    <li key={`${m.week}-${m.player}`} className="flex items-baseline justify-between gap-3 py-2 text-sm">
+                      <span className="min-w-0 text-ink">
+                        Wk {m.week}: <b>{m.player}</b> <span className="text-muted">{m.pos}</span>
+                      </span>
+                      <span className="shrink-0 whitespace-nowrap text-xs text-muted">
+                        {pts(m.pts)} pts{m.before != null ? ` · was ${pts(m.before)}` : ""}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : null}
+
             <p className="mt-6 text-xs text-muted">
               Skill positions only; kickers and defenses aren&apos;t in the stats this grades from. Insurance and
               bye-cover pickups aren&apos;t graded on points. Playoff and title odds get graded when the season ends.
