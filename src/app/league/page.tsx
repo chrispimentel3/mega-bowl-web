@@ -61,11 +61,10 @@ export default async function LeaguePage() {
               ]}
             />
             <p className="mt-2 text-xs text-muted">
-              6,000 simulated seasons. Each team&apos;s own points-per-week estimate carries its
-              own uncertainty — wide early in the season, narrowing as more games come in — on
-              top of this league&apos;s week-to-week scoring spread. See{" "}
+              6,000 simulated seasons, every starter&apos;s score drawn from his own projection — the
+              same simulation that prices trades and the rooting guide. See{" "}
               <Link href="/logic#playoff_odds" className="text-navy hover:underline">
-                Logic → why these move so much early in the season
+                How it works → the playoff odds
               </Link>
               .
             </p>
