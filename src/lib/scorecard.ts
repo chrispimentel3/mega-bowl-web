@@ -52,6 +52,8 @@ export type Scorecard = {
     waivers_right: number;
   } | null;
   waivers: WaiverGrade[];
+  /** matchup tags graded: what tagged players scored against their own average before that week */
+  matchups?: Record<"good" | "neutral" | "tough", { n: number; vs_avg_pct: number }>;
   /** this season's graded weeks re-weighting ours vs the consensus by position */
   live_blend?: { weights: Record<string, number>; tested: number; mae_gain?: number; active: boolean };
   /** the week's prop movers (the books raised his role) and what they then scored */

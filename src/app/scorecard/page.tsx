@@ -168,6 +168,28 @@ export default async function ScorecardPage() {
               </>
             ) : null}
 
+            {sc.matchups && Object.keys(sc.matchups).length ? (
+              <>
+                <SectionHeading title="Matchup tags" />
+                <SimpleTable
+                  rowKey={(r) => r.tag}
+                  rows={(["good", "neutral", "tough"] as const)
+                    .filter((b) => sc.matchups?.[b])
+                    .map((b) => ({ tag: b === "good" ? "Good (+5% or better)" : b === "tough" ? "Tough (−5% or worse)" : "Neutral", ...sc.matchups![b] }))}
+                  columns={[
+                    { key: "tag", label: "Tagged" },
+                    { key: "n", label: "Player-weeks", align: "right" },
+                    { key: "vs_avg_pct", label: "Vs his average", align: "right",
+                      format: (v) => `${(v as number) > 0 ? "+" : ""}${(v as number).toFixed(1)}%` },
+                  ]}
+                />
+                <p className="mt-2 text-xs text-muted">
+                  Every ranked player&apos;s published matchup, against what he then scored relative to his own average
+                  before that week. A good tag should land above the neutral row, a tough one below it.
+                </p>
+              </>
+            ) : null}
+
             {sc.live_blend && Object.keys(sc.live_blend.weights).length ? (
               <>
                 <SectionHeading title="Learning from this season" />
