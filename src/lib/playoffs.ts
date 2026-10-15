@@ -28,6 +28,17 @@ export type Playoffs = {
     by_week: { week: number; gain: number; opp: string | null; tag: PlayoffStarter["tag"] }[];
   }[];
   handcuffs?: { starter: string; cuff: string; clear_two: boolean; owner: string; mine: boolean }[];
+  /** free agents worth holding to keep from the rival who'd start him in the playoffs */
+  blocks?: {
+    name: string;
+    pos: string;
+    team: string | null;
+    rival: string;
+    rival_gain: number;
+    my_title_drop: number;
+    se: number;
+    rival_title_gain: number;
+  }[];
 };
 
 const EMPTY: Playoffs = { available: false };

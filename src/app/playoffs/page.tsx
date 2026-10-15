@@ -147,6 +147,35 @@ export default async function PlayoffsPage() {
               roster spot is worth spending on him now.
             </p>
 
+            {pp.blocks?.length ? (
+              <>
+                <SectionHeading title="Keep away from rivals" />
+                <ul className="divide-y divide-line rounded-xl border border-line bg-card px-4 shadow-sm">
+                  {pp.blocks.map((b) => (
+                    <li key={b.name} className="py-2.5 text-sm">
+                      <div className="flex items-baseline justify-between gap-3">
+                        <span className="flex min-w-0 items-center gap-2 text-ink">
+                          <PosBadge pos={b.pos} />
+                          <b>{b.name}</b> <span className="text-muted">{b.team}</span>
+                        </span>
+                        <span className="shrink-0 whitespace-nowrap font-semibold text-crimson">
+                          −{(b.my_title_drop * 100).toFixed(1)}pp
+                        </span>
+                      </div>
+                      <p className="mt-0.5 text-xs text-muted">
+                        If {b.rival} adds him: +{b.rival_gain.toFixed(1)} pts to their playoff lineup, your title odds{" "}
+                        −{(b.my_title_drop * 100).toFixed(1)} points (±{(b.se * 100).toFixed(1)}).
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-2 text-xs text-muted">
+                  Each is handed, in the title simulation, to the rival whose playoff lineup he helps most — the
+                  likeliest to claim him. Only drops beyond the simulation&apos;s own noise are shown.
+                </p>
+              </>
+            ) : null}
+
             {pp.handcuffs?.length ? (
               <>
                 <SectionHeading title="Handcuffs" />
