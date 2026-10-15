@@ -1,27 +1,44 @@
+import Link from "next/link";
 import { getActionBoard } from "@/lib/action-board";
 import { getDigest } from "@/lib/digest";
+import { getStartSit } from "@/lib/start-sit";
+import { getPlayoffs } from "@/lib/playoffs";
+import { getTrades } from "@/lib/trades";
 import { Masthead } from "@/components/Masthead";
-import { AnswerCard } from "@/components/AnswerCard";
 import { BasisNote } from "@/components/BasisNote";
-import { SectionHeading } from "@/components/SectionHeading";
-import { PlayerCard } from "@/components/PlayerCard";
-import { WaiverCard } from "@/components/WaiverCard";
-import { TradeCard } from "@/components/TradeCard";
 
 export const revalidate = 3600;
 
+const pct = (x: number) => `${Math.round(x * 100)}%`;
+
+/** One decision, answered in a line, with the page that has the rest. */
+function Answer({ label, href, line, sub }: { label: string; href: string; line: React.ReactNode; sub?: React.ReactNode }) {
+  return (
+    <Link
+      href={href}
+      className="group block rounded-xl border border-line bg-card px-4 py-3 shadow-sm transition-colors hover:border-navy/40"
+    >
+      <div className="flex items-baseline justify-between gap-3">
+        <span className="text-xs font-bold uppercase tracking-wide text-muted">{label}</span>
+        <span className="shrink-0 text-xs text-navy group-hover:underline">More →</span>
+      </div>
+      <p className="mt-1 text-sm font-medium text-ink">{line}</p>
+      {sub ? <p className="mt-0.5 text-xs text-muted">{sub}</p> : null}
+    </Link>
+  );
+}
+
 export default async function Home() {
-  const [ab, d] = await Promise.all([getActionBoard(), getDigest()]);
+  const [ab, d, ss, pp, tr] = await Promise.all([getActionBoard(), getDigest(), getStartSit(), getPlayoffs(), getTrades()]);
   const r = d.available ? d.my_result : null;
+  const claim = ab.waivers.find((w) => w.bid != null) ?? null;
+  const trade = ab.trades[0] ?? null;
+  const mine = pp.rooting?.mine ?? null;
+  const root = (pp.rooting?.games ?? []).filter((g) => !g.noise);
 
   return (
     <>
-      <Masthead
-        season={ab.season}
-        week={ab.week}
-        nextWeek={ab.next_week}
-        rosterSrc={ab.roster_src}
-      />
+      <Masthead season={ab.season} week={ab.week} nextWeek={ab.next_week} rosterSrc={ab.roster_src} />
       <main className="mx-auto w-full max-w-2xl flex-1 px-4 pb-16 pt-4 sm:max-w-3xl">
         {r ? (
           <details className="group mb-4 rounded-xl border border-line bg-card px-4 py-3 shadow-sm">
@@ -49,85 +66,65 @@ export default async function Home() {
           </details>
         ) : null}
 
-        <AnswerCard headline={ab.headline} subhead={ab.subhead} />
-
-        <div className="mt-4">
-          <BasisNote basis={ab.basis} />
+        <h1 className="font-display text-xl font-bold text-ink">Week {ab.next_week}</h1>
+        <div className="mt-3 grid gap-3">
+          <Answer
+            label="Lineup"
+            href="/start-sit"
+            line={ss.available ? ss.headline : "Projections aren't available right now."}
+            sub={ss.available ? ss.subhead : undefined}
+          />
+          <Answer
+            label="Waivers"
+            href="/waivers"
+            line={
+              claim
+                ? <>Claim <b>{claim.player}</b> ({claim.pos}) for ${claim.bid}{claim.drop ? `, drop ${claim.drop}` : ""}</>
+                : "Nothing on the wire improves your lineup. Keep the budget."
+            }
+            sub={claim?.why}
+          />
+          <Answer
+            label="Trades"
+            href="/trades"
+            line={
+              tr.closed
+                ? "The trade deadline has passed."
+                : trade
+                  ? <>Offer {trade.give} to <b>{trade.partner}</b> for {trade.get}</>
+                  : "No offer the league would take raises your title odds right now."
+            }
+            sub={
+              !tr.closed && trade && trade.p_accept != null
+                ? `${pct(trade.p_accept)} likely to be accepted${trade.d_me != null ? ` · +${trade.d_me.toFixed(1)} pts a week` : ""}`
+                : undefined
+            }
+          />
+          {mine ? (
+            <Answer
+              label="Playoffs"
+              href="/playoffs"
+              line={
+                <>
+                  vs {mine.opp}: <b>{pct(mine.playoffs_if_win)}</b> playoff odds with a win, {pct(mine.playoffs_if_lose)} with
+                  a loss
+                </>
+              }
+              sub={
+                root.length
+                  ? `Also root for ${root.slice(0, 2).map((g) => g.root_for).join(" and ")}.`
+                  : `${pct(mine.p_win)} to win.`
+              }
+            />
+          ) : null}
         </div>
 
-        {ab.xfp_available ? (
-          <>
-            <SectionHeading title="Shop these — points are ahead of the work" tone="sell" />
-            {ab.shop.length === 0 ? (
-              <EmptyNote text="Nobody on your roster is meaningfully outscoring his opportunity right now." />
-            ) : (
-              <div className="grid gap-3 sm:grid-cols-2">
-                {ab.shop.map((row) => (
-                  <PlayerCard key={row.player} row={row} tone="sell" />
-                ))}
-              </div>
-            )}
-            {ab.shop.length > 0 ? (
-              <p className="mt-2 text-sm text-muted">
-                Their value to a leaguemate is at its peak. Sell the name, not the role.
-              </p>
-            ) : null}
-
-            <SectionHeading title="Hold these — the work is there, the points aren't yet" tone="buy" />
-            {ab.hold.length === 0 ? (
-              <EmptyNote text="Nobody is notably underperforming his opportunity." />
-            ) : (
-              <div className="grid gap-3 sm:grid-cols-2">
-                {ab.hold.map((row) => (
-                  <PlayerCard key={row.player} row={row} tone="buy" />
-                ))}
-              </div>
-            )}
-            {ab.hold.length > 0 ? (
-              <p className="mt-2 text-sm text-muted">
-                Don&apos;t sell into a cold streak — the usage says the points are coming.
-              </p>
-            ) : null}
-          </>
-        ) : (
-          <div className="mt-8">
-            <EmptyNote text="Expected-points data isn't available yet this season, so sell/hold flags are off." />
+        {ab.basis ? (
+          <div className="mt-4">
+            <BasisNote basis={ab.basis} />
           </div>
-        )}
-
-        <SectionHeading title="Best waiver claims" />
-        {ab.waivers.length === 0 ? (
-          <EmptyNote text="Nothing on the wire improves your starting lineup this week. Your budget keeps." />
-        ) : (
-          <div className="grid gap-3 sm:grid-cols-2">
-            {ab.waivers.map((row) => (
-              <WaiverCard key={row.player} row={row} />
-            ))}
-          </div>
-        )}
-
-        <SectionHeading title="Best trades to offer" />
-        {ab.trades.length === 0 ? (
-          <EmptyNote text="Nothing clears the fairness filter right now." />
-        ) : (
-          <div className="grid gap-3 sm:grid-cols-2">
-            {ab.trades.map((row, i) => (
-              <TradeCard key={`${row.partner}-${i}`} row={row} />
-            ))}
-          </div>
-        )}
+        ) : null}
       </main>
-      <footer className="border-t border-line px-4 py-4 text-center text-xs text-muted">
-        Full lists live under Waivers &amp; Trades.
-      </footer>
     </>
-  );
-}
-
-function EmptyNote({ text }: { text: string }) {
-  return (
-    <div className="rounded-xl border border-dashed border-line bg-card/50 px-4 py-3 text-sm text-muted">
-      {text}
-    </div>
   );
 }

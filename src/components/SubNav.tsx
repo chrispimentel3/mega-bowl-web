@@ -8,7 +8,6 @@ const GROUPS = [
   {
     links: [
       { href: "/start-sit", label: "Lineup" },
-      { href: "/matchups", label: "Matchups" },
       { href: "/playoffs", label: "Playoff plan" },
     ],
   },
@@ -31,14 +30,7 @@ const GROUPS = [
       { href: "/players", label: "Player card" },
       { href: "/rankings", label: "Rankings" },
       { href: "/compare", label: "Compare" },
-      { href: "/chart", label: "Chart builder" },
       { href: "/news", label: "News" },
-    ],
-  },
-  {
-    links: [
-      { href: "/ask", label: "Ask anything" },
-      { href: "/downloads", label: "Downloads" },
     ],
   },
 ];

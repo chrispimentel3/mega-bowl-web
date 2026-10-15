@@ -11,6 +11,7 @@ import { PostureChip } from "@/components/PostureChip";
 import { TrendChart } from "@/components/TrendChart";
 import Link from "next/link";
 import { YourOffers } from "@/components/OfferLog";
+import { PlayerCard } from "@/components/PlayerCard";
 
 export const revalidate = 3600;
 
@@ -94,6 +95,37 @@ export default async function TradesPage() {
             </div>
           ))
         )}
+
+        {ab.xfp_available && (ab.shop.length || ab.hold.length) ? (
+          <>
+            {ab.shop.length ? (
+              <>
+                <SectionHeading title="Shop these — points are ahead of the work" tone="sell" />
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {ab.shop.map((row) => (
+                    <PlayerCard key={row.player} row={row} tone="sell" />
+                  ))}
+                </div>
+                <p className="mt-2 text-sm text-muted">
+                  Their value to a leaguemate is at its peak. Sell the name, not the role.
+                </p>
+              </>
+            ) : null}
+            {ab.hold.length ? (
+              <>
+                <SectionHeading title="Hold these — the work is there, the points aren't yet" tone="buy" />
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {ab.hold.map((row) => (
+                    <PlayerCard key={row.player} row={row} tone="buy" />
+                  ))}
+                </div>
+                <p className="mt-2 text-sm text-muted">
+                  Don&apos;t sell into a cold streak — the usage says the points are coming.
+                </p>
+              </>
+            ) : null}
+          </>
+        ) : null}
 
         {valueTrend.available ? (
           <>

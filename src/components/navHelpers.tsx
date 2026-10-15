@@ -6,11 +6,11 @@ import { useEffect, useRef } from "react";
 /** The site's top-level sections: tabs on wide screens, the bottom bar on phones. */
 export const SECTIONS = [
   { href: "/", label: "This Week", matches: ["/"] },
-  { href: "/start-sit", label: "Lineup & Matchups", matches: ["/start-sit", "/matchups", "/playoffs"] },
+  { href: "/start-sit", label: "Lineup", matches: ["/start-sit", "/playoffs"] },
   { href: "/waivers", label: "Waivers & Trades", matches: ["/waivers", "/trades"] },
   { href: "/roster", label: "Season", matches: ["/roster", "/league", "/history", "/scorecard"] },
-  { href: "/players", label: "Player Lookup", matches: ["/players", "/rankings", "/compare", "/chart", "/news"] },
-  { href: "/ask", label: "Data Search", matches: ["/ask", "/downloads"] },
+  { href: "/players", label: "Player Lookup", matches: ["/players", "/rankings", "/compare", "/news"] },
+  { href: "/ask", label: "Data Search", matches: ["/ask"] },
   { href: "/logic", label: "How it works", matches: ["/logic"] },
 ];
 
