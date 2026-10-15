@@ -52,6 +52,8 @@ export type Scorecard = {
     waivers_right: number;
   } | null;
   waivers: WaiverGrade[];
+  /** this season's graded weeks re-weighting ours vs the consensus by position */
+  live_blend?: { weights: Record<string, number>; tested: number; mae_gain?: number; active: boolean };
   /** the week's prop movers (the books raised his role) and what they then scored */
   movers?: { week: number; player: string; pos: string; kind: "UP" | "NEW"; pts: number; before: number | null }[];
 };

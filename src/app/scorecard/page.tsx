@@ -168,6 +168,26 @@ export default async function ScorecardPage() {
               </>
             ) : null}
 
+            {sc.live_blend && Object.keys(sc.live_blend.weights).length ? (
+              <>
+                <SectionHeading title="Learning from this season" />
+                <p className="text-sm text-ink">
+                  {sc.live_blend.active ? (
+                    <>Start/Sit now leans on this season&apos;s results:{" "}</>
+                  ) : (
+                    <>
+                      Off for now — {sc.live_blend.tested} week{sc.live_blend.tested === 1 ? "" : "s"} tested, and it
+                      switches on after 4 that beat our projections alone. It would weight:{" "}
+                    </>
+                  )}
+                  {Object.entries(sc.live_blend.weights)
+                    .map(([pos, w]) => `${pos} ${Math.round(w * 100)}% ours`)
+                    .join(" · ")}
+                  , the rest the consensus.
+                </p>
+              </>
+            ) : null}
+
             {sc.movers?.length ? (
               <>
                 <SectionHeading title="When the books moved a role" />
