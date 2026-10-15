@@ -95,34 +95,10 @@ export type TradesMeta = {
   bias_teams?: string[];
 };
 
-/** A rival an injury just made a buyer at one position, with the offers that fill it */
-export type TradeWindow = {
-  team: string;
-  pos: string;
-  /** "bye": starters on bye in `week`; absent = injuries */
-  kind?: "bye";
-  week?: number;
-  /** pts/wk the injuries take out of the players they'd start there */
-  drop: number;
-  /** pts/wk their starters there now sit below the league's average (injury windows) */
-  gap: number | null;
-  lost: { name: string; ir: boolean; back: number | null }[];
-  offers: {
-    give: string[];
-    get: string[];
-    d_me: number;
-    d_them: number;
-    p_accept: number;
-    fa_add: string[] | null;
-  }[];
-};
-
 export type Trades = {
   available: boolean;
   version?: number;
   cards?: TradeThesis[];
-  /** absent on an older export */
-  windows?: TradeWindow[];
   /** Yahoo's trade end date, YYYY-MM-DD */
   deadline?: string;
   /** past the deadline: no offers, no search */

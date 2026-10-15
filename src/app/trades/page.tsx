@@ -1,4 +1,4 @@
-import { getTrades, type TradeWindow } from "@/lib/trades";
+import { getTrades } from "@/lib/trades";
 import { getTradeValueTrend } from "@/lib/trends";
 import { getActionBoard } from "@/lib/action-board";
 import { Masthead } from "@/components/Masthead";
@@ -10,7 +10,7 @@ import { TradeThesisList } from "@/components/TradeThesisList";
 import { PostureChip } from "@/components/PostureChip";
 import { TrendChart } from "@/components/TrendChart";
 import Link from "next/link";
-import { LogOfferButton, YourOffers } from "@/components/OfferLog";
+import { YourOffers } from "@/components/OfferLog";
 
 export const revalidate = 3600;
 
@@ -32,7 +32,6 @@ export default async function TradesPage() {
         ) : (
           <>
         <DeadlineLine deadline={tr.deadline} />
-        {tr.windows ? <TradeWindows windows={tr.windows} /> : null}
 
         <SectionHeading title="Your offers" />
         <YourOffers />
@@ -113,72 +112,6 @@ export default async function TradesPage() {
           </>
         )}
       </main>
-    </>
-  );
-}
-
-function lostText(l: TradeWindow["lost"][number]) {
-  return `${l.name} (${l.ir ? "IR" : l.back && l.back < 19 ? `out until wk ${l.back}` : "out for the season"})`;
-}
-
-function TradeWindows({ windows }: { windows: TradeWindow[] }) {
-  return (
-    <>
-      <SectionHeading title="Trade windows" />
-      {windows.length === 0 ? (
-        <p className="rounded-xl border border-dashed border-line bg-card/50 px-4 py-3 text-sm text-muted">
-          No rival has lost a starter at a thin position or faces a bye-week crunch. When one does, the offers
-          that fill the hole show up here first.
-        </p>
-      ) : (
-        <div className="grid gap-3">
-          {windows.map((w) => (
-            <section key={`${w.team}-${w.pos}-${w.kind ?? "inj"}`} className="rounded-xl border border-line bg-card px-4 py-3 shadow-sm">
-              <h3 className="font-display text-base font-bold text-ink">
-                {w.team} needs a {w.pos}{w.kind === "bye" ? ` in week ${w.week}` : ""}
-              </h3>
-              <p className="mt-0.5 text-sm text-muted">
-                {w.kind === "bye" ? (
-                  <>
-                    {w.lost.map((l) => l.name).join(" and ")} on bye in week {w.week} — {w.drop.toFixed(1)} pts of
-                    their starters out, and they&apos;re still in the playoff race.
-                  </>
-                ) : (
-                  <>
-                    Lost {w.lost.map(lostText).join(" and ")} — {w.drop.toFixed(1)} pts/wk out of their {w.pos}s, now{" "}
-                    {(w.gap ?? 0).toFixed(1)} below the league&apos;s average there.
-                  </>
-                )}
-              </p>
-              {w.offers.length ? (
-                <ul className="mt-2 divide-y divide-line">
-                  {w.offers.map((o) => (
-                    <li key={o.give.join("+")} className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 py-1.5 text-sm">
-                      <span className="min-w-0 text-ink">
-                        Send <b>{o.give.join(" + ")}</b> for <b>{o.get.join(" + ")}</b>
-                        <span className="text-muted">
-                          {" "}· +{o.d_me.toFixed(1)} pts/wk for you{o.fa_add?.length ? ` (with ${o.fa_add.join(", ")} added)` : ""}
-                        </span>
-                      </span>
-                      <span className="shrink-0 whitespace-nowrap font-semibold text-ink">
-                        {Math.round(o.p_accept * 100)}% <span className="font-normal text-muted">yes</span>
-                      </span>
-                      <div className="w-full">
-                        <LogOfferButton
-                          offer={{ partner: w.team, give: o.give, get: o.get, p_accept: o.p_accept,
-                                   d_me: o.d_me, d_them: o.d_them, source: "window" }}
-                        />
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="mt-2 text-sm text-muted">Nothing on your roster fills it and helps you too.</p>
-              )}
-            </section>
-          ))}
-        </div>
-      )}
     </>
   );
 }
