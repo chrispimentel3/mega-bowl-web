@@ -29,12 +29,18 @@ export function PlayerCard({ row, tone }: { row: ShopHoldRow; tone: "sell" | "bu
         </div>
       </div>
 
-      <div className="mt-3 flex items-center gap-2">
+      <div className="mt-3 flex flex-wrap items-center gap-2">
         <span className={`rounded-md px-2 py-0.5 text-xs font-bold ${diffColor} ${diffBg}`}>
           {row.per_g >= 0 ? "+" : ""}
           {row.per_g.toFixed(1)}/g vs opportunity
         </span>
+        {row.timing ? (
+          <span className={`rounded-md px-2 py-0.5 text-xs font-bold ${row.timing.call === "now" ? "bg-crimson/10 text-crimson" : "bg-ink/5 text-muted"}`}>
+            {row.timing.call === "now" ? "sell now" : row.timing.call === "after" ? "sell soon" : "no rush"}
+          </span>
+        ) : null}
       </div>
+      {row.timing ? <p className="mt-1.5 text-xs text-muted">{row.timing.why}</p> : null}
     </div>
   );
 }

@@ -9,6 +9,8 @@ export type ShopHoldRow = {
   tgt_pct: number | null;
   tm_rank: number | null;
   why: string;
+  /** when to sell (sell candidates only): value at its high, schedule turning — absent on an older export */
+  timing?: { call: "now" | "after" | "hold"; why: string } | null;
 };
 
 export type WaiverRow = {
