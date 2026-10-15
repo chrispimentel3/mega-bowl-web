@@ -10,7 +10,7 @@ export type RankingRow = {
   proj_source: string;
   opponent: string | null;
   matchup_pct: number | null;
-  matchup_basis: "defense+vegas" | "defense_only" | null;
+  matchup_basis: "defense+vegas" | "defense+market" | "defense_only" | null;
   mine: boolean;
 };
 

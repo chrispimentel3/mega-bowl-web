@@ -54,6 +54,11 @@ export function vegasLineSentence(team: string | null | undefined, vegasPct: num
   if (basis === "defense_only") return "No betting line for this game yet.";
   if (vegasPct == null) return null;
   const who = team ?? "his team";
+  if (basis === "defense+market") {
+    // no line posted yet: priced from the ratings the market's posted lines imply (mega/power.py)
+    if (Math.abs(vegasPct) < 2) return `No line yet; the betting market rates ${who} to score about as usual.`;
+    return `No line yet; the betting market rates ${who} to score ${Math.abs(vegasPct).toFixed(0)}% ${vegasPct > 0 ? "more" : "less"} than usual.`;
+  }
   if (Math.abs(vegasPct) < 2) return `Vegas expects ${who} to score about as usual.`;
   return `Vegas expects ${who} to score ${Math.abs(vegasPct).toFixed(0)}% ${vegasPct > 0 ? "more" : "less"} than usual.`;
 }

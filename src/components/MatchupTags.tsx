@@ -45,7 +45,7 @@ export function MatchupTags({
       {line != null ? (
         <TapTip className={`${tag} bg-ink/5 ${line > 0 ? "text-pos-rb-text" : "text-crimson"}`}
                 tip={vegasLineSentence(team, line, basis)}>
-          Vegas: team {line > 0 ? "+" : "−"}{Math.abs(line).toFixed(0)}%
+          {basis === "defense+market" ? "Market" : "Vegas"}: team {line > 0 ? "+" : "−"}{Math.abs(line).toFixed(0)}%
         </TapTip>
       ) : null}
       {props != null ? (

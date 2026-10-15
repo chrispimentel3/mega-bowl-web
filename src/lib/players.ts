@@ -62,7 +62,7 @@ export type ThisWeek = {
   proj_source?: string | null;
   matchup_mult?: number | null;
   matchup_pct?: number | null;
-  matchup_basis?: "defense+vegas" | "defense_only" | null;
+  matchup_basis?: "defense+vegas" | "defense+market" | "defense_only" | null;
   matchup_def_rank?: number | null;
   matchup_def_pct?: number | null;
   matchup_vegas_pct?: number | null;
