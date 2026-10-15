@@ -127,19 +127,28 @@ function TradeWindows({ windows }: { windows: TradeWindow[] }) {
       <SectionHeading title="Trade windows" />
       {windows.length === 0 ? (
         <p className="rounded-xl border border-dashed border-line bg-card/50 px-4 py-3 text-sm text-muted">
-          No rival has lost a starter at a position they&apos;re already thin at. When one does, the offers that
-          fill the hole show up here first.
+          No rival has lost a starter at a thin position or faces a bye-week crunch. When one does, the offers
+          that fill the hole show up here first.
         </p>
       ) : (
         <div className="grid gap-3">
           {windows.map((w) => (
-            <section key={`${w.team}-${w.pos}`} className="rounded-xl border border-line bg-card px-4 py-3 shadow-sm">
+            <section key={`${w.team}-${w.pos}-${w.kind ?? "inj"}`} className="rounded-xl border border-line bg-card px-4 py-3 shadow-sm">
               <h3 className="font-display text-base font-bold text-ink">
-                {w.team} needs a {w.pos}
+                {w.team} needs a {w.pos}{w.kind === "bye" ? ` in week ${w.week}` : ""}
               </h3>
               <p className="mt-0.5 text-sm text-muted">
-                Lost {w.lost.map(lostText).join(" and ")} — {w.drop.toFixed(1)} pts/wk out of their {w.pos}s, now{" "}
-                {w.gap.toFixed(1)} below the league&apos;s average there.
+                {w.kind === "bye" ? (
+                  <>
+                    {w.lost.map((l) => l.name).join(" and ")} on bye in week {w.week} — {w.drop.toFixed(1)} pts of
+                    their starters out, and they&apos;re still in the playoff race.
+                  </>
+                ) : (
+                  <>
+                    Lost {w.lost.map(lostText).join(" and ")} — {w.drop.toFixed(1)} pts/wk out of their {w.pos}s, now{" "}
+                    {(w.gap ?? 0).toFixed(1)} below the league&apos;s average there.
+                  </>
+                )}
               </p>
               {w.offers.length ? (
                 <ul className="mt-2 divide-y divide-line">

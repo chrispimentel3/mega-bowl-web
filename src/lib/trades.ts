@@ -99,10 +99,13 @@ export type TradesMeta = {
 export type TradeWindow = {
   team: string;
   pos: string;
+  /** "bye": starters on bye in `week`; absent = injuries */
+  kind?: "bye";
+  week?: number;
   /** pts/wk the injuries take out of the players they'd start there */
   drop: number;
-  /** pts/wk their starters there now sit below the league's average */
-  gap: number;
+  /** pts/wk their starters there now sit below the league's average (injury windows) */
+  gap: number | null;
   lost: { name: string; ir: boolean; back: number | null }[];
   offers: {
     give: string[];
