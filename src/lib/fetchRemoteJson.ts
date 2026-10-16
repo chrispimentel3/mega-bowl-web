@@ -15,13 +15,17 @@ export class RemoteFetchError extends Error {
   }
 }
 
+/** Every export is fetched under this tag, so the Refresh button can expire them all at once
+ *  (src/app/api/refresh-site/route.ts). */
+export const DATA_TAG = "league-data";
+
 export async function fetchRemoteJson<T>(url: string, revalidate: number, label: string): Promise<T> {
   const attempts = 3;
   let lastError: unknown;
 
   for (let attempt = 0; attempt < attempts; attempt++) {
     try {
-      const res = await fetch(url, { next: { revalidate } });
+      const res = await fetch(url, { next: { revalidate, tags: [DATA_TAG] } });
       if (res.ok) return (await res.json()) as T;
       if (res.status === 404) throw new RemoteFetchError(`${label} 404: ${url}`, 404);
       lastError = new RemoteFetchError(`${label} fetch failed: ${res.status} ${res.statusText}`, res.status);

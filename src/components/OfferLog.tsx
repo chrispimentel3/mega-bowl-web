@@ -7,12 +7,12 @@ import {
 } from "@/lib/offers";
 
 // a sleeping Render service fails the fetch itself, before any status comes back
-const msg = (e: unknown, fallback: string) =>
+export const msg = (e: unknown, fallback: string) =>
   e instanceof OfferError ? e.message
     : e instanceof TypeError ? "Couldn't reach the server. It may be waking up; try again in a minute."
     : fallback;
 
-function PasscodeForm({ onSave, error }: { onSave: (p: string) => void; error?: string }) {
+export function PasscodeForm({ onSave, error }: { onSave: (p: string) => void; error?: string }) {
   const [v, setV] = useState("");
   return (
     <form
@@ -25,8 +25,8 @@ function PasscodeForm({ onSave, error }: { onSave: (p: string) => void; error?: 
       <input
         type="password"
         autoComplete="current-password"
-        aria-label="Offer log passcode"
-        placeholder="Offer log passcode"
+        aria-label="Site passcode"
+        placeholder="Site passcode"
         value={v}
         onChange={(e) => setV(e.target.value)}
         className="h-10 min-w-0 flex-1 rounded-lg border border-line bg-card px-3 text-sm text-ink"

@@ -6,6 +6,7 @@ import { getPlayoffs } from "@/lib/playoffs";
 import { getTrades } from "@/lib/trades";
 import { Masthead } from "@/components/Masthead";
 import { BasisNote } from "@/components/BasisNote";
+import { RefreshButton } from "@/components/RefreshButton";
 
 export const revalidate = 3600;
 
@@ -68,6 +69,7 @@ export default async function Home() {
 
         <h1 className="font-display text-xl font-bold text-ink">Week {ab.next_week}</h1>
         <div className="mt-3 grid gap-3">
+          <RefreshButton />
           <Answer
             label="Lineup"
             href="/start-sit"
