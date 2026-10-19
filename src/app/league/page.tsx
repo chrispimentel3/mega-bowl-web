@@ -7,6 +7,7 @@ import { KpiRow } from "@/components/KpiRow";
 import { SimpleTable } from "@/components/SimpleTable";
 import { WeeklyResultsTable } from "@/components/WeeklyResultsTable";
 import { WeeklyPointsChart } from "@/components/WeeklyPointsChart";
+import { ConsistencyTable } from "@/components/ConsistencyTable";
 import Link from "next/link";
 
 export const revalidate = 3600;
@@ -153,6 +154,9 @@ export default async function LeaguePage() {
             </p>
             <WeeklyPointsChart rows={lg.weekly_results.rows} myTeam={lg.my_team} />
             <p className="mt-2 text-xs text-muted">Scores from the {lg.weekly_results.source}.</p>
+
+            <SectionHeading title="Consistency" />
+            <ConsistencyTable rows={lg.weekly_results.rows} myTeam={lg.my_team} />
           </>
         ) : null}
       </main>
