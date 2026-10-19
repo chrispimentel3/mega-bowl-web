@@ -17,6 +17,7 @@ export function MultiLineChart({
   highlighted,
   percent = false,
   yLabel,
+  average,
 }: {
   data: Record<string, number | string | null>[];
   xKey: string;
@@ -24,6 +25,8 @@ export function MultiLineChart({
   highlighted: string[];
   percent?: boolean;
   yLabel?: string;
+  /** dataKey of a reference series (e.g. a league average), drawn dashed under the picks. */
+  average?: string;
 }) {
   return (
     <ResponsiveContainer width="100%" height={340}>
@@ -73,6 +76,19 @@ export function MultiLineChart({
               connectNulls
             />
           ))}
+        {average ? (
+          <Line
+            key={average}
+            type="monotone"
+            dataKey={average}
+            stroke="var(--color-ink)"
+            strokeDasharray="6 4"
+            strokeWidth={1.5}
+            dot={false}
+            isAnimationActive={false}
+            connectNulls
+          />
+        ) : null}
         {highlighted.map((s, i) => (
           <Line
             key={s}
