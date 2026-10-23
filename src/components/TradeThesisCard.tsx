@@ -3,6 +3,7 @@ import { PosBadge } from "./PosBadge";
 import type { ThesisSide, TradeThesis } from "@/lib/trades";
 import { PlayerName } from "@/components/PlayerCardProvider";
 import { WhyNote } from "@/components/WhyNote";
+import { TradeFlags } from "@/components/TradeFlags";
 import { ScheduleTag } from "@/components/ScheduleTag";
 
 const pts = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(1)}`;
@@ -105,6 +106,8 @@ export function TradeThesisCard({ card }: { card: TradeThesis }) {
           </tr>
         </tbody>
       </table>
+
+      <TradeFlags flags={card.flags} className="mt-3" />
 
       <p className="mt-3 rounded-lg bg-crimson/5 px-3 py-2 text-xs text-ink">
         <span className="font-semibold text-crimson">Kill condition · </span>

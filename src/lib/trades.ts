@@ -53,6 +53,9 @@ export type ThesisRank = {
 
 import type { TeamProfile } from "@/lib/tradeSearch";
 
+/** A check from your side before sending an offer (mega/trade_theses.py our_flags). */
+export type TradeFlag = { kind: "role_risk" | "rebound" | "injury" | "need"; text: string };
+
 export type TradeThesis = {
   partner: string;
   /** what the partner is thin at and can spare; absent in files exported before this existed */
@@ -80,6 +83,8 @@ export type TradeThesis = {
   fairness: number;
   /** why they'd say yes or no, written about them (mega/trade_worth.py) */
   why?: string[];
+  /** what to check from your side: role risk, rebound bet, injuries, your thinnest spot */
+  flags?: TradeFlag[];
   ranks: { give: ThesisRank[]; get: ThesisRank[] };
 };
 

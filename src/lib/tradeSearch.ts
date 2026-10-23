@@ -1,6 +1,8 @@
 /** Client for the live trade-search endpoints (service/main.py in ff-dashboard, the same
  * Render service "Ask anything" talks to — see src/lib/ask.ts for why this one page-family
  * can't be a static export: the question is "pick anyone in the league," not a fixed list. */
+import type { TradeFlag } from "@/lib/trades";
+
 const API_URL = process.env.NEXT_PUBLIC_ASK_API_URL || "http://localhost:8008";
 
 export type TradePoolRow = {
@@ -87,6 +89,8 @@ export type TradeSearchResult = {
   shape_counts?: Record<string, number>;
   /** evaluator only: one line on what the trade does for you and the chance they accept */
   verdict?: string;
+  /** evaluator only: what to check from your side before sending it */
+  flags?: TradeFlag[];
 };
 
 /** Only the best this-many offers get priced in playoff/title odds (SIM_TOP in the service). */

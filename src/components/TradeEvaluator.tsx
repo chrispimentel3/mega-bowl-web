@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { getTradePool, evaluateTrade, type TradePoolRow, type TradeSearchResult } from "@/lib/tradeSearch";
 import { TradeSearchResultCard } from "@/components/TradeSearchResultCard";
+import { TradeFlags } from "@/components/TradeFlags";
 
 const MAX_SIDE = 3;
 
@@ -166,6 +167,7 @@ export function TradeEvaluator() {
       {result?.rows[0] ? (
         <div className="mt-3 space-y-2">
           {result.verdict ? <p className="text-sm font-semibold text-ink">{result.verdict}</p> : null}
+          <TradeFlags flags={result.flags} />
           <TradeSearchResultCard row={result.rows[0]} pricing={pricing} hideNeeds={false} />
         </div>
       ) : null}
