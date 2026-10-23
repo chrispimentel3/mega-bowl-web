@@ -84,7 +84,9 @@ export function TradeThesisCard({ card }: { card: TradeThesis }) {
           <tr className="text-muted">
             <th className="py-1 text-left font-normal"></th>
             <th className="py-1 text-right font-normal">This week</th>
-            <th className="py-1 text-right font-normal">Rest of season</th>
+            <th className="py-1 text-right font-normal" title="Points a week, weighted by how much each week moves that team's title odds">
+              Weeks that count
+            </th>
             <th className="py-1 text-right font-normal">Title odds</th>
           </tr>
         </thead>
