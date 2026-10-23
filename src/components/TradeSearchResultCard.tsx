@@ -2,6 +2,7 @@ import type { TradeSearchRow } from "@/lib/tradeSearch";
 import { PlayerList } from "@/components/PlayerCardProvider";
 import { PartnerNeeds } from "@/components/PartnerNeeds";
 import { WhyNote } from "@/components/WhyNote";
+import { WeekByWeek } from "@/components/WeekByWeek";
 
 const FLAG_STYLE: Record<string, string> = {
   LIKELY: "bg-pos-rb/10 text-pos-rb-text",
@@ -92,6 +93,7 @@ export function TradeSearchResultCard({
         <LineupVerdict label="Their lineup:" delta={row.d_them} starts={row.they_would_start}
                       benches={row.they_would_bench} excluding={row.get} />
         <WhyNote lines={row.why} />
+        <WeekByWeek rows={row.matchups} />
         {row.on_ir?.map((p) => (
           <p key={p.name} className="text-xs text-muted">
             {p.name} is on IR — counted for the {p.avail != null ? `${Math.round(p.avail * 100)}%` : "share"} of

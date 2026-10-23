@@ -56,6 +56,17 @@ import type { TeamProfile } from "@/lib/tradeSearch";
 /** A check from your side before sending an offer (mega/trade_theses.py our_flags). */
 export type TradeFlag = { kind: "role_risk" | "rebound" | "injury" | "need"; text: string };
 
+/** One remaining week with a trade (mega/title_odds.py Model.matchups): points as
+ *  [worst, base, best] = 10th/50th/90th percentile; opp and win chances in the regular season. */
+export type Matchup = {
+  week: number;
+  opp: string | null;
+  win_before?: number;
+  win_after?: number;
+  before: [number, number, number];
+  after: [number, number, number];
+};
+
 export type TradeThesis = {
   partner: string;
   /** what the partner is thin at and can spare; absent in files exported before this existed */
@@ -85,6 +96,8 @@ export type TradeThesis = {
   why?: string[];
   /** what to check from your side: role risk, rebound bet, injuries, your thinnest spot */
   flags?: TradeFlag[];
+  /** each remaining week with the trade, worst / base / best */
+  matchups?: Matchup[];
   ranks: { give: ThesisRank[]; get: ThesisRank[] };
 };
 
