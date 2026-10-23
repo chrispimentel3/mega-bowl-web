@@ -13,7 +13,8 @@ export function ComparePlayerCard({ player, nextWeek }: { player: PlayerDetail; 
   return (
     // Five fixed rows (header, numbers, matchup, role, detail) on the page's grid via subgrid:
     // each row is as tall as the tallest card's, so the same section lines up across cards.
-    <div className="row-span-5 grid grid-rows-subgrid gap-y-3 rounded-2xl border border-line bg-card p-3 shadow-sm">
+    // minmax(0,1fr): the column never grows past the card, so nothing spills into the next one
+    <div className="row-span-5 grid grid-cols-[minmax(0,1fr)] grid-rows-subgrid gap-y-3 rounded-2xl border border-line bg-card p-3 shadow-sm">
       <div className="flex items-center gap-2">
         <PlayerAvatar player={player.name} size={36} />
         <div className="min-w-0">
@@ -41,7 +42,7 @@ export function ComparePlayerCard({ player, nextWeek }: { player: PlayerDetail; 
           {/* always one child per row, even when empty, so the rows stay in step */}
           <div>{s.this_week ? <MatchupScore tw={s.this_week} pos={player.pos} week={nextWeek} /> : null}</div>
           <div>{s.role ? <RoleCard role={s.role} compact /> : null}</div>
-          <div>{s.card.length > 0 ? <SeasonDetailCard rows={s.card} /> : null}</div>
+          <div>{s.card.length > 0 ? <SeasonDetailCard rows={s.card} compact /> : null}</div>
         </>
       )}
     </div>
