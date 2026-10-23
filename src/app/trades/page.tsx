@@ -10,7 +10,6 @@ import { TradeThesisList } from "@/components/TradeThesisList";
 import { PostureChip } from "@/components/PostureChip";
 import { TrendChart } from "@/components/TrendChart";
 import Link from "next/link";
-import { YourOffers } from "@/components/OfferLog";
 import { PlayerCard } from "@/components/PlayerCard";
 
 export const revalidate = 3600;
@@ -33,9 +32,6 @@ export default async function TradesPage() {
         ) : (
           <>
         <DeadlineLine deadline={tr.deadline} />
-
-        <SectionHeading title="Your offers" />
-        <YourOffers />
 
         <SectionHeading title="Evaluate a trade" />
         <TradeEvaluator />

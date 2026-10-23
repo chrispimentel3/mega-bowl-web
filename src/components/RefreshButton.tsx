@@ -2,8 +2,6 @@
 
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
-import { savePasscode, savedPasscode } from "@/lib/offers";
-import { PasscodeForm, msg } from "./OfferLog";
 
 /** "Refresh league": asks the Mac to pull Yahoo and rebuild the site (service/refresh_request.py,
  *  tools/refresh_watch.py), follows it, and expires the site's cache when it lands. */
@@ -20,10 +18,63 @@ type State = {
   cooldown?: boolean;
 };
 
+const KEY = "offer-passcode";   // the key predates the refresh button; kept so saved passcodes still work
+
+// a convenience per device: if storage is blocked, the passcode is just asked again
+function savedPasscode(): string {
+  try {
+    return localStorage.getItem(KEY) ?? "";
+  } catch {
+    return "";
+  }
+}
+
+function savePasscode(p: string) {
+  try {
+    if (p) localStorage.setItem(KEY, p);
+    else localStorage.removeItem(KEY);
+  } catch {
+    /* private window: ask again next time */
+  }
+}
+
 class RefreshError extends Error {
   constructor(message: string, public status: number) {
     super(message);
   }
+}
+
+// a sleeping Render service fails the fetch itself, before any status comes back
+const msg = (e: unknown, fallback: string) =>
+  e instanceof RefreshError ? e.message
+    : e instanceof TypeError ? "Couldn't reach the server. It may be waking up; try again in a minute."
+    : fallback;
+
+function PasscodeForm({ onSave, error }: { onSave: (p: string) => void; error?: string }) {
+  const [v, setV] = useState("");
+  return (
+    <form
+      className="flex flex-wrap items-center gap-2"
+      onSubmit={(e) => {
+        e.preventDefault();
+        if (v) onSave(v);
+      }}
+    >
+      <input
+        type="password"
+        autoComplete="current-password"
+        aria-label="Site passcode"
+        placeholder="Site passcode"
+        value={v}
+        onChange={(e) => setV(e.target.value)}
+        className="h-10 min-w-0 flex-1 rounded-lg border border-line bg-card px-3 text-sm text-ink"
+      />
+      <button type="submit" className="hit h-10 rounded-lg bg-navy px-4 text-sm font-semibold text-white">
+        Save
+      </button>
+      {error ? <p className="w-full text-xs text-crimson">{error}</p> : null}
+    </form>
+  );
 }
 
 async function call(method: "GET" | "POST", passcode: string): Promise<State> {
