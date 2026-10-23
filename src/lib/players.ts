@@ -99,6 +99,8 @@ export type PlayerDetail = {
   nfl_status: string | null;
   out_reason: string | null;
   seasons: Record<string, SeasonPayload>;
+  /** rank at his position in each weekly trade-value snapshot; only on the pop-up card's API */
+  trade_value?: { week: number; rank: number }[] | null;
   error?: string;
 };
 

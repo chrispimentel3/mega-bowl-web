@@ -1,5 +1,6 @@
 import type { NextRequest } from "next/server";
 import { getPlayer, getPlayerIndex, type PlayerIndexRow } from "@/lib/players";
+import { getTradeValueTrend } from "@/lib/trends";
 
 /** One player's card for the pop-up (src/components/PlayerCardProvider.tsx), by gsis id or
  *  by name — most pages only know a name. Only the two seasons the card shows are sent. */
@@ -30,11 +31,14 @@ export async function GET(req: NextRequest) {
     if (!hit) return Response.json({ error: `No card for ${name}.` }, { status: 404 });
     gsis = hit.gsis_id;
   }
-  const p = await getPlayer(gsis);
+  const [p, tv] = await Promise.all([getPlayer(gsis), getTradeValueTrend()]);
   if (!p) return Response.json({ error: "No card for this player." }, { status: 404 });
   const keep = Object.keys(p.seasons).sort().reverse().slice(0, 2);
+  // his rank at his position in each weekly trade-value snapshot (the Trade value tab's chart)
+  const tvName = tv.players.find((x) => norm(x) === norm(p.name) && (!tv.info || tv.info[x]?.pos === p.pos));
+  const trade_value = tvName ? tv.rows.filter((r) => r.player === tvName).map((r) => ({ week: r.week, rank: r.value })) : null;
   return Response.json(
-    { ...p, seasons: Object.fromEntries(keep.map((s) => [s, p.seasons[s]])) },
+    { ...p, seasons: Object.fromEntries(keep.map((s) => [s, p.seasons[s]])), trade_value },
     { headers: { "Cache-Control": "public, s-maxage=900, stale-while-revalidate=3600" } },
   );
 }

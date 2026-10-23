@@ -59,6 +59,10 @@ function Card({ p, onClose }: { p: PlayerDetail; onClose: () => void }) {
   const ptsRank = rankNum(s?.ranks?.pts_pg);
   const xRank = rankNum(s?.ranks?.xfp_pg);
   const log = LOG[p.pos] ?? [];
+  // trade value is this season's market, so only on the current season
+  const tv = season === seasons[0] ? (p.trade_value ?? []).slice(-6) : [];
+  const tvLast = tv[tv.length - 1], tvPrev = tv[tv.length - 2];
+  const tvMove = tvLast && tvPrev ? tvPrev.rank - tvLast.rank : 0;
 
   return (
     <div>
@@ -106,6 +110,27 @@ function Card({ p, onClose }: { p: PlayerDetail; onClose: () => void }) {
               </div>
             ))}
           </div>
+
+          {tvLast ? (
+            <div className="mt-3 flex items-end justify-between gap-3 rounded-xl bg-ink/5 px-3 py-2">
+              <div>
+                <p className="text-xs text-muted">Trade value</p>
+                <p className="font-display text-xl font-bold text-ink">
+                  {p.pos}{tvLast.rank}
+                  {tvMove ? (
+                    <span className={`ml-2 font-sans text-xs font-semibold ${tvMove > 0 ? "text-pos-rb-text" : "text-crimson"}`}>
+                      {tvMove > 0 ? "▲" : "▼"} {Math.abs(tvMove)} since wk {tvPrev.week}
+                    </span>
+                  ) : null}
+                </p>
+              </div>
+              <p className="text-right text-xs text-muted">
+                Market rank at {p.pos}, wk {tv[0].week}–{tvLast.week}
+                <br />
+                <span className="tabular-nums">{tv.map((w) => w.rank).join(" → ")}</span>
+              </p>
+            </div>
+          ) : null}
 
           {tw ? (
             <div className="mt-3">
