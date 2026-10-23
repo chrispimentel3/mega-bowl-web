@@ -7,7 +7,7 @@ import { useEffect, useRef } from "react";
 export const SECTIONS = [
   { href: "/", label: "This Week", matches: ["/"] },
   { href: "/start-sit", label: "Lineup", matches: ["/start-sit", "/playoffs"] },
-  { href: "/waivers", label: "Waivers & Trades", matches: ["/waivers", "/trades"] },
+  { href: "/waivers", label: "Waivers & Trades", matches: ["/waivers", "/trades", "/trade-value"] },
   { href: "/roster", label: "Season", matches: ["/roster", "/league", "/history", "/scorecard"] },
   { href: "/players", label: "Player Lookup", matches: ["/players", "/rankings", "/compare", "/news"] },
   { href: "/ask", label: "Data Search", matches: ["/ask"] },

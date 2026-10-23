@@ -15,6 +15,7 @@ const GROUPS = [
     links: [
       { href: "/waivers", label: "Waivers" },
       { href: "/trades", label: "Trades" },
+      { href: "/trade-value", label: "Trade value" },
     ],
   },
   {

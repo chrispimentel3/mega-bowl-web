@@ -1,5 +1,4 @@
 import { getTrades } from "@/lib/trades";
-import { getTradeValueTrend } from "@/lib/trends";
 import { getActionBoard } from "@/lib/action-board";
 import { Masthead } from "@/components/Masthead";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -8,14 +7,13 @@ import { TradeSearchExplorer } from "@/components/TradeSearchExplorer";
 import { TradeEvaluator } from "@/components/TradeEvaluator";
 import { TradeThesisList } from "@/components/TradeThesisList";
 import { PostureChip } from "@/components/PostureChip";
-import { TrendChart } from "@/components/TrendChart";
 import Link from "next/link";
 import { PlayerCard } from "@/components/PlayerCard";
 
 export const revalidate = 3600;
 
 export default async function TradesPage() {
-  const [tr, ab, valueTrend] = await Promise.all([getTrades(), getActionBoard(), getTradeValueTrend()]);
+  const [tr, ab] = await Promise.all([getTrades(), getActionBoard()]);
 
   return (
     <>
@@ -121,18 +119,6 @@ export default async function TradesPage() {
                 </p>
               </>
             ) : null}
-          </>
-        ) : null}
-
-        {valueTrend.available ? (
-          <>
-            <SectionHeading title="Trade value, week by week" />
-            <p className="mb-3 text-sm text-muted">
-              Where the trade market ranks each player at their position (WR1 is the most valuable
-              receiver), from FantasyCalc, a site whose values come from thousands of real trades. A
-              riser is a sell and a faller a buy, if you believe the role hasn&apos;t changed.
-            </p>
-            <TrendChart trend={valueTrend} unit="int" yLabel="Rank at position" />
           </>
         ) : null}
 
