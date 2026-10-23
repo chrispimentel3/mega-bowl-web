@@ -1,7 +1,7 @@
 import type { TradeSearchRow } from "@/lib/tradeSearch";
 import { PlayerList } from "@/components/PlayerCardProvider";
 import { PartnerNeeds } from "@/components/PartnerNeeds";
-import { SitsNote } from "@/components/SitsNote";
+import { WhyNote } from "@/components/WhyNote";
 
 const FLAG_STYLE: Record<string, string> = {
   LIKELY: "bg-pos-rb/10 text-pos-rb-text",
@@ -64,7 +64,7 @@ export function TradeSearchResultCard({
         </p>
         <span className="flex items-center gap-1.5">
           {row.p_accept != null ? (
-            <span className="text-xs text-muted" title="Estimated: their lineup and title odds, fairness by the rankings they see, and whether you fill a position they're short at">
+            <span className="text-xs text-muted" title="An estimate: rules tuned on offers you labelled — their lineup, names by position and track record, what fills a hole for them, throw-ins, fandom.">
               ~{Math.round(row.p_accept * 100)}% they say yes
             </span>
           ) : null}
@@ -91,7 +91,7 @@ export function TradeSearchResultCard({
                       benches={row.i_would_bench} excluding={row.give} />
         <LineupVerdict label="Their lineup:" delta={row.d_them} starts={row.they_would_start}
                       benches={row.they_would_bench} excluding={row.get} />
-        <SitsNote lines={row.sits_for_them} />
+        <WhyNote lines={row.why} />
         {row.on_ir?.map((p) => (
           <p key={p.name} className="text-xs text-muted">
             {p.name} is on IR — counted for the {p.avail != null ? `${Math.round(p.avail * 100)}%` : "share"} of

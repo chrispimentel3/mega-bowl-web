@@ -2,7 +2,7 @@ import { PartnerNeeds } from "@/components/PartnerNeeds";
 import { PosBadge } from "./PosBadge";
 import type { ThesisSide, TradeThesis } from "@/lib/trades";
 import { PlayerName } from "@/components/PlayerCardProvider";
-import { SitsNote } from "@/components/SitsNote";
+import { WhyNote } from "@/components/WhyNote";
 import { ScheduleTag } from "@/components/ScheduleTag";
 
 const pts = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(1)}`;
@@ -30,7 +30,7 @@ const TAG_LABEL: Record<string, string> = {
 
 /** HANDOFF v1.3 §6.4: ΔTitle leads; thesis, numbers for BOTH teams (each labelled — the
  *  old card printed their lineup change next to our player's name), kill condition,
- *  pitch, P(accept) and FantasyCalc fairness, and our rank against consensus. */
+ *  pitch, P(accept) and why, and our rank against consensus. */
 export function TradeThesisCard({ card }: { card: TradeThesis }) {
   const names = (ps: { name: string; pos: string }[]) =>
     ps.map((p) => (
@@ -70,7 +70,7 @@ export function TradeThesisCard({ card }: { card: TradeThesis }) {
         ))}
         <span
           className={`rounded-md px-2 py-0.5 text-xs font-bold ${FLAG_STYLE[card.flag]}`}
-          title="Acceptance odds are an estimate: Yahoo only shows trades that went through, never the ones turned down, so there is nothing to fit them to yet."
+          title="An estimate: rules tuned on offers you labelled — their lineup, names by position and track record, what fills a hole for them, throw-ins, fandom."
         >
           {card.flag.replace("_", " ").toLowerCase()} · est. {Math.round(card.p_accept * 100)}% accept
         </span>
@@ -112,7 +112,7 @@ export function TradeThesisCard({ card }: { card: TradeThesis }) {
         <span className="font-semibold text-ink">Pitch · </span>
         {card.pitch}
       </p>
-      <SitsNote lines={card.sits_for_them} className="mt-1" />
+      <WhyNote lines={card.why} className="mt-1" />
 
       <p className="mt-2 border-t border-line pt-2 text-xs text-muted">
         {[...card.ranks.give, ...card.ranks.get]
@@ -121,7 +121,7 @@ export function TradeThesisCard({ card }: { card: TradeThesis }) {
               `${r.name}: ours ${r.pos}${r.our_rank ?? "—"} / ECR ${r.pos}${r.ecr_rank ?? "—"} (${r.view})`,
           )
           .join(" · ")}
-        {" · "}FantasyCalc {Math.round(Math.min(card.fairness, 1 / card.fairness) * 100)}% even
+        {" · "}by name {Math.round(Math.min(card.fairness, 1 / card.fairness) * 100)}% even
         {card.netted_free_swap ? " · net of the free-agent pickup you could make anyway" : ""}
       </p>
     </article>

@@ -42,9 +42,10 @@ export type TradeSearchRow = {
   /** injured but not in an IR slot: `share` of his remaining games he is already ruled out
    *  of (his value is cut by that much), `back` the first week he plays again */
   out_now?: { name: string; share: number; back: number | null }[];
-  /** estimated chance they accept (their lineup and title odds, fairness, whether what you
-   *  send fills a position they're short at); null if it couldn't be built */
+  /** estimated chance they accept (mega/trade_worth.py); null if it couldn't be built */
   p_accept?: number | null;
+  /** why they'd say yes or no, written about them */
+  why?: string[];
   /** what you send plays a position their roster is short at */
   need_fit?: boolean;
   /** what you send that would sit on their bench (counted at a discount to them), worded by the service */

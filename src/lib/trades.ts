@@ -76,9 +76,10 @@ export type TradeThesis = {
   pitch: string;
   p_accept: number;
   flag: "LIKELY" | "EXPLOIT" | "NEEDS_PITCH" | "LONGSHOT";
+  /** what they get / what they give, by name (mega/trade_worth.py) */
   fairness: number;
-  /** what you send that would sit on their bench, worded by the service */
-  sits_for_them?: string[];
+  /** why they'd say yes or no, written about them (mega/trade_worth.py) */
+  why?: string[];
   ranks: { give: ThesisRank[]; get: ThesisRank[] };
 };
 
