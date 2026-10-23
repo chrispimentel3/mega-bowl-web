@@ -18,6 +18,7 @@ export function MultiLineChart({
   percent = false,
   yLabel,
   average,
+  reversed = false,
 }: {
   data: Record<string, number | string | null>[];
   xKey: string;
@@ -27,6 +28,8 @@ export function MultiLineChart({
   yLabel?: string;
   /** dataKey of a reference series (e.g. a league average), drawn dashed under the picks. */
   average?: string;
+  /** ranks: 1 at the top */
+  reversed?: boolean;
 }) {
   return (
     <ResponsiveContainer width="100%" height={340}>
@@ -39,7 +42,10 @@ export function MultiLineChart({
           tickLine={false}
         />
         <YAxis
-          tickFormatter={(v: number) => (percent ? `${Math.round(v * 100)}%` : String(v))}
+          reversed={reversed}
+          allowDecimals={!reversed}
+          domain={reversed ? [1, "auto"] : undefined}
+          tickFormatter={(v: number) => (percent ? `${Math.round(v * 100)}%` : reversed ? `#${v}` : String(v))}
           tick={{ fontSize: 11, fill: "var(--color-muted)" }}
           axisLine={false}
           tickLine={false}

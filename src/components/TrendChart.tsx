@@ -7,10 +7,16 @@ import type { Trend, TrendMover } from "@/lib/trends";
 
 const MAX_LINES = 7;
 
-type Fmt = (v: number) => string;
+type Fmt = (v: number, pos?: string) => string;
 
-function formatters(percent: boolean, unit: "int" | "num"): { value: Fmt; delta: Fmt } {
+function formatters(percent: boolean, unit: "int" | "num", rank = false): { value: Fmt; delta: Fmt } {
   const sign = (n: number) => (n >= 0 ? "+" : "−");
+  if (rank) {
+    return {
+      value: (v, pos) => `${pos ?? "#"}${Math.round(v)}`,
+      delta: (d) => `${sign(d)}${Math.abs(Math.round(d))} ${Math.abs(Math.round(d)) === 1 ? "spot" : "spots"}`,
+    };
+  }
   if (percent) {
     return {
       value: (v) => `${(v * 100).toFixed(1)}%`,
@@ -57,7 +63,7 @@ function MoverList({
                 <span className="min-w-0 flex-1 truncate font-medium text-ink">{r.player}</span>
                 {r.mine ? <span title="On your roster" aria-label="on your roster" className="shrink-0 text-xs text-navy dark:text-muted">★</span> : null}
                 <span className="shrink-0 text-xs text-muted">
-                  {fmt.value(r.prev)} → {fmt.value(r.last)}
+                  {fmt.value(r.prev, r.pos)} → {fmt.value(r.last, r.pos)}
                 </span>
                 <span className={`w-16 shrink-0 text-right text-xs font-bold ${tone}`}>{fmt.delta(r.delta)}</span>
               </button>
@@ -87,7 +93,7 @@ export function TrendChart({
   const [selected, setSelected] = useState<string[]>(initial);
   const [query, setQuery] = useState("");
 
-  const fmt = formatters(percent, unit);
+  const fmt = formatters(percent, unit, trend.rank);
   const weeks = useMemo(
     () => Array.from(new Set(trend.rows.map((r) => r.week))).sort((a, b) => a - b),
     [trend.rows],
@@ -137,7 +143,7 @@ export function TrendChart({
       {hasMovers ? (
         <>
           <p className="mb-2 text-xs text-muted">
-            Biggest changes from week {m.weeks[0]} to week {m.weeks[1]} — tap a player to chart him.
+            Biggest changes from week {m.weeks[0]} to week {m.weeks[1]} — tap a player to add them to the chart.
           </p>
           <div className="mb-4 grid gap-3 sm:grid-cols-2">
             <MoverList title="Rising" rows={m.up} selected={selected} onToggle={toggle} fmt={fmt} tone="text-pos-rb-text" />
@@ -162,6 +168,7 @@ export function TrendChart({
             highlighted={selected}
             percent={percent}
             yLabel={yLabel}
+            reversed={trend.rank}
           />
         )}
       </div>

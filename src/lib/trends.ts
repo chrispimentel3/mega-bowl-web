@@ -19,6 +19,8 @@ export type Trend = {
   info?: Record<string, { pos: string; mine: boolean }>;
   /** change between each player's last two snapshots, biggest first */
   movers?: { weeks: number[]; up: TrendMover[]; down: TrendMover[] };
+  /** values are ranks at the player's position (1 = best); a mover's delta is spots gained */
+  rank?: boolean;
 };
 
 const EMPTY: Trend = { available: false, players: [], rows: [] };

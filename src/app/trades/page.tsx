@@ -49,12 +49,13 @@ export default async function TradesPage() {
               <summary className="cursor-pointer font-medium text-ink">How offers are built</summary>
               <p className="mt-2">
               Every 1-for-1 and 2-for-1 the engine can build ({tr.meta?.evaluated?.toLocaleString() ?? "—"} this
-              week), priced at what the other manager would accept on FantasyCalc, then the best{" "}
-              {tr.meta?.simulated ?? 25} played through {tr.meta?.seasons?.toLocaleString() ?? "6,000"} simulated
-              seasons for both teams. Only offers that raise your title odds beyond the simulation&apos;s own
-              noise are shown. Each says why, what would prove it wrong, and what it does to them. The
-              acceptance odds are estimates — Yahoo never shows the offers that get turned down, so
-              there is nothing to fit them to yet. See{" "}
+              week), each week weighted by how much winning it moves your title odds, and ranked by
+              the chance the other manager says yes times what it does for you. The best{" "}
+              {tr.meta?.simulated ?? 25} are played through {tr.meta?.seasons?.toLocaleString() ?? "6,000"} simulated
+              seasons for both teams, and only offers that raise your title odds beyond the
+              simulation&apos;s own noise are shown. The acceptance odds are estimates from rules tuned on
+              offers you labelled — names by position and track record, their lineup, throw-ins,
+              fandom. See{" "}
               <Link href="/logic#trade_theses" className="text-navy hover:underline">
                 Logic → how offers are built
               </Link>
@@ -127,10 +128,11 @@ export default async function TradesPage() {
           <>
             <SectionHeading title="Trade value, week by week" />
             <p className="mb-3 text-sm text-muted">
-              What the market (FantasyCalc) will pay for each player, and who moved most since the last
-              snapshot — a riser is a sell, a faller a buy, if you believe the role hasn&apos;t changed.
+              Where the trade market ranks each player at their position (WR1 is the most valuable
+              receiver), from FantasyCalc, a site whose values come from thousands of real trades. A
+              riser is a sell and a faller a buy, if you believe the role hasn&apos;t changed.
             </p>
-            <TrendChart trend={valueTrend} unit="int" yLabel="Trade value" />
+            <TrendChart trend={valueTrend} unit="int" yLabel="Rank at position" />
           </>
         ) : null}
 
