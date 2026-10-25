@@ -4,6 +4,9 @@ const TEAM = "TOR";
 const NHL = "https://api-web.nhle.com/v1";
 // every TOR game MoneyPuck has (all seasons, one row per situation); filtered to this season below
 const MONEYPUCK = `https://moneypuck.com/moneypuck/playerData/careers/gameByGame/regular/teams/${TEAM}.csv`;
+// every team's and player's season totals, for league averages and ranks
+const STATS = "https://api.nhle.com/stats/rest/en";
+const LEAFS_ID = 10;
 export const ROLL = 10;
 const REVALIDATE = 3600;
 
@@ -50,10 +53,13 @@ export type Game = {
 export type Skater = {
   id: number; name: string; pos: string; gp: number; g: number; a: number; p: number;
   pm: number; ppg: number; shots: number; toi: number;
+  /** points rank among all NHL forwards (or defensemen), null if the league table is unavailable */
+  rank: Ctx | null;
 };
 export type Goalie = { id: number; name: string; gp: number; w: number; l: number; otl: number; gaa: number; svPct: number; so: number };
 export type Form = { id: number; name: string; seasonPpg: number; lastGp: number; lastP: number; lastG: number; lastPpg: number };
 
+const isD = (pos: string) => pos === "D";
 const name = (p: { firstName: { default: string }; lastName: { default: string } }) =>
   `${p.firstName.default} ${p.lastName.default}`;
 
@@ -78,6 +84,63 @@ async function moneypuck(season: number): Promise<Map<number, { xg: number; cf: 
   }
 }
 
+/** Leafs' value, league average and rank (1 = best) for one metric across all teams/players. */
+export type Ctx = { value: number; avg: number; rank: number; of: number };
+export function context<T>(rows: T[], isUs: (r: T) => boolean, get: (r: T) => number, lowerIsBetter = false): Ctx | null {
+  const us = rows.find(isUs);
+  if (!us) return null;
+  const value = get(us);
+  const vals = rows.map(get);
+  return {
+    value,
+    avg: vals.reduce((a, b) => a + b, 0) / vals.length,
+    rank: 1 + vals.filter((v) => (lowerIsBetter ? v < value : v > value)).length,
+    of: vals.length,
+  };
+}
+
+export type TeamCtx = { label: string; ctx: Ctx; fmt: "pct" | "num" };
+
+type TeamRow = {
+  teamId: number; pointPct: number; goalsForPerGame: number; goalsAgainstPerGame: number;
+  shotsForPerGame: number; shotsAgainstPerGame: number; powerPlayPct: number; penaltyKillPct: number; faceoffWinPct: number;
+};
+type SkaterRow = { playerId: number; positionCode: string; points: number; pointsPerGame: number; gamesPlayed: number };
+type GoalieRow = { saves: number; shotsAgainst: number; goalsAgainst: number; timeOnIce: number };
+
+const stats = <T>(path: string, nhlSeason: string) =>
+  get(`${STATS}/${path}?limit=-1&cayenneExp=${encodeURIComponent(`seasonId=${nhlSeason} and gameTypeId=2`)}`, "json")
+    .then((r) => (r as { data: T[] }).data)
+    .catch(() => [] as T[]); // no league context beats no page
+
+/** Leafs vs the other 31 teams: NHL team summary plus MoneyPuck's 5v5 season numbers. */
+async function teamContext(nhlSeason: string, mpSeason: number): Promise<TeamCtx[]> {
+  const [teams, mp] = await Promise.all([
+    stats<TeamRow>("team/summary", nhlSeason),
+    get(`https://moneypuck.com/moneypuck/playerData/seasonSummary/${mpSeason}/regular/teams.csv`, "text")
+      .then((t) => parseCsv(t as string).filter((r) => r.situation === "5on5"))
+      .catch(() => []),
+  ]);
+  const us = (r: TeamRow) => r.teamId === LEAFS_ID;
+  const mpUs = (r: Record<string, string>) => r.team === TEAM;
+  const per60 = (k: string) => (r: Record<string, string>) => (Number(r[k]) * 3600) / Number(r.iceTime);
+  const rows: [string, Ctx | null, "pct" | "num"][] = [
+    ["Points %", context(teams, us, (r) => r.pointPct), "pct"],
+    ["Goals for / game", context(teams, us, (r) => r.goalsForPerGame), "num"],
+    ["Goals against / game", context(teams, us, (r) => r.goalsAgainstPerGame, true), "num"],
+    ["Shots for / game", context(teams, us, (r) => r.shotsForPerGame), "num"],
+    ["Shots against / game", context(teams, us, (r) => r.shotsAgainstPerGame, true), "num"],
+    ["Power play %", context(teams, us, (r) => r.powerPlayPct), "pct"],
+    ["Penalty kill %", context(teams, us, (r) => r.penaltyKillPct), "pct"],
+    ["Faceoff %", context(teams, us, (r) => r.faceoffWinPct), "pct"],
+    ["xGoals % (5v5)", context(mp, mpUs, (r) => Number(r.xGoalsPercentage)), "pct"],
+    ["Corsi % (5v5)", context(mp, mpUs, (r) => Number(r.corsiPercentage)), "pct"],
+    ["xGoals for / 60 (5v5)", context(mp, mpUs, per60("xGoalsFor")), "num"],
+    ["xGoals against / 60 (5v5)", context(mp, mpUs, per60("xGoalsAgainst"), true), "num"],
+  ];
+  return rows.filter((r): r is [string, Ctx, "pct" | "num"] => r[1] != null).map(([label, ctx, fmt]) => ({ label, ctx, fmt }));
+}
+
 /** Mean of the last `n` values ending at each index (skipping nulls); null until any exist. */
 export function rolling(values: (number | null)[], n = ROLL): (number | null)[] {
   return values.map((_, i) => {
@@ -88,10 +151,13 @@ export function rolling(values: (number | null)[], n = ROLL): (number | null)[] 
 
 export async function getLeafs() {
   const season = currentSeason();
-  const [sched, stats, mp] = await Promise.all([
+  const [sched, club, mp, team, lgSkaters, lgGoalies] = await Promise.all([
     get(`${NHL}/club-schedule-season/${TEAM}/${season.nhl}`, "json") as Promise<{ games: NhlGame[] }>,
     get(`${NHL}/club-stats/${TEAM}/${season.nhl}/2`, "json") as Promise<{ skaters: any[]; goalies: any[] }>, // eslint-disable-line @typescript-eslint/no-explicit-any
     moneypuck(season.moneypuck),
+    teamContext(season.nhl, season.moneypuck),
+    stats<SkaterRow>("skater/summary", season.nhl),
+    stats<GoalieRow>("goalie/summary", season.nhl),
   ]);
 
   const regular = sched.games.filter((g) => g.gameType === 2);
@@ -114,11 +180,12 @@ export async function getLeafs() {
     opp: g.homeTeam.abbrev === TEAM ? g.awayTeam.abbrev : g.homeTeam.abbrev,
   }));
 
-  const skaters: Skater[] = stats.skaters.map((s) => ({
+  const skaters: Skater[] = club.skaters.map((s) => ({
     id: s.playerId, name: name(s), pos: s.positionCode, gp: s.gamesPlayed, g: s.goals, a: s.assists, p: s.points,
     pm: s.plusMinus, ppg: s.powerPlayGoals, shots: s.shots, toi: s.avgTimeOnIcePerGame,
+    rank: context(lgSkaters.filter((r) => isD(r.positionCode) === isD(s.positionCode)), (r) => r.playerId === s.playerId, (r) => r.points),
   })).sort((a, b) => b.p - a.p || b.g - a.g);
-  const goalies: Goalie[] = stats.goalies.map((g) => ({
+  const goalies: Goalie[] = club.goalies.map((g) => ({
     id: g.playerId, name: name(g), gp: g.gamesPlayed, w: g.wins, l: g.losses, otl: g.overtimeLosses,
     gaa: g.goalsAgainstAverage, svPct: g.savePercentage, so: g.shutouts,
   })).sort((a, b) => b.gp - a.gp);
@@ -146,11 +213,16 @@ export async function getLeafs() {
   const gfPct = games.map((g) => (g.gf + g.ga ? g.gf / (g.gf + g.ga) : 0.5));
   const [rGf, rXg, rCf] = [rolling(gfPct), rolling(games.map((g) => g.xgPct)), rolling(games.map((g) => g.cfPct))];
   const trend = games.map((g, i) => ({
-    game: `${i + 1}`, "Goals %": rGf[i], "xGoals % (5v5)": rXg[i], "Corsi % (5v5)": rCf[i],
+    game: `${i + 1}`, "Goals %": rGf[i], "xGoals % (5v5)": rXg[i], "Corsi % (5v5)": rCf[i], "League avg": 0.5,
   }));
 
+  const sum = (k: keyof GoalieRow) => lgGoalies.reduce((t, g) => t + g[k], 0);
+  const lgGoalie = lgGoalies.length
+    ? { svPct: sum("saves") / sum("shotsAgainst"), gaa: (sum("goalsAgainst") * 3600) / sum("timeOnIce") }
+    : null;
+
   return {
-    season, games, upcoming, skaters, goalies, form, trend,
+    season, games, team, lgGoalie, upcoming, skaters, goalies, form, trend,
     hasMoneyPuck: games.some((g) => g.xgPct != null),
     record: { w, l, otl, pts: 2 * w + otl, ptsPct: games.length ? (2 * w + otl) / (2 * games.length) : 0,
       gf: games.reduce((t, g) => t + g.gf, 0), ga: games.reduce((t, g) => t + g.ga, 0) },

@@ -11,6 +11,8 @@ export const revalidate = 3600;
 const pct = (v: number) => `${(v * 100).toFixed(1)}%`;
 const mmss = (s: number) => `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, "0")}`;
 const signed = (v: number) => (v > 0 ? `+${v}` : String(v));
+const ord = (n: number) => `${n}${["th", "st", "nd", "rd"][n % 100 > 10 && n % 100 < 14 ? 0 : n % 10] ?? "th"}`;
+const fmtCtx = (v: number, f: "pct" | "num") => (f === "pct" ? pct(v) : v.toFixed(2));
 
 export default async function LeafsPage() {
   const [d, ab] = await Promise.all([getLeafs().catch(() => null), getActionBoard()]);
@@ -27,6 +29,8 @@ export default async function LeafsPage() {
   const { record: r } = d;
   const last10 = d.games.slice(-ROLL);
   const l10 = `${last10.filter((g) => g.result === "W").length}-${last10.filter((g) => g.result === "L").length}-${last10.filter((g) => g.result === "OTL").length}`;
+  const ptsRank = d.team.find((t) => t.label === "Points %")?.ctx;
+  const gfRank = d.team.find((t) => t.label === "Goals for / game")?.ctx;
   const series = ["Goals %", ...(d.hasMoneyPuck ? ["xGoals % (5v5)", "Corsi % (5v5)"] : [])];
 
   return (
@@ -46,19 +50,36 @@ export default async function LeafsPage() {
           <>
             <KpiRow
               items={[
-                { label: "Record", value: `${r.w}-${r.l}-${r.otl}`, sub: `${r.pts} pts · ${pct(r.ptsPct)}` },
-                { label: "Goal diff", value: signed(r.gf - r.ga), sub: `${r.gf} GF · ${r.ga} GA` },
+                { label: "Record", value: `${r.w}-${r.l}-${r.otl}`, sub: `${r.pts} pts${ptsRank ? ` · ${ord(ptsRank.rank)} in NHL` : ` · ${pct(r.ptsPct)}`}` },
+                { label: "Goal diff", value: signed(r.gf - r.ga), sub: `${r.gf} GF · ${r.ga} GA${gfRank ? ` · lg avg ${gfRank.avg.toFixed(2)} GF/GP` : ""}` },
                 { label: `Last ${last10.length}`, value: l10, sub: `${last10.reduce((t, g) => t + g.gf - g.ga, 0)} GD` },
               ]}
             />
 
             <SectionHeading title={`Rolling ${ROLL}-game share`} />
             <p className="mb-2 text-xs text-muted">
-              Leafs&apos; share of goals{d.hasMoneyPuck ? ", expected goals and shot attempts (5-on-5)" : ""}. Above 50% = outplaying opponents.
+              Leafs&apos; share of goals{d.hasMoneyPuck ? ", expected goals and shot attempts (5-on-5)" : ""}. Dashed line = league average (50%); above it = outplaying opponents.
             </p>
             <div className="rounded-xl border border-line bg-card p-2 shadow-sm">
-              <MultiLineChart data={d.trend} xKey="game" series={series} highlighted={series} percent />
+              <MultiLineChart data={d.trend} xKey="game" series={series} highlighted={series} average="League avg" percent />
             </div>
+
+            {d.team.length ? (
+              <>
+                <SectionHeading title="Leafs vs the league" />
+                <p className="mb-2 text-xs text-muted">Season to date. Rank is out of {d.team[0].ctx.of} teams, 1st = best.</p>
+                <SimpleTable
+                  rowKey={(t) => t.label}
+                  rows={d.team}
+                  columns={[
+                    { key: "label", label: "Metric" },
+                    { key: "ctx", label: "Leafs", align: "right", format: (_, t) => fmtCtx(t.ctx.value, t.fmt) },
+                    { key: "ctx", label: "NHL avg", align: "right", format: (_, t) => fmtCtx(t.ctx.avg, t.fmt) },
+                    { key: "ctx", label: "Rank", align: "right", format: (_, t) => ord(t.ctx.rank) },
+                  ]}
+                />
+              </>
+            ) : null}
 
             <SectionHeading title="Recent results" />
             <SimpleTable
@@ -124,20 +145,21 @@ export default async function LeafsPage() {
             { key: "ppg", label: "PPG", align: "right" },
             { key: "shots", label: "SOG", align: "right" },
             { key: "toi", label: "TOI", align: "right", format: (v) => mmss(v as number) },
+            { key: "rank", label: "NHL pts rank", align: "right", format: (_, s) => (s.rank ? `${ord(s.rank.rank)} of ${s.rank.of} ${s.pos === "D" ? "D" : "F"}` : "—") },
           ]}
         />
 
         <SectionHeading title="Goalies" />
         <SimpleTable
           rowKey={(g) => String(g.id)}
-          rows={d.goalies}
+          rows={d.lgGoalie ? [...d.goalies, { id: 0, name: "NHL average", gp: NaN, w: NaN, l: 0, otl: 0, so: NaN, ...d.lgGoalie }] : d.goalies}
           columns={[
             { key: "name", label: "Goalie" },
-            { key: "gp", label: "GP", align: "right" },
-            { key: "w", label: "Record", align: "right", format: (v, g) => `${v}-${g.l}-${g.otl}` },
+            { key: "gp", label: "GP", align: "right", format: (v, g) => (g.id ? String(v) : "—") },
+            { key: "w", label: "Record", align: "right", format: (v, g) => (g.id ? `${v}-${g.l}-${g.otl}` : "—") },
             { key: "svPct", label: "SV%", align: "right", format: (v) => (v as number).toFixed(3).replace(/^0/, "") },
             { key: "gaa", label: "GAA", align: "right", format: (v) => (v as number).toFixed(2) },
-            { key: "so", label: "SO", align: "right" },
+            { key: "so", label: "SO", align: "right", format: (v, g) => (g.id ? String(v) : "—") },
           ]}
         />
 
