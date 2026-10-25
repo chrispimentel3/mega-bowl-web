@@ -57,7 +57,18 @@ export type Skater = {
   rank: Ctx | null;
 };
 export type Goalie = { id: number; name: string; gp: number; w: number; l: number; otl: number; gaa: number; svPct: number; so: number };
-export type Form = { id: number; name: string; seasonPpg: number; lastGp: number; lastP: number; lastG: number; lastPpg: number };
+export type Form = {
+  id: number; name: string; pos: string; seasonPpg: number; lastGp: number; lastP: number; lastG: number; lastPpg: number;
+  /** points in each of the last ROLL games, oldest first */
+  last: number[]; rank: Ctx | null;
+};
+/** one row of the NHL standings */
+export type Standing = {
+  team: string; name: string; division: string; gp: number; w: number; l: number; otl: number;
+  pts: number; ptsPct: number; gd: number; rank: number;
+};
+/** the average NHL regular at a position (played at least half the games so far) */
+export type RefSkater = { name: string; gp: number; g: number; a: number; p: number; ppg: number; pm: number; toi: number };
 
 const isD = (pos: string) => pos === "D";
 const name = (p: { firstName: { default: string }; lastName: { default: string } }) =>
@@ -105,7 +116,14 @@ type TeamRow = {
   teamId: number; pointPct: number; goalsForPerGame: number; goalsAgainstPerGame: number;
   shotsForPerGame: number; shotsAgainstPerGame: number; powerPlayPct: number; penaltyKillPct: number; faceoffWinPct: number;
 };
-type SkaterRow = { playerId: number; positionCode: string; points: number; pointsPerGame: number; gamesPlayed: number };
+type SkaterRow = {
+  playerId: number; positionCode: string; points: number; goals: number; assists: number;
+  gamesPlayed: number; plusMinus: number; timeOnIcePerGame: number;
+};
+type StandingRow = {
+  teamAbbrev: { default: string }; placeName?: { default: string }; teamName: { default: string }; divisionName: string;
+  gamesPlayed: number; wins: number; losses: number; otLosses: number; points: number; pointPctg: number; goalDifferential: number;
+};
 type GoalieRow = { saves: number; shotsAgainst: number; goalsAgainst: number; timeOnIce: number };
 
 const stats = <T>(path: string, nhlSeason: string) =>
@@ -151,14 +169,24 @@ export function rolling(values: (number | null)[], n = ROLL): (number | null)[] 
 
 export async function getLeafs() {
   const season = currentSeason();
-  const [sched, club, mp, team, lgSkaters, lgGoalies] = await Promise.all([
+  const [sched, club, mp, team, lgSkaters, lgGoalies, standRows] = await Promise.all([
     get(`${NHL}/club-schedule-season/${TEAM}/${season.nhl}`, "json") as Promise<{ games: NhlGame[] }>,
     get(`${NHL}/club-stats/${TEAM}/${season.nhl}/2`, "json") as Promise<{ skaters: any[]; goalies: any[] }>, // eslint-disable-line @typescript-eslint/no-explicit-any
     moneypuck(season.moneypuck),
     teamContext(season.nhl, season.moneypuck),
     stats<SkaterRow>("skater/summary", season.nhl),
     stats<GoalieRow>("goalie/summary", season.nhl),
+    get(`${NHL}/standings/now`, "json").then((r) => (r as { standings: StandingRow[] }).standings).catch(() => [] as StandingRow[]),
   ]);
+
+  // ordered like the NHL does it: points %, then points
+  const standings: Standing[] = standRows
+    .map((r) => ({
+      team: r.teamAbbrev.default, name: r.placeName?.default ?? r.teamName.default, division: r.divisionName,
+      gp: r.gamesPlayed, w: r.wins, l: r.losses, otl: r.otLosses, pts: r.points, ptsPct: r.pointPctg, gd: r.goalDifferential, rank: 0,
+    }))
+    .sort((a, b) => b.ptsPct - a.ptsPct || b.pts - a.pts)
+    .map((r, i) => ({ ...r, rank: i + 1 }));
 
   const regular = sched.games.filter((g) => g.gameType === 2);
   const games: Game[] = regular
@@ -190,6 +218,7 @@ export async function getLeafs() {
     gaa: g.goalsAgainstAverage, svPct: g.savePercentage, so: g.shutouts,
   })).sort((a, b) => b.gp - a.gp);
 
+  const base = (s: Skater) => ({ id: s.id, name: s.name, pos: s.pos, seasonPpg: s.p / s.gp, rank: s.rank });
   // recent form for the top scorers: last ROLL games they played vs their season pace
   const form: Form[] = await Promise.all(
     skaters.filter((s) => s.gp > 0).slice(0, 8).map(async (s) => {
@@ -197,12 +226,12 @@ export async function getLeafs() {
         const log = ((await get(`${NHL}/player/${s.id}/game-log/${season.nhl}/2`, "json")) as {
           gameLog: { gameDate: string; goals: number; points: number }[];
         }).gameLog;
-        const last = [...log].sort((a, b) => b.gameDate.localeCompare(a.gameDate)).slice(0, ROLL);
+        const last = [...log].sort((a, b) => a.gameDate.localeCompare(b.gameDate)).slice(-ROLL);
         const lastP = last.reduce((t, g) => t + g.points, 0);
-        return { id: s.id, name: s.name, seasonPpg: s.p / s.gp, lastGp: last.length, lastP,
+        return { ...base(s), lastGp: last.length, lastP, last: last.map((g) => g.points),
           lastG: last.reduce((t, g) => t + g.goals, 0), lastPpg: last.length ? lastP / last.length : 0 };
       } catch {
-        return { id: s.id, name: s.name, seasonPpg: s.p / s.gp, lastGp: 0, lastP: 0, lastG: 0, lastPpg: 0 };
+        return { ...base(s), lastGp: 0, lastP: 0, lastG: 0, lastPpg: 0, last: [] };
       }
     }),
   );
@@ -212,17 +241,25 @@ export async function getLeafs() {
   const otl = games.length - w - l;
   const gfPct = games.map((g) => (g.gf + g.ga ? g.gf / (g.gf + g.ga) : 0.5));
   const [rGf, rXg, rCf] = [rolling(gfPct), rolling(games.map((g) => g.xgPct)), rolling(games.map((g) => g.cfPct))];
-  const trend = games.map((g, i) => ({
-    game: `${i + 1}`, "Goals %": rGf[i], "xGoals % (5v5)": rXg[i], "Corsi % (5v5)": rCf[i], "League avg": 0.5,
-  }));
+  const trend = { goals: rGf, xg: rXg, cf: rCf, gf: rolling(games.map((g) => g.gf)), ga: rolling(games.map((g) => g.ga)) };
 
   const sum = (k: keyof GoalieRow) => lgGoalies.reduce((t, g) => t + g[k], 0);
   const lgGoalie = lgGoalies.length
     ? { svPct: sum("saves") / sum("shotsAgainst"), gaa: (sum("goalsAgainst") * 3600) / sum("timeOnIce") }
     : null;
 
+  // average NHL regular at forward / defense, so player lines have something to sit next to
+  const maxGp = Math.max(0, ...lgSkaters.map((r) => r.gamesPlayed));
+  const refSkaters: RefSkater[] = [false, true].flatMap((d) => {
+    const rows = lgSkaters.filter((r) => isD(r.positionCode) === d && r.gamesPlayed >= Math.max(1, maxGp / 2));
+    if (!rows.length) return [];
+    const avg = (f: (r: SkaterRow) => number) => rows.reduce((t, r) => t + f(r), 0) / rows.length;
+    const [gp, g, a] = [avg((r) => r.gamesPlayed), avg((r) => r.goals), avg((r) => r.assists)];
+    return [{ name: `NHL avg ${d ? "defenseman" : "forward"}`, gp, g, a, p: g + a, ppg: (g + a) / gp, pm: avg((r) => r.plusMinus), toi: avg((r) => r.timeOnIcePerGame) }];
+  });
+
   return {
-    season, games, team, lgGoalie, upcoming, skaters, goalies, form, trend,
+    season, games, team, lgGoalie, standings, refSkaters, upcoming, skaters, goalies, form, trend,
     hasMoneyPuck: games.some((g) => g.xgPct != null),
     record: { w, l, otl, pts: 2 * w + otl, ptsPct: games.length ? (2 * w + otl) / (2 * games.length) : 0,
       gf: games.reduce((t, g) => t + g.gf, 0), ga: games.reduce((t, g) => t + g.ga, 0) },

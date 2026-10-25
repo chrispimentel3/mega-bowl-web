@@ -1,0 +1,145 @@
+/* Leafs dashboard. Every selector sits under .lf: this Next version keeps a page's global
+   stylesheet loaded after you navigate away, so unscoped rules would leak into other pages. */
+.lf {
+  --bg: #f5f5f7; --card: #ffffff; --ink: #1d1d1f; --muted: #6e6e73;
+  --line: rgba(0,0,0,.08); --fill: rgba(0,0,0,.04);
+  --leafs: #00205b; --s2: #ff9f0a;
+  --good: #248a3d; --good-soft: rgba(52,199,89,.14);
+  --bad: #d70015; --bad-soft: rgba(255,59,48,.12);
+  --warn: #b25000; --warn-soft: rgba(255,159,10,.16);
+  --glass: rgba(255,255,255,.78);
+  --shadow: 0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.05);
+  flex: 1; background: var(--bg); color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", var(--font-inter), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+/* dark: the site's own page and card colors, so the masthead and dashboard match */
+@media (prefers-color-scheme: dark) {
+  .lf {
+    --bg: #0b1220; --card: #131c2e; --ink: #eef1f6; --muted: #94a3b8;
+    --line: rgba(255,255,255,.1); --fill: rgba(255,255,255,.06);
+    --leafs: #5e9bff; --good: #30d158; --good-soft: rgba(48,209,88,.16);
+    --bad: #ff6b61; --bad-soft: rgba(255,69,58,.16); --warn: #ffb340; --warn-soft: rgba(255,159,10,.18);
+    --glass: rgba(19,28,46,.8); --shadow: 0 0 0 1px rgba(255,255,255,.06);
+  }
+}
+.lf .wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px 64px; }
+.lf .num { font-variant-numeric: tabular-nums; }
+
+.lf .hero { display: flex; align-items: center; gap: 18px; padding: 24px 0 12px; }
+.lf .eyebrow { font-size: .78rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.lf h1 { margin: 2px 0 6px; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.05; letter-spacing: -.025em; font-weight: 700; }
+.lf .hero p { margin: 0; color: var(--muted); font-size: .95rem; }
+.lf .jump { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin: 4px -4px 0; }
+.lf .jump a { flex: none; font-size: .82rem; font-weight: 500; color: var(--muted); padding: 6px 12px; border-radius: 999px; transition: background .15s, color .15s; }
+.lf .jump a:hover { color: var(--ink); background: var(--fill); }
+.lf .jump a:active { transform: scale(.97); }
+
+.lf section { margin-top: 40px; scroll-margin-top: 120px; }
+.lf h2 { font-size: 1.35rem; letter-spacing: -.015em; line-height: 1.2; margin: 0 0 4px; font-weight: 700; }
+.lf .lede { color: var(--muted); font-size: .88rem; margin: 0 0 14px; max-width: 62ch; }
+.lf .card { background: var(--card); border-radius: 18px; box-shadow: var(--shadow); }
+.lf .empty { padding: 14px 16px; color: var(--muted); font-size: .88rem; }
+
+.lf .kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+.lf .kpi { padding: 16px; }
+.lf .kpi .lbl { font-size: .78rem; font-weight: 600; color: var(--muted); }
+.lf .kpi .val { font-size: 1.85rem; font-weight: 700; letter-spacing: -.02em; line-height: 1.15; margin-top: 4px; }
+.lf .kpi .ctx { font-size: .78rem; color: var(--muted); margin-top: 8px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.lf .chip { display: inline-flex; align-items: center; font-size: .72rem; font-weight: 600; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.lf .chip.good { background: var(--good-soft); color: var(--good); }
+.lf .chip.bad { background: var(--bad-soft); color: var(--bad); }
+.lf .chip.mid { background: var(--fill); color: var(--muted); }
+.lf .chip.warn { background: var(--warn-soft); color: var(--warn); }
+.lf .meter { position: relative; height: 6px; border-radius: 3px; background: var(--fill); margin-top: 10px; }
+.lf .meter i { position: absolute; inset: 0 auto 0 0; border-radius: 3px; background: var(--leafs); }
+.lf .meter b { position: absolute; top: -3px; width: 2px; height: 12px; background: var(--ink); opacity: .55; border-radius: 1px; }
+
+.lf .seg { position: relative; display: inline-grid; grid-auto-flow: column; grid-auto-columns: 1fr; background: var(--fill); border-radius: 10px; padding: 2px; margin-bottom: 12px; max-width: 100%; }
+.lf .seg button { position: relative; z-index: 1; border: 0; background: none; font: inherit; font-size: .8rem; font-weight: 500; color: var(--ink);
+  padding: 6px 12px; border-radius: 8px; cursor: pointer; white-space: nowrap; -webkit-tap-highlight-color: transparent; }
+.lf .seg button[aria-pressed="true"] { font-weight: 600; }
+.lf .seg button:active { opacity: .6; }
+.lf .seg .thumb { position: absolute; z-index: 0; top: 2px; bottom: 2px; left: 0; border-radius: 8px; background: var(--card);
+  box-shadow: 0 1px 3px rgba(0,0,0,.12), 0 0 0 .5px rgba(0,0,0,.04); transition: transform .32s cubic-bezier(.32,.72,0,1), width .32s cubic-bezier(.32,.72,0,1); }
+.lf .chart-card { padding: 16px 12px 12px; }
+.lf .chart { position: relative; width: 100%; height: 280px; touch-action: pan-y; }
+.lf .chart svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.lf .tip { position: absolute; top: 8px; pointer-events: none; z-index: 5; min-width: 150px; padding: 8px 10px; border-radius: 12px; font-size: .78rem;
+  background: var(--glass); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: 0 4px 16px rgba(0,0,0,.14), 0 0 0 .5px var(--line); }
+.lf .tip .t { font-weight: 600; display: flex; align-items: center; gap: 6px; margin-bottom: 2px; }
+.lf .legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: .76rem; color: var(--muted); padding: 8px 6px 0; }
+.lf .legend span { display: inline-flex; align-items: center; gap: 6px; }
+.lf .legend i { width: 14px; height: 3px; border-radius: 2px; display: inline-block; }
+.lf .legend i.dash { background: repeating-linear-gradient(90deg, var(--muted) 0 4px, transparent 4px 7px); height: 2px; }
+.lf .strip { display: flex; gap: 2px; padding: 10px 6px 0; }
+.lf .strip i { flex: 1; height: 6px; border-radius: 2px; }
+
+.lf .ranks { padding: 4px 16px; }
+.lf .rank-row { display: grid; grid-template-columns: minmax(120px, 1.3fr) 64px 64px minmax(120px, 2fr) 44px; gap: 12px; align-items: center;
+  padding: 11px 0; border-bottom: 1px solid var(--line); font-size: .86rem; }
+.lf .rank-row:last-child { border-bottom: 0; }
+.lf .rank-row.head { font-size: .72rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; padding: 12px 0 8px; }
+.lf .r { text-align: right; }
+.lf .track { position: relative; height: 8px; border-radius: 4px;
+  background: linear-gradient(90deg, var(--good-soft) 0 25%, var(--fill) 25% 75%, var(--bad-soft) 75% 100%); }
+.lf .track .dot { position: absolute; top: 50%; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%; background: var(--leafs); box-shadow: 0 0 0 2.5px var(--card); }
+.lf .track .avg { position: absolute; top: -3px; left: 50%; width: 2px; height: 14px; background: var(--muted); opacity: .5; }
+.lf .rk { font-weight: 700; text-align: right; }
+.lf .rk.good { color: var(--good); } .lf .rk.bad { color: var(--bad); }
+
+.lf .games { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.lf .game { padding: 12px; display: flex; flex-direction: column; gap: 6px; }
+.lf .game .top { display: flex; align-items: center; gap: 8px; }
+.lf .game .opp { font-weight: 600; font-size: .9rem; }
+.lf .game .date, .lf .game .sub { font-size: .74rem; color: var(--muted); }
+.lf .game .score { font-size: 1.15rem; font-weight: 700; letter-spacing: -.01em; display: flex; align-items: center; gap: 8px; }
+
+.lf .split { display: grid; grid-template-columns: 1fr; gap: 12px; }
+@media (min-width: 820px) { .lf .split { grid-template-columns: 1.15fr 1fr; } }
+
+.lf .tbl-wrap { overflow-x: auto; border-radius: 18px; }
+.lf table { width: 100%; border-collapse: collapse; font-size: .86rem; }
+.lf th, .lf td { padding: 10px 12px; text-align: right; white-space: nowrap; }
+.lf th:first-child, .lf td:first-child { text-align: left; position: sticky; left: 0; background: var(--card); }
+.lf th { font-size: .72rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; border-bottom: 1px solid var(--line); }
+.lf th button { all: unset; cursor: pointer; }
+.lf th button:hover { color: var(--ink); }
+.lf th button[data-dir="desc"]::after { content: " ↓"; }
+.lf th button[data-dir="asc"]::after { content: " ↑"; }
+.lf td { border-bottom: 1px solid var(--line); }
+.lf tr:last-child td { border-bottom: 0; }
+.lf tr.ref td { color: var(--muted); font-style: italic; background: var(--fill); }
+.lf tr.ref td:first-child { background: color-mix(in srgb, var(--card) 94%, var(--ink)); }
+.lf tr.me td { font-weight: 600; }
+.lf tr.me td:first-child { color: var(--leafs); }
+.lf .team { display: inline-flex; align-items: center; gap: 8px; }
+.lf .pname { font-weight: 600; }
+.lf .pos { color: var(--muted); font-size: .76rem; margin-left: 6px; }
+.lf .bar { display: inline-block; width: 56px; height: 5px; border-radius: 3px; background: var(--fill); vertical-align: middle; margin-left: 8px; position: relative; overflow: hidden; }
+.lf .bar i { position: absolute; inset: 0 auto 0 0; background: var(--leafs); border-radius: 3px; }
+
+.lf .form { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+.lf .fcard { padding: 14px 16px; }
+.lf .fcard .h { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.lf .bars { display: flex; align-items: flex-end; gap: 3px; height: 40px; margin: 12px 0 8px; }
+.lf .bars i { flex: 1; border-radius: 3px 3px 1px 1px; background: var(--leafs); min-height: 3px; }
+.lf .bars i.z { background: var(--fill); }
+.lf .fcard .ctx { font-size: .78rem; color: var(--muted); }
+.lf .fcard .ctx b { color: var(--ink); font-weight: 600; }
+
+.lf .logo { display: inline-block; flex: none; object-fit: contain; }
+.lf .logo-txt { display: inline-grid; place-items: center; border-radius: 50%; background: var(--fill); font-size: .6rem; font-weight: 700; color: var(--muted); }
+.lf footer { margin-top: 56px; font-size: .76rem; color: var(--muted); line-height: 1.6; }
+
+@media (max-width: 560px) {
+  .lf .rank-row { grid-template-columns: 1fr 52px 52px 40px; }
+  .lf .rank-row .trk { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lf * { transition-duration: 1ms !important; }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .lf .tip { background: var(--card); backdrop-filter: none; -webkit-backdrop-filter: none; }
+}

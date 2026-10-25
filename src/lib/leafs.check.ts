@@ -17,8 +17,13 @@ globalThis.fetch = (async (url: string) => {
   const body = url.includes("club-schedule") ? { games: [g(1, "TOR", 4, "MTL", 1), g(2, "BOS", 3, "TOR", 2, "OT"), g(3, "TOR", 1, "OTT", 2), g(4, "TOR", 0, "NYR", 0, "REG", "FUT")] }
     : url.includes("club-stats") ? { skaters: [{ playerId: 1, ...n("Auston", "Matthews"), positionCode: "C", gamesPlayed: 3, goals: 3, assists: 1, points: 4, plusMinus: 2, powerPlayGoals: 1, shots: 12, avgTimeOnIcePerGame: 1250 }], goalies: [{ playerId: 2, ...n("Joseph", "Woll"), gamesPlayed: 3, wins: 1, losses: 1, overtimeLosses: 1, goalsAgainstAverage: 2.0, savePercentage: 0.915, shutouts: 0 }] }
     : url.includes("team/summary") ? { data: [{ teamId: 10, pointPct: 0.6, goalsForPerGame: 3.5 }, { teamId: 6, pointPct: 0.7, goalsForPerGame: 2.5 }] }
-    : url.includes("skater/summary") ? { data: [{ playerId: 1, positionCode: "C", points: 4 }, { playerId: 5, positionCode: "L", points: 9 }, { playerId: 6, positionCode: "D", points: 20 }] }
+    : url.includes("skater/summary") ? { data: [{ playerId: 1, positionCode: "C", points: 4, goals: 3, assists: 1, gamesPlayed: 3, plusMinus: 2, timeOnIcePerGame: 1200 },
+      { playerId: 5, positionCode: "L", points: 9, goals: 4, assists: 5, gamesPlayed: 3, plusMinus: 0, timeOnIcePerGame: 1000 },
+      { playerId: 6, positionCode: "D", points: 20, goals: 5, assists: 15, gamesPlayed: 3, plusMinus: 1, timeOnIcePerGame: 1500 }] }
     : url.includes("goalie/summary") ? { data: [{ saves: 90, shotsAgainst: 100, goalsAgainst: 10, timeOnIce: 18000 }] }
+    : url.includes("standings") ? { standings: [
+        { teamAbbrev: { default: "TOR" }, placeName: { default: "Toronto" }, teamName: { default: "Maple Leafs" }, divisionName: "Atlantic", gamesPlayed: 3, wins: 1, losses: 1, otLosses: 1, points: 3, pointPctg: 0.5, goalDifferential: 1 },
+        { teamAbbrev: { default: "MTL" }, placeName: { default: "Montréal" }, teamName: { default: "Canadiens" }, divisionName: "Atlantic", gamesPlayed: 3, wins: 2, losses: 1, otLosses: 0, points: 4, pointPctg: 0.667, goalDifferential: 2 }] }
     : url.includes("game-log") ? { gameLog: [{ gameDate: "2026-10-01", goals: 2, points: 3 }, { gameDate: "2026-10-03", goals: 1, points: 1 }] }
     : null;
   if (url.includes("seasonSummary")) return new Response("team,situation,xGoalsPercentage,corsiPercentage,xGoalsFor,xGoalsAgainst,iceTime\nTOR,5on5,0.55,0.52,30,25,36000\nBOS,5on5,0.45,0.48,25,30,36000\n");
@@ -33,7 +38,11 @@ assert.equal(d.games[1].opp, "BOS"); assert.equal(d.games[1].home, false);
 assert.equal(d.games[0].xgPct, 0.6); assert.equal(d.games[1].xgPct, null);
 assert.equal(d.upcoming[0].opp, "NYR");
 assert.equal(d.form[0].lastP, 4);
-assert.equal(d.trend[1]["Goals %"], (0.8 + 0.4) / 2);
+assert.equal(d.trend.goals[1], (0.8 + 0.4) / 2);
+assert.deepEqual(d.form[0].last, [3, 1]); // oldest first
+assert.deepEqual(d.standings.map((x) => [x.team, x.rank]), [["MTL", 1], ["TOR", 2]]);
+assert.equal(d.refSkaters.length, 2); assert.equal(d.refSkaters[0].name, "NHL avg forward");
+assert.equal(d.refSkaters[0].p, 6.5); // forwards (4 + 9) / 2; D only counted in the D row
 const t = Object.fromEntries(d.team.map((x) => [x.label, x.ctx]));
 assert.equal(t["Points %"].rank, 2); assert.ok(Math.abs(t["Points %"].avg - 0.65) < 1e-9);
 assert.equal(t["xGoals % (5v5)"].rank, 1);
