@@ -19,6 +19,7 @@ export function MultiLineChart({
   yLabel,
   average,
   reversed = false,
+  domain,
 }: {
   data: Record<string, number | string | null>[];
   xKey: string;
@@ -30,6 +31,8 @@ export function MultiLineChart({
   average?: string;
   /** ranks: 1 at the top */
   reversed?: boolean;
+  /** y-axis range; recharts still widens it if data falls outside */
+  domain?: [number, number];
 }) {
   return (
     <ResponsiveContainer width="100%" height={340}>
@@ -44,7 +47,7 @@ export function MultiLineChart({
         <YAxis
           reversed={reversed}
           allowDecimals={!reversed}
-          domain={reversed ? [1, "auto"] : undefined}
+          domain={reversed ? [1, "auto"] : domain}
           tickFormatter={(v: number) => (percent ? `${Math.round(v * 100)}%` : reversed ? `#${v}` : String(v))}
           tick={{ fontSize: 11, fill: "var(--color-muted)" }}
           axisLine={false}

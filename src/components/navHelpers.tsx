@@ -11,6 +11,7 @@ export const SECTIONS = [
   { href: "/roster", label: "Season", matches: ["/roster", "/league", "/history", "/scorecard"] },
   { href: "/players", label: "Player Lookup", matches: ["/players", "/rankings", "/compare", "/news"] },
   { href: "/ask", label: "Data Search", matches: ["/ask"] },
+  { href: "/leafs", label: "Leafs", matches: ["/leafs"] },
   { href: "/logic", label: "How it works", matches: ["/logic"] },
 ];
 
