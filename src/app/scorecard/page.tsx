@@ -233,9 +233,103 @@ export default async function ScorecardPage() {
               </>
             ) : null}
 
+            {sc.trades?.n ? (
+              <>
+                <SectionHeading title="Trade ideas, replayed" />
+                <p className="mb-2 text-sm text-ink">
+                  {sc.trades.n} trade idea{sc.trades.n === 1 ? "" : "s"} from the home board, each replayed on your roster
+                  from the week it first showed: <b>{sc.trades.helped}</b> would have helped your lineup,{" "}
+                  <b>{sc.trades.hurt}</b> would have hurt it
+                  {sc.trades.per_week != null
+                    ? ` — ${sc.trades.per_week >= 0 ? "+" : ""}${pts(sc.trades.per_week)} pts a week on average.`
+                    : "."}
+                </p>
+                <details className="rounded-xl border border-line bg-card px-4 shadow-sm">
+                  <summary className="cursor-pointer py-2 text-sm font-semibold text-ink">Every idea</summary>
+                  <ul className="divide-y divide-line">
+                    {sc.trades.rows.map((r) => (
+                      <li key={`${r.week}-${r.give.join("+")}-${r.get.join("+")}`} className="flex items-baseline justify-between gap-3 py-2 text-sm">
+                        <span className="min-w-0 text-ink">
+                          Wk {r.week} · {r.partner}: give {r.give.join(" + ")}, get <b>{r.get.join(" + ")}</b>
+                          <span className="block text-xs text-muted">
+                            {r.per_week >= 0 ? "+" : ""}
+                            {pts(r.per_week)}/wk over {r.weeks} wk{r.weeks === 1 ? "" : "s"}
+                            {r.said != null ? ` · we said ${r.said >= 0 ? "+" : ""}${pts(r.said)}` : ""}
+                          </span>
+                        </span>
+                        {r.right == null ? <span className="shrink-0 text-muted">—</span> : <Verdict right={r.right} />}
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+                <p className="mt-2 text-xs text-muted">
+                  Your best lineup each week with the deal and without it, on what was actually scored. A week stops
+                  counting once a player you&apos;d have given leaves your roster.
+                </p>
+              </>
+            ) : null}
+
+            {sc.odds?.n ? (
+              <>
+                <SectionHeading title="Win odds" />
+                <p className="mb-2 text-sm text-ink">
+                  Favorites won <b>{sc.odds.favorites_won}</b> of {sc.odds.n} games; we gave them{" "}
+                  <b>{Math.round((sc.odds.said ?? 0) * 100)}%</b> on average.
+                </p>
+                <SimpleTable
+                  rowKey={(r) => r.bucket}
+                  rows={sc.odds.buckets ?? []}
+                  columns={[
+                    { key: "bucket", label: "Chance we gave" },
+                    { key: "n", label: "Games", align: "right" },
+                    { key: "said", label: "We said", align: "right", format: (v) => `${Math.round((v as number) * 100)}%` },
+                    { key: "happened", label: "Won", align: "right", format: (v) => `${Math.round((v as number) * 100)}%` },
+                  ]}
+                />
+                {sc.odds.games?.length ? (
+                  <details className="mt-2 rounded-xl border border-line bg-card px-4 shadow-sm">
+                    <summary className="cursor-pointer py-2 text-sm font-semibold text-ink">Every game</summary>
+                    <ul className="divide-y divide-line">
+                      {sc.odds.games.map((g) => (
+                        <li key={`${g.week}-${g.favorite}`} className="flex items-baseline justify-between gap-3 py-2 text-sm">
+                          <span className="min-w-0 text-ink">
+                            Wk {g.week}: <b>{g.favorite}</b> {Math.round(g.p * 100)}% vs {g.underdog}
+                          </span>
+                          <Verdict right={g.won} />
+                        </li>
+                      ))}
+                    </ul>
+                  </details>
+                ) : null}
+                <p className="mt-2 text-xs text-muted">
+                  Each game&apos;s chance from the season simulation as it stood before kickoff. Over a season, the
+                  favorites we gave 70% should win about 70% of the time.
+                </p>
+              </>
+            ) : null}
+
+            {sc.playoff_odds?.available && sc.playoff_odds.buckets?.length ? (
+              <>
+                <SectionHeading title="Playoff odds" />
+                <SimpleTable
+                  rowKey={(r) => r.bucket}
+                  rows={sc.playoff_odds.buckets}
+                  columns={[
+                    { key: "bucket", label: "Odds we gave" },
+                    { key: "n", label: "Team-weeks", align: "right" },
+                    { key: "said", label: "We said", align: "right", format: (v) => `${Math.round((v as number) * 100)}%` },
+                    { key: "happened", label: "Made it", align: "right", format: (v) => `${Math.round((v as number) * 100)}%` },
+                  ]}
+                />
+              </>
+            ) : null}
+
             <p className="mt-6 text-xs text-muted">
               Skill positions only; kickers and defenses aren&apos;t in the stats this grades from. Insurance and
-              bye-cover pickups aren&apos;t graded on points. Playoff and title odds get graded when the season ends.
+              bye-cover pickups aren&apos;t graded on points.{" "}
+              {sc.playoff_odds?.available
+                ? "Title odds get graded when the season ends."
+                : `Playoff odds get graded once the field is set after week ${sc.playoff_odds?.after_week ?? 14}; title odds when the season ends.`}
             </p>
           </>
         )}

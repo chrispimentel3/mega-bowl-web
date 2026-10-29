@@ -14,7 +14,7 @@ export function PlayerCard({ row, tone }: { row: ShopHoldRow; tone: "sell" | "bu
             <PosBadge pos={row.pos} />
             <PlayerName name={row.player} pos={row.pos} className="truncate font-semibold text-ink" />
           </div>
-          {/* the chip below already says "+4.3/g vs opportunity"; this line is the why, in words */}
+          {/* the chip below says what we project from here; this line is the role behind it */}
           <p className="mt-0.5 text-xs text-muted">
             {row.slot === "BN" ? "Bench" : "Starter"}
             {row.tgt_pct != null ? ` · ${(row.tgt_pct * 100).toFixed(0)}% of targets` : ""}
@@ -31,8 +31,9 @@ export function PlayerCard({ row, tone }: { row: ShopHoldRow; tone: "sell" | "bu
 
       <div className="mt-3 flex flex-wrap items-center gap-2">
         <span className={`rounded-md px-2 py-0.5 text-xs font-bold ${diffColor} ${diffBg}`}>
-          {row.per_g >= 0 ? "+" : ""}
-          {row.per_g.toFixed(1)}/g vs opportunity
+          {row.proj_pg != null
+            ? `we project ${row.proj_pg.toFixed(1)}/g`
+            : `${row.per_g >= 0 ? "+" : ""}${row.per_g.toFixed(1)}/g vs opportunity`}
         </span>
         {row.timing ? (
           <span className={`rounded-md px-2 py-0.5 text-xs font-bold ${row.timing.call === "now" ? "bg-crimson/10 text-crimson" : "bg-ink/5 text-muted"}`}>

@@ -5,6 +5,9 @@ export type ShopHoldRow = {
   pos: string;
   slot: string;
   half_ppr_pg: number;
+  /** our forward projection, pts/g — the call is this against his pace (half_ppr_pg) */
+  proj_pg?: number | null;
+  /** proj_pg − half_ppr_pg (older exports: points vs expected points per game) */
   per_g: number;
   tgt_pct: number | null;
   tm_rank: number | null;

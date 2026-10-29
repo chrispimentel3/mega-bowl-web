@@ -91,11 +91,11 @@ export default async function TradesPage() {
           ))
         )}
 
-        {ab.xfp_available && (ab.shop.length || ab.hold.length) ? (
+        {ab.shop.length || ab.hold.length ? (
           <>
             {ab.shop.length ? (
               <>
-                <SectionHeading title="Shop these — points are ahead of the work" tone="sell" />
+                <SectionHeading title="Shop these — scoring above what we project from here" tone="sell" />
                 <div className="grid gap-3 sm:grid-cols-2">
                   {ab.shop.map((row) => (
                     <PlayerCard key={row.player} row={row} tone="sell" />
@@ -108,14 +108,14 @@ export default async function TradesPage() {
             ) : null}
             {ab.hold.length ? (
               <>
-                <SectionHeading title="Hold these — the work is there, the points aren't yet" tone="buy" />
+                <SectionHeading title="Hold these — we project more than he's scored" tone="buy" />
                 <div className="grid gap-3 sm:grid-cols-2">
                   {ab.hold.map((row) => (
                     <PlayerCard key={row.player} row={row} tone="buy" />
                   ))}
                 </div>
                 <p className="mt-2 text-sm text-muted">
-                  Don&apos;t sell into a cold streak — the usage says the points are coming.
+                  Don&apos;t sell into a cold streak — his role says more points are coming.
                 </p>
               </>
             ) : null}

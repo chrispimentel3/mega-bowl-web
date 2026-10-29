@@ -35,6 +35,22 @@ export type WaiverGrade = {
   week: number; add: string; drop: string; add_pts: number; drop_pts: number; weeks: number; right: boolean;
 };
 
+export type TradeGrade = {
+  week: number;
+  partner: string;
+  give: string[];
+  get: string[];
+  /** what the card said the deal adds to your lineup, pts/wk */
+  said: number | null;
+  weeks: number;
+  /** your best lineup with the deal minus without it, per week since */
+  per_week: number;
+  right: boolean | null;
+};
+
+/** what we said (a probability) against how often it happened, bucketed */
+export type Calib = { bucket: string; n: number; said: number; happened: number };
+
 export type Scorecard = {
   available: boolean;
   season?: number;
@@ -58,6 +74,18 @@ export type Scorecard = {
   live_blend?: { weights: Record<string, number>; tested: number; mae_gain?: number; active: boolean };
   /** the week's prop movers (the books raised his role) and what they then scored */
   movers?: { week: number; player: string; pos: string; kind: "UP" | "NEW"; pts: number; before: number | null }[];
+  /** every trade idea the home board showed, replayed on your roster from the week it appeared */
+  trades?: { n: number; helped: number; hurt: number; per_week: number | null; rows: TradeGrade[] };
+  /** each game's win chance from the season sim at kickoff, against who won */
+  odds?: {
+    n?: number;
+    favorites_won?: number;
+    said?: number;
+    buckets?: Calib[];
+    games?: { week: number; favorite: string; underdog: string; p: number; won: boolean }[];
+  };
+  /** weekly playoff odds against who made it — only once the regular season is over */
+  playoff_odds?: { available: boolean; after_week?: number; n?: number; weeks?: number[]; buckets?: Calib[] };
 };
 
 const EMPTY: Scorecard = { available: false, through_week: 0, weeks: [], totals: null, waivers: [] };
