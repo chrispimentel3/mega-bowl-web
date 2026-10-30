@@ -57,6 +57,8 @@ export type ActionBoard = {
   waivers: WaiverRow[];
   trades: TradeRow[];
   roster_src: string | null;
+  /** when the last Yahoo pull passed validation (UTC ISO); the masthead warns when it's old */
+  yahoo_pulled_at?: string | null;
   season: number;
   week: number;
   next_week: number;
