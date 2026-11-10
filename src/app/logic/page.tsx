@@ -4,7 +4,7 @@ import { InlineMarkdown } from "@/components/InlineMarkdown";
 import { SectionHeading } from "@/components/SectionHeading";
 import { getActionBoard } from "@/lib/action-board";
 import { Masthead } from "@/components/Masthead";
-import { LogicDetail } from "@/components/LogicDetail";
+import { LogicTopicCard } from "@/components/LogicDetail";
 
 export const revalidate = 86400;
 
@@ -23,24 +23,7 @@ export default async function LogicPage() {
 
         <div className="space-y-3">
           {logic.topics.map((topic) => (
-            <details
-              key={topic.key}
-              id={topic.key}
-              className="group scroll-mt-4 rounded-xl border border-line bg-card p-4 shadow-sm"
-            >
-              <summary className="cursor-pointer list-none">
-                <div className="flex items-start justify-between gap-3">
-                  <h2 className="font-display text-base font-bold text-ink">{topic.title}</h2>
-                  <span className="mt-0.5 shrink-0 text-xs text-muted transition-transform group-open:rotate-180">
-                    ▾
-                  </span>
-                </div>
-                <p className="mt-1.5 text-sm text-muted">{topic.headline}</p>
-              </summary>
-              <div className="mt-4 border-t border-line pt-4">
-                <LogicDetail text={topic.detail} />
-              </div>
-            </details>
+            <LogicTopicCard key={topic.key} topic={topic} />
           ))}
         </div>
 

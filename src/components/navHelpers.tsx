@@ -6,6 +6,7 @@ import { useEffect, useRef } from "react";
 /** The site's top-level sections: tabs on wide screens, the bottom bar on phones. */
 export const SECTIONS = [
   { href: "/", label: "This Week", matches: ["/"] },
+  { href: "/matchup", label: "Matchup", matches: ["/matchup"] },
   { href: "/start-sit", label: "Lineup", matches: ["/start-sit", "/playoffs"] },
   { href: "/waivers", label: "Waivers & Trades", matches: ["/waivers", "/trades", "/trade-value"] },
   { href: "/roster", label: "Season", matches: ["/roster", "/league", "/history", "/scorecard"] },

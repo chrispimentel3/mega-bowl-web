@@ -61,3 +61,22 @@ export function LogicDetail({ text }: { text: string }) {
     </div>
   );
 }
+
+/** One "How it works" topic: title and short answer, opened for the mechanics. Used by the
+ *  How-it-works page and by any page that explains itself inline (Matchup). */
+export function LogicTopicCard({ topic }: { topic: { key: string; title: string; headline: string; detail: string } }) {
+  return (
+    <details id={topic.key} className="group scroll-mt-4 rounded-xl border border-line bg-card p-4 shadow-sm">
+      <summary className="cursor-pointer list-none">
+        <div className="flex items-start justify-between gap-3">
+          <h2 className="font-display text-base font-bold text-ink">{topic.title}</h2>
+          <span className="mt-0.5 shrink-0 text-xs text-muted transition-transform group-open:rotate-180">▾</span>
+        </div>
+        <p className="mt-1.5 text-sm text-muted">{topic.headline}</p>
+      </summary>
+      <div className="mt-4 border-t border-line pt-4">
+        <LogicDetail text={topic.detail} />
+      </div>
+    </details>
+  );
+}

@@ -5,9 +5,10 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { SECTIONS, isActive, Pending } from "./navHelpers";
 
-/** Phones only: the four sections used every week, plus More for the rest. */
+/** Phones only: the five sections used every week, plus More for the rest. */
 const BAR: { href: string; label: string; icon: React.ReactNode }[] = [
   { href: "/", label: "This Week", icon: <path d="M3 10.5 12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" /> },
+  { href: "/matchup", label: "Matchup", icon: <><circle cx="6.5" cy="12" r="3.5" /><circle cx="17.5" cy="12" r="3.5" /><path d="M10 12h4" /></> },
   { href: "/start-sit", label: "Lineup", icon: <><rect x="4" y="4" width="16" height="16" rx="2" /><path d="M4 12h16M12 4v16" /></> },
   { href: "/waivers", label: "Moves", icon: <path d="M7 7h13l-3-3M17 17H4l3 3" /> },
   { href: "/roster", label: "Season", icon: <path d="M4 20V10M10 20V4M16 20v-7M22 20H2" /> },
