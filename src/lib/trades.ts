@@ -99,12 +99,17 @@ export type TradeThesis = {
   /** each remaining week with the trade, worst / base / best */
   matchups?: Matchup[];
   ranks: { give: ThesisRank[]; get: ThesisRank[] };
+  /** two from your flex spot and bench for one who starts (mega/trade_theses.py) */
+  depth?: boolean;
 };
 
 export type TradesMeta = {
   evaluated?: number;
   simulated?: number;
   shown?: number;
+  /** the flex spot and bench a depth offer is paid from, and how many such 2-for-1s were checked */
+  depth_pile?: string[];
+  depth_checked?: number;
   p_playoffs?: number | null;
   p_title?: number | null;
   posture?: "protect" | "balanced" | "swing" | null;
@@ -118,6 +123,8 @@ export type Trades = {
   available: boolean;
   version?: number;
   cards?: TradeThesis[];
+  /** depth for a starter: 2-for-1s paid only from the flex spot and bench */
+  depth?: TradeThesis[];
   /** Yahoo's trade end date, YYYY-MM-DD */
   deadline?: string;
   /** past the deadline: no offers, no search */

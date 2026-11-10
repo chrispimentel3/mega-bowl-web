@@ -80,6 +80,9 @@ export function TradeThesisCard({ card }: { card: TradeThesis }) {
 
       <p className="mt-2 text-sm text-ink">{card.thesis}</p>
       {card.second ? <p className="mt-1 text-sm text-muted">{card.second.thesis}</p> : null}
+      {card.depth && card.fa_add ? (
+        <p className="mt-1 text-sm text-muted">Then fill the open roster spot with {card.fa_add} from waivers.</p>
+      ) : null}
 
       <table className="mt-3 w-full text-xs">
         <thead>

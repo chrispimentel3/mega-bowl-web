@@ -6,6 +6,7 @@ import { TradeOfferCard } from "@/components/TradeOfferCard";
 import { TradeSearchExplorer } from "@/components/TradeSearchExplorer";
 import { TradeEvaluator } from "@/components/TradeEvaluator";
 import { TradeThesisList } from "@/components/TradeThesisList";
+import { TradeThesisCard } from "@/components/TradeThesisCard";
 import { PostureChip } from "@/components/PostureChip";
 import Link from "next/link";
 import { PlayerCard } from "@/components/PlayerCard";
@@ -36,6 +37,30 @@ export default async function TradesPage() {
 
         <SectionHeading title="Trade around one player" />
         <TradeSearchExplorer />
+
+        {tr.depth ? (
+          <>
+            <SectionHeading title="Turn depth into a starter" />
+            <p className="text-sm text-muted">
+              Two of your flex and bench players
+              {tr.meta?.depth_pile?.length ? ` (${tr.meta.depth_pile.join(", ")})` : ""} for one who starts, so
+              the flex stops being a weekly coin flip. Each is judged on your lineup over the weeks that count,
+              net of the free agent you could add anyway, best chance-times-gain first.
+            </p>
+            {tr.depth.length ? (
+              <div className="mt-3 grid gap-3">
+                {tr.depth.map((c) => (
+                  <TradeThesisCard key={`${c.partner}|${c.give.map((g) => g.name).join("+")}|${c.get[0]?.name}`} card={c} />
+                ))}
+              </div>
+            ) : (
+              <div className="mt-3 rounded-xl border border-dashed border-line bg-card/50 px-4 py-3 text-sm text-muted">
+                None of the {tr.meta?.depth_checked ?? ""} two-for-ones paid from your bench beats adding a free agent
+                this week.
+              </div>
+            )}
+          </>
+        ) : null}
 
         {tr.cards ? (
           <>
