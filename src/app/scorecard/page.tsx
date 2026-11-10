@@ -60,6 +60,10 @@ export default async function ScorecardPage() {
   const [sc, ab] = await Promise.all([getScorecard(), getActionBoard()]);
   const t = sc.totals;
   const p = t?.projections;
+  const cg = sc.call_grades;
+  const saidAll = cg?.n ? cg.buckets.reduce((s, b) => s + b.said * b.n, 0) / cg.n : 0;
+  // the honesty check: a band with enough calls whose chances didn't come true
+  const offBands = (cg?.buckets ?? []).filter((b) => b.n >= 30 && Math.abs(b.said - b.happened) > 0.05);
   const posRows = Object.entries(p?.by_pos ?? {}).map(([pos, e]) => ({ pos, ...(e as ProjErr) }));
   if (p?.vegas) {
     posRows.push({ pos: "Vegas-priced", n: p.vegas.n, mae_ours: p.vegas.mae_ours, mae_consensus: p.vegas.mae_consensus });
@@ -83,7 +87,10 @@ export default async function ScorecardPage() {
           <>
             <KpiRow
               items={[
-                { label: "Close calls right", value: `${t.calls_right} of ${t.calls}`, sub: "our pick outscored the sit" },
+                cg && cg.n
+                  ? { label: "Close-call chances", value: `${Math.round(saidAll * 100)}% → ${Math.round(((cg.right ?? 0) / cg.n) * 100)}%`,
+                      sub: `said → happened · ${cg.n} calls` }
+                  : { label: "Close calls right", value: `${t.calls_right} of ${t.calls}`, sub: "our pick outscored the sit" },
                 { label: "Left on the bench", value: pts(t.points_left), sub: `pts over ${t.lineup_weeks} weeks` },
                 {
                   label: "Projection error",
@@ -92,6 +99,46 @@ export default async function ScorecardPage() {
                 },
               ]}
             />
+
+            {cg && cg.n ? (
+              <>
+                <SectionHeading title="Close-call chances, graded" />
+                <SimpleTable
+                  rowKey={(r) => r.bucket}
+                  rows={cg.buckets}
+                  columns={[
+                    { key: "bucket", label: "Called" },
+                    { key: "n", label: "Calls", align: "right" },
+                    { key: "said", label: "Said", align: "right", format: (v) => `${Math.round((v as number) * 100)}%` },
+                    { key: "happened", label: "Happened", align: "right", format: (v) => `${Math.round((v as number) * 100)}%` },
+                  ]}
+                />
+                <p className="mt-2 text-xs text-muted">
+                  Every close call on Start/Sit, with the chance we gave the player we started. Honest chances come true
+                  about as often as they say.{" "}
+                  {offBands.length
+                    ? `Off by more than 5 points: ${offBands.map((b) => `${b.bucket} (said ${Math.round(b.said * 100)}%, happened ${Math.round(b.happened * 100)}%)`).join("; ")}.`
+                    : cg.buckets.some((b) => b.n >= 30)
+                      ? "Every band with 30+ calls is within 5 points."
+                      : "No band has the 30 calls it takes to judge yet."}
+                  {cg.brier != null ? ` Brier score ${cg.brier.toFixed(3)} (a coin flip scores 0.250; lower is better).` : ""}
+                  {cg.rebuilt_weeks?.length
+                    ? ` Weeks ${cg.rebuilt_weeks.join(", ")} came before Start/Sit showed chances, so theirs are rebuilt from the projections as they stood at kickoff.`
+                    : ""}
+                </p>
+              </>
+            ) : null}
+
+            {t.dead_starts ? (
+              <p className="mt-4 text-sm text-ink">
+                <b>Starters who didn&apos;t play:</b> {t.dead_starts.n}
+                {t.dead_starts.n ? ` (${pts(t.dead_starts.proj)} projected points)` : ""}.{" "}
+                <span className="text-muted">
+                  A starter whose team played but who has no stat line. The Sunday game-day check (11:40 AM and 3:00 PM)
+                  exists to make this zero.
+                </span>
+              </p>
+            ) : null}
 
             {t.shadow ? (
               <>
@@ -152,6 +199,11 @@ export default async function ScorecardPage() {
                       {w.lineup.shadow ? (
                         <p className="mt-0.5 text-xs text-muted">
                           On our projections: {pts(w.lineup.shadow.ours)} · on the consensus: {pts(w.lineup.shadow.consensus)}
+                        </p>
+                      ) : null}
+                      {w.lineup.dead_starts?.n ? (
+                        <p className="mt-0.5 text-xs font-semibold text-crimson">
+                          Started but didn&apos;t play: {w.lineup.dead_starts.players.join(", ")} ({pts(w.lineup.dead_starts.proj)} projected)
                         </p>
                       ) : null}
                       {w.lineup.calls.length ? (

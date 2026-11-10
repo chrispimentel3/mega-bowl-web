@@ -1,11 +1,12 @@
 import { PosBadge } from "./PosBadge";
 import { PlayerAvatar } from "./PlayerAvatar";
 import { TeamLogo } from "./TeamLogo";
-import type { LineupRow as LineupRowType } from "@/lib/start-sit";
+import type { Call, LineupRow as LineupRowType } from "@/lib/start-sit";
 import { PlayerName } from "@/components/PlayerCardProvider";
 import { MatchupTags } from "./MatchupTags";
 
-export function LineupRow({ row }: { row: LineupRowType }) {
+/** `call`: the close call this bench player is on the losing side of, when the export has one. */
+export function LineupRow({ row, call }: { row: LineupRowType; call?: Call }) {
   return (
     <div className="rounded-xl border border-line bg-card p-4 shadow-sm">
       <div className="flex items-start justify-between gap-3">
@@ -48,9 +49,9 @@ export function LineupRow({ row }: { row: LineupRowType }) {
           pct={row.matchup_pct} pts={row.matchup_pts} pos={row.pos} opp={row.opp} team={row.nfl_team}
           defRank={row.matchup_def_rank} vegasPct={row.matchup_vegas_pct} basis={row.matchup_basis}
           props={row.vegas} propsEdge={row.vegas_edge}
-          extra={row.close_call ? (
+          extra={call || row.close_call ? (
             <span className="rounded-md bg-amber-100 px-2 py-0.5 text-xs font-bold text-amber-800 dark:bg-amber-950/40 dark:text-amber-300">
-              close call {row.close_call}
+              {call ? `${call.verdict} vs ${call.start} · ${Math.round(call.p * 100)}%` : `close call ${row.close_call}`}
             </span>
           ) : null}
       />

@@ -27,6 +27,8 @@ export type ScoreWeek = {
     should_have_started: string[];
     calls: Call[];
     bye_calls: string[];
+    /** starters whose team played but who have no stat line — absent on an older export */
+    dead_starts?: { n: number; proj: number; players: string[] };
   } | null;
   projections: ProjSummary | null;
 };
@@ -54,6 +56,16 @@ export type Calib = { bucket: string; n: number; said: number; happened: number 
 /** n player-weeks; tag_pct the average published tag; vs_ours_pct actual vs our projection */
 export type TagGrade = { n: number; tag_pct?: number; vs_ours_pct?: number };
 
+export type CallGrades = {
+  n: number;
+  right?: number;
+  brier?: number;
+  /** weeks graded before Start/Sit published chances, rebuilt from the projections at kickoff */
+  rebuilt_weeks?: number[];
+  buckets: { bucket: string; n: number; said: number; happened: number }[];
+  rows?: { week: number; start: string; sit: string; p: number; won: boolean; source: "published" | "rebuilt" }[];
+};
+
 export type LiveCalib = {
   season: number;
   through_week: number;
@@ -78,12 +90,15 @@ export type Scorecard = {
     projections: ProjSummary;
     waivers: number;
     waivers_right: number;
+    dead_starts?: { n: number; proj: number };
   } | null;
   waivers: WaiverGrade[];
   /** matchup tags graded: what tagged players who played scored against our projection at kickoff */
   matchups?: Partial<Record<"good" | "neutral" | "tough", TagGrade>> & { spread?: number };
   /** the weekly self-calibration (mega/live_calib.py): three settings refit on graded weeks */
   live_calib?: LiveCalib;
+  /** the close-call chances Start/Sit showed, graded: said vs happened (mega/live_calib.grade_calls) */
+  call_grades?: CallGrades;
   /** this season's graded weeks re-weighting ours vs the consensus by position */
   live_blend?: { weights: Record<string, number>; tested: number; mae_gain?: number; active: boolean };
   /** the week's prop movers (the books raised his role) and what they then scored */

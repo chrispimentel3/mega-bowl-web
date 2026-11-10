@@ -28,7 +28,23 @@ export type LineupRow = {
   matchup_basis?: "defense+vegas" | "defense+market" | "defense_only" | null;
 };
 
+/** One reason in a close call, in points; positive favours the starter (they add up to `gap`). */
+export type CallReason = { factor: string; label: string; pts: number };
+
+/** A close call (ff-dashboard mega/live_calib.call): the chance `start` outscores `sit`. */
+export type Call = {
+  start: string;
+  sit: string;
+  p: number;
+  verdict: "coin flip" | "lean" | "clear";
+  gap: number;
+  why: CallReason[];
+  context: string[];
+};
+
 export type StartSit = {
+  /** close calls, clearest first — absent on an older export */
+  calls?: Call[];
   available: boolean;
   headline: string;
   subhead: string;
