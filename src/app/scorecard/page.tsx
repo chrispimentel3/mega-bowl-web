@@ -134,8 +134,8 @@ export default async function ScorecardPage() {
                 <b>Starters who didn&apos;t play:</b> {t.dead_starts.n}
                 {t.dead_starts.n ? ` (${pts(t.dead_starts.proj)} projected points)` : ""}.{" "}
                 <span className="text-muted">
-                  A starter whose team played but who has no stat line. The Sunday game-day check (11:40 AM and 3:00 PM)
-                  exists to make this zero.
+                  A starter whose team played but who has no stat line — usually a late scratch the 7 AM
+                  refresh couldn&apos;t see yet.
                 </span>
               </p>
             ) : null}
