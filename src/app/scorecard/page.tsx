@@ -1,4 +1,4 @@
-import { getScorecard, type Call, type ProjErr } from "@/lib/scorecard";
+import { getScorecard, type Call, type LiveCalib, type ProjErr } from "@/lib/scorecard";
 import { getActionBoard } from "@/lib/action-board";
 import { Masthead } from "@/components/Masthead";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -8,6 +8,34 @@ import { SimpleTable } from "@/components/SimpleTable";
 export const revalidate = 3600;
 
 const pts = (v: number) => v.toFixed(1);
+const signedPct = (v: unknown) =>
+  typeof v === "number" ? `${v > 0 ? "+" : ""}${v.toFixed(1)}%` : "—";
+
+/** One line per setting the weekly calibration refits (mega/live_calib.py). */
+function learnedLines(c: LiveCalib): { label: string; on: boolean; text: string }[] {
+  const lines: { label: string; on: boolean; text: string }[] = [];
+  for (const [pos, d] of Object.entries(c.defense ?? {})) {
+    const fit = `fit ${Math.abs(d.dev_gain_pct).toFixed(1)}% ${d.dev_gain_pct >= 0 ? "better" : "worse"}`;
+    const miss = `average miss ${Math.abs(d.mae_gain).toFixed(2)} pts ${d.mae_gain >= 0 ? "smaller" : "bigger"}`;
+    lines.push({ label: `${pos} defense matchup`, on: d.active,
+      text: `β ${d.beta.toFixed(2)}: ${fit}, ${miss}, over ${d.tested} week${d.tested === 1 ? "" : "s"}` });
+  }
+  const a = c.availability;
+  const sure = a?.buckets?.["3"];
+  if (a && sure) {
+    lines.push({ label: "Chance he plays", on: a.active,
+      text: `a player we had at ${Math.round(sure.said * 100)}% to play counts as ${Math.round(sure.p * 100)}% (${sure.n} player-weeks), over ${a.tested} week${a.tested === 1 ? "" : "s"}` });
+  }
+  const o = c.odds;
+  if (o) {
+    lines.push({ label: "Win odds", on: o.active,
+      text: o.active
+        ? `gaps between teams' expected scores shrunk to ${Math.round(o.lam * 100)}% (${o.n} graded games)`
+        : `would shrink the gaps between teams' expected scores to ${Math.round(o.lam * 100)}%; ${o.n} of the 30 graded games it needs`,
+    });
+  }
+  return lines;
+}
 
 function Verdict({ right }: { right: boolean }) {
   return right ? (
@@ -179,13 +207,35 @@ export default async function ScorecardPage() {
                   columns={[
                     { key: "tag", label: "Tagged" },
                     { key: "n", label: "Player-weeks", align: "right" },
-                    { key: "vs_avg_pct", label: "Vs his average", align: "right",
-                      format: (v) => `${(v as number) > 0 ? "+" : ""}${(v as number).toFixed(1)}%` },
+                    { key: "tag_pct", label: "Average tag", align: "right", format: (v) => signedPct(v) },
+                    { key: "vs_ours_pct", label: "Vs our projection", align: "right", format: (v) => signedPct(v) },
                   ]}
                 />
                 <p className="mt-2 text-xs text-muted">
-                  Every ranked player&apos;s published matchup, against what he then scored relative to his own average
-                  before that week. A good tag should land above the neutral row, a tough one below it.
+                  Every tagged player who played, against our projection at kickoff. A good tag should land above
+                  neutral, a tough one below.
+                  {sc.matchups.spread != null ? <> Good tags beat tough ones by {sc.matchups.spread.toFixed(1)} points.</> : null}
+                </p>
+              </>
+            ) : null}
+
+            {sc.live_calib && sc.live_calib.defense ? (
+              <>
+                <SectionHeading title="What the model learned this week" />
+                <ul className="space-y-1.5 text-sm text-ink">
+                  {learnedLines(sc.live_calib).map((l) => (
+                    <li key={l.label}>
+                      <span className="font-medium">{l.label}:</span>{" "}
+                      <span className={l.on ? "font-semibold text-pos-rb-text" : "text-muted"}>{l.on ? "on" : "off"}</span>
+                      {" — "}
+                      {l.text}
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-2 text-xs text-muted">
+                  Refit every week on this season&apos;s graded weeks (through week {sc.live_calib.through_week}), each
+                  anchored to ten seasons of history. A setting switches on only after it beats leaving it alone, week
+                  by week: 4 tested weeks for the player settings, and 30 graded games for win odds.
                 </p>
               </>
             ) : null}

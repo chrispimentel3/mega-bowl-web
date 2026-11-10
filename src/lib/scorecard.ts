@@ -51,6 +51,18 @@ export type TradeGrade = {
 /** what we said (a probability) against how often it happened, bucketed */
 export type Calib = { bucket: string; n: number; said: number; happened: number };
 
+/** n player-weeks; tag_pct the average published tag; vs_ours_pct actual vs our projection */
+export type TagGrade = { n: number; tag_pct?: number; vs_ours_pct?: number };
+
+export type LiveCalib = {
+  season: number;
+  through_week: number;
+  defense: Record<string, { beta: number; tested: number; dev_gain_pct: number; mae_gain: number; active: boolean }>;
+  /** bucket "0".."3" = P(plays) ≤50%, 50–80%, 80–95%, 95–100%; p is what it now counts as */
+  availability: { buckets: Record<string, { said: number; n: number; p: number }>; tested: number; brier_gain: number; active: boolean };
+  odds: { s: number; lam: number; n: number; logloss_gain?: number; active: boolean };
+};
+
 export type Scorecard = {
   available: boolean;
   season?: number;
@@ -68,8 +80,10 @@ export type Scorecard = {
     waivers_right: number;
   } | null;
   waivers: WaiverGrade[];
-  /** matchup tags graded: what tagged players scored against their own average before that week */
-  matchups?: Record<"good" | "neutral" | "tough", { n: number; vs_avg_pct: number }>;
+  /** matchup tags graded: what tagged players who played scored against our projection at kickoff */
+  matchups?: Partial<Record<"good" | "neutral" | "tough", TagGrade>> & { spread?: number };
+  /** the weekly self-calibration (mega/live_calib.py): three settings refit on graded weeks */
+  live_calib?: LiveCalib;
   /** this season's graded weeks re-weighting ours vs the consensus by position */
   live_blend?: { weights: Record<string, number>; tested: number; mae_gain?: number; active: boolean };
   /** the week's prop movers (the books raised his role) and what they then scored */
