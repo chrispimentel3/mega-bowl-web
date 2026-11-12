@@ -66,6 +66,11 @@ export type CallGrades = {
   rows?: { week: number; start: string; sit: string; p: number; won: boolean; source: "published" | "rebuilt" }[];
 };
 
+/** how far Sunday's prop lines moved from the midweek consensus toward our projection:
+ *  0 = the market ignored where we differed, 1 = it agreed fully (mega/scorecard.grade_market) */
+export type MarketFit = { n: number; disagree: number; toward_ours?: number; se?: number };
+export type Market = MarketFit & { weeks: number[]; by_pos?: Record<string, MarketFit> };
+
 export type LiveCalib = {
   season: number;
   through_week: number;
@@ -99,6 +104,8 @@ export type Scorecard = {
   live_calib?: LiveCalib;
   /** the close-call chances Start/Sit showed, graded: said vs happened (mega/live_calib.grade_calls) */
   call_grades?: CallGrades;
+  /** did Sunday's lines move toward our midweek projection? — absent on an older export */
+  market?: Market;
   /** this season's graded weeks re-weighting ours vs the consensus by position */
   live_blend?: { weights: Record<string, number>; tested: number; mae_gain?: number; active: boolean };
   /** the week's prop movers (the books raised his role) and what they then scored */

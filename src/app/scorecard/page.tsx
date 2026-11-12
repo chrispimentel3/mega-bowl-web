@@ -1,4 +1,4 @@
-import { getScorecard, type Call, type LiveCalib, type ProjErr } from "@/lib/scorecard";
+import { getScorecard, type Call, type LiveCalib, type Market, type ProjErr } from "@/lib/scorecard";
 import { getActionBoard } from "@/lib/action-board";
 import { Masthead } from "@/components/Masthead";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -179,6 +179,9 @@ export default async function ScorecardPage() {
                 ) : null}
               </>
             ) : null}
+
+            <SectionHeading title="Do Sunday's lines agree with us?" />
+            <MarketCheck m={sc.market} />
 
             <SectionHeading title="Week by week" />
             <div className="grid gap-3">
@@ -436,6 +439,46 @@ export default async function ScorecardPage() {
           </>
         )}
       </main>
+    </>
+  );
+}
+
+/** Where our midweek projection differed from the consensus, how far Sunday's prop lines moved
+ *  toward ours. Faster than waiting on results: a line moving our way says we knew something. */
+function MarketCheck({ m }: { m?: Market }) {
+  const share = (v: number) => `${Math.round(v * 100)}%`;
+  if (!m || m.toward_ours == null || m.se == null) {
+    return (
+      <p className="text-sm text-muted">
+        When our midweek projection differs from the consensus, do Sunday morning&apos;s prop lines move toward
+        ours? {m?.n ? `${m.n} player-weeks so far; a number shows from 30.` : "This starts with week 10's Sunday lines and is graded the Tuesday after."}
+      </p>
+    );
+  }
+  const lo = m.toward_ours - 1.96 * m.se;
+  const pos = Object.entries(m.by_pos ?? {}).filter(([, f]) => f.toward_ours != null && f.se != null);
+  return (
+    <>
+      <p className="text-sm text-ink">
+        Where our midweek projection differed from the consensus, Sunday&apos;s prop lines moved{" "}
+        <b>{share(m.toward_ours)}</b> of the way toward ours (± {share(1.96 * m.se)}), over {m.n.toLocaleString()} player-weeks
+        in week{m.weeks.length > 1 ? "s" : ""} {m.weeks.join(", ")}.{" "}
+        {lo > 0
+          ? "The market keeps finding what we saw first."
+          : "Not yet clear of zero: too early to say the market agrees with us."}
+      </p>
+      {pos.length ? (
+        <ul className="mt-1 text-xs text-muted">
+          {pos.map(([p, f]) => (
+            <li key={p}>
+              {p}: {share(f.toward_ours!)} ± {share(1.96 * f.se!)} over {f.n}
+            </li>
+          ))}
+        </ul>
+      ) : null}
+      <p className="mt-2 text-xs text-muted">
+        0% would mean the market ignored where we differed; 100% that it ended up exactly at ours.
+      </p>
     </>
   );
 }
