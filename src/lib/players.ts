@@ -69,6 +69,8 @@ export type ThisWeek = {
   matchup_baseline?: number | null;
   expected_pts?: number | null;
   delta_pts?: number | null;
+  /** our matchup model's read of his week — absent when it doesn't score him */
+  ml?: import("@/components/ModelCall").ModelRead;
 };
 
 export type GameLogRow = Record<string, number | string | null>;

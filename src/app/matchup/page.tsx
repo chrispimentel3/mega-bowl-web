@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getActionBoard } from "@/lib/action-board";
-import { getStartSit, type LineupRow } from "@/lib/start-sit";
+import { getStartSit, modelRead, type LineupRow } from "@/lib/start-sit";
 import { getMatchup } from "@/lib/matchup";
 import { getPlayoffs } from "@/lib/playoffs";
 import { getLogic } from "@/lib/logic";
@@ -9,6 +9,7 @@ import { Masthead } from "@/components/Masthead";
 import { SectionHeading } from "@/components/SectionHeading";
 import { PosBadge } from "@/components/PosBadge";
 import { MatchupTags } from "@/components/MatchupTags";
+import { ModelCall } from "@/components/ModelCall";
 import { LogicTopicCard } from "@/components/LogicDetail";
 import { PlayerName } from "@/components/PlayerCardProvider";
 
@@ -17,7 +18,7 @@ export const revalidate = 3600;
 const pct = (x: number) => `${Math.round(x * 100)}%`;
 const pts = (r: LineupRow | null) => r?.proj_adj ?? 0;
 /** the How-it-works topics this page leans on, in reading order */
-const LOGIC = ["playoff_odds", "matchup_model", "live_calib"];
+const LOGIC = ["ml_matchup", "playoff_odds", "matchup_model", "live_calib"];
 
 type Pair = { slot: string; me: LineupRow | null; them: LineupRow | null };
 
@@ -45,7 +46,8 @@ export default async function MatchupPage() {
   const worst = edges.reduce<(typeof edges)[number] | null>((x, r) => (!x || r.d < x.d ? r : x), null);
   const players = [...ss.starters, ...ss.bench]
     .filter((r) => r.pos !== "K" && r.pos !== "DEF")
-    .sort((x, y) => (y.matchup_pts ?? -99) - (x.matchup_pts ?? -99));
+    .sort((x, y) => (y.ml_week ?? y.matchup_pts ?? -99) - (x.ml_week ?? x.matchup_pts ?? -99));
+  const modelOn = players.some((r) => r.ml_week != null);
   const topics = LOGIC.flatMap((k) => logic.topics.filter((t) => t.key === k));
   // a starter who won't play: in practice a kicker or defense on bye, which Lineup can't swap
   // for someone you don't roster — the season sim streams one (title_odds.kdef_means)
@@ -126,13 +128,13 @@ export default async function MatchupPage() {
               {best && best.d >= 0.5 ? (
                 <p>
                   Your biggest edge is at <b>{best.slot}</b>: {best.me!.player} projects {best.d.toFixed(1)} more than{" "}
-                  {best.them!.player}.
+                  {best.them!.player.replace(/\.$/, "")}.
                 </p>
               ) : null}
               {worst && worst.d <= -0.5 ? (
                 <p>
                   Theirs is at <b>{worst.slot}</b>: {worst.them!.player} projects {(-worst.d).toFixed(1)} more than{" "}
-                  {worst.me!.player}.
+                  {worst.me!.player.replace(/\.$/, "")}.
                 </p>
               ) : null}
               <p className="text-xs text-muted">
@@ -144,8 +146,19 @@ export default async function MatchupPage() {
 
             <SectionHeading title="Your players' matchups" />
             <p className="mb-2 text-sm text-muted">
-              Best to worst: how far the defense he faces and this week&apos;s Vegas line move each player from a normal
-              week. Inside ±3% is noise. Whether a better matchup is worth starting someone is{" "}
+              {modelOn ? (
+                <>
+                  Best to worst, by our model: how far this week&apos;s situation — the Vegas line, the defense,
+                  teammates out, his quarterback, the injury report — moves each player against his own usual week. A
+                  point or more is a call; less is a normal week.
+                </>
+              ) : (
+                <>
+                  Best to worst: how far the defense he faces and this week&apos;s Vegas line move each player from a
+                  normal week. Inside ±3% is noise.
+                </>
+              )}{" "}
+              Whether a better matchup is worth starting someone is{" "}
               <Link href="/start-sit" className="text-navy hover:underline">Lineup</Link>&apos;s call.
             </p>
             <div className="grid gap-2">
@@ -163,7 +176,9 @@ export default async function MatchupPage() {
                     {r.opp ? ` · ${r.opp}` : r.report_status ? "" : " · bye"}
                     {r.report_status ? <span className="font-bold text-crimson"> · {r.report_status}</span> : null}
                   </p>
-                  {r.matchup_pct != null ? (
+                  {modelRead(r) ? (
+                    <ModelCall m={modelRead(r)!} className="mt-2" />
+                  ) : r.matchup_pct != null ? (
                     <MatchupTags
                       className="mt-2"
                       pct={r.matchup_pct} pts={r.matchup_pts} pos={r.pos} opp={r.opp} team={r.nfl_team}
@@ -196,7 +211,11 @@ export default async function MatchupPage() {
 /** One side of a slot: points, name, and his NFL game with the matchup word when it isn't neutral. */
 function Side({ r, right = false }: { r: LineupRow | null; right?: boolean }) {
   if (!r) return <span className={`text-sm text-muted ${right ? "text-right" : ""}`}>—</span>;
-  const s = r.matchup_pct != null ? STEPS[step(r.matchup_pct)] : null;
+  // the model's call when it scored him; the older defense-and-Vegas word otherwise
+  const old = r.matchup_pct != null ? STEPS[step(r.matchup_pct)] : null;
+  const s = r.ml_call
+    ? { label: r.ml_call === "good" ? "Good week" : r.ml_call === "bad" ? "Bad week" : "Neutral", tone: r.ml_call === "good" ? "text-pos-rb-text" : "text-crimson" }
+    : old;
   return (
     <div className={`min-w-0 ${right ? "text-right" : ""}`}>
       <p className={`flex items-baseline gap-2 ${right ? "flex-row-reverse" : ""}`}>

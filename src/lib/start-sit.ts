@@ -1,4 +1,5 @@
 import { fetchRemoteJson } from "./fetchRemoteJson";
+import type { ModelRead, ModelWhy } from "@/components/ModelCall";
 
 export type LineupRow = {
   lineup: string;
@@ -26,7 +27,22 @@ export type LineupRow = {
   matchup_def_rank?: number | null;
   matchup_vegas_pct?: number | null;
   matchup_basis?: "defense+vegas" | "defense+market" | "defense_only" | null;
+  /** our matchup model (ff-dashboard mega/ml_matchup.py): its projection, his average going in,
+   *  this week against his usual in points, the call and its reasons — absent on an older
+   *  export, null for a player it doesn't score (fewer than 3 games this season, K, DEF) */
+  ml_proj?: number | null;
+  ml_avg?: number | null;
+  ml_week?: number | null;
+  ml_call?: ModelRead["call"] | null;
+  ml_why?: ModelWhy[] | null;
 };
+
+/** A lineup row's model fields as one read, or null when the model didn't score him. */
+export function modelRead(r: LineupRow): ModelRead | null {
+  return r.ml_proj != null && r.ml_week != null && r.ml_call
+    ? { proj: r.ml_proj, week: r.ml_week, call: r.ml_call, avg: r.ml_avg, why: r.ml_why ?? [] }
+    : null;
+}
 
 /** One reason in a close call, in points; positive favours the starter (they add up to `gap`). */
 export type CallReason = { factor: string; label: string; pts: number };

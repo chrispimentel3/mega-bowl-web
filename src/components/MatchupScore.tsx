@@ -2,6 +2,7 @@ import type { ThisWeek } from "@/lib/players";
 
 import { STEPS, ptsShort, ptsSentence, step } from "@/lib/matchupVerdict";
 import { MatchupTags } from "./MatchupTags";
+import { ModelCall } from "./ModelCall";
 import { TapTip } from "./TapTip";
 
 /** This week's matchup in plain words: a verdict, what it's worth, and why. */
@@ -60,6 +61,12 @@ export function MatchupScore({ tw, pos, week }: { tw: ThisWeek; pos: string; wee
         hideVerdict pct={tw.matchup_pct} pts={tw.delta_pts} pos={pos} opp={tw.opponent}
         defRank={tw.matchup_def_rank} vegasPct={tw.matchup_vegas_pct} basis={tw.matchup_basis}
       />
+      {tw.ml ? (
+        <div className="mt-2 border-t border-line pt-2">
+          <p className="mb-1 text-xs font-bold uppercase tracking-wide text-muted">Our model, against his usual week</p>
+          <ModelCall m={tw.ml} />
+        </div>
+      ) : null}
     </div>
   );
 }

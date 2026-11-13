@@ -1,4 +1,4 @@
-import { getScorecard, type Call, type LiveCalib, type Market, type ProjErr } from "@/lib/scorecard";
+import { getScorecard, type Call, type LiveCalib, type Market, type ModelGrade, type ProjErr } from "@/lib/scorecard";
 import { getActionBoard } from "@/lib/action-board";
 import { Masthead } from "@/components/Masthead";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -177,6 +177,13 @@ export default async function ScorecardPage() {
                     Vegas props, on the {p.vegas.n} player-weeks they priced, missed by {pts(p.vegas.mae_vegas)}.
                   </p>
                 ) : null}
+              </>
+            ) : null}
+
+            {sc.ml?.n ? (
+              <>
+                <SectionHeading title="Our matchup model, graded" />
+                <ModelGraded g={sc.ml} />
               </>
             ) : null}
 
@@ -478,6 +485,46 @@ function MarketCheck({ m }: { m?: Market }) {
       ) : null}
       <p className="mt-2 text-xs text-muted">
         0% would mean the market ignored where we differed; 100% that it ended up exactly at ours.
+      </p>
+    </>
+  );
+}
+
+/** The matchup model against ours and the consensus on the player-weeks it scored, and whether
+ *  it has earned a share of the Lineup projection. */
+function ModelGraded({ g }: { g: ModelGrade }) {
+  const replayed = g.weeks?.replayed ?? [];
+  const published = g.weeks?.published ?? [];
+  const b = g.blend;
+  return (
+    <>
+      <p className="text-sm text-ink">
+        On {g.n.toLocaleString()} player-weeks the model missed by <b>{(g.mae_ml ?? 0).toFixed(2)}</b> points on
+        average; our projection missed by {(g.mae_ours ?? 0).toFixed(2)} and the consensus by{" "}
+        {(g.mae_consensus ?? 0).toFixed(2)}. Lower is better.
+      </p>
+      <p className="mt-1 text-sm text-ink">
+        {b.active ? (
+          <>
+            <b>It has earned a place:</b> {Math.round(b.u * 100)}% of the Lineup projection now comes from the model,
+            after the blend beat our projection alone by {(b.mae_gain ?? 0).toFixed(2)} points a player over {b.tested} tested
+            weeks.
+          </>
+        ) : (
+          <>
+            <b>Not in your lineup yet.</b> Blending it into our projection{" "}
+            {b.mae_gain != null && b.tested
+              ? `${b.mae_gain > 0 ? "helped" : "cost"} ${Math.abs(b.mae_gain).toFixed(2)} points a player over ${b.tested} tested weeks`
+              : "hasn't been tested on enough weeks"}
+            ; it joins only after the blend wins over 4 or more.
+          </>
+        )}
+      </p>
+      <p className="mt-2 text-xs text-muted">
+        {published.length ? `Graded as published before kickoff: week${published.length > 1 ? "s" : ""} ${published.join(", ")}. ` : ""}
+        {replayed.length
+          ? `Week${replayed.length > 1 ? "s" : ""} ${replayed.join(", ")} ${replayed.length > 1 ? "are" : "is"} replayed: the model run afterwards on what was known before each week, which flatters it a little (it sees who really sat out).`
+          : ""}
       </p>
     </>
   );

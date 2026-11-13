@@ -71,6 +71,18 @@ export type CallGrades = {
 export type MarketFit = { n: number; disagree: number; toward_ours?: number; se?: number };
 export type Market = MarketFit & { weeks: number[]; by_pos?: Record<string, MarketFit> };
 
+/** our matchup model (mega/ml_matchup.py) graded beside ours and the consensus, and the
+ *  walk-forward test that decides whether a share `u` of it joins the Lineup projection */
+export type ModelGrade = {
+  n: number;
+  mae_ml?: number;
+  mae_ours?: number;
+  mae_consensus?: number;
+  /** published = graded as it stood at kickoff; replayed = run afterwards on what was known then */
+  weeks?: { published: number[]; replayed: number[] };
+  blend: { u: number; tested: number; mae_gain?: number; active: boolean };
+};
+
 export type LiveCalib = {
   season: number;
   through_week: number;
@@ -106,6 +118,8 @@ export type Scorecard = {
   call_grades?: CallGrades;
   /** did Sunday's lines move toward our midweek projection? — absent on an older export */
   market?: Market;
+  /** the matchup model's grades — absent on an older export */
+  ml?: ModelGrade;
   /** this season's graded weeks re-weighting ours vs the consensus by position */
   live_blend?: { weights: Record<string, number>; tested: number; mae_gain?: number; active: boolean };
   /** the week's prop movers (the books raised his role) and what they then scored */
